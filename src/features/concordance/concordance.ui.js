@@ -183,16 +183,43 @@ export async function ucitajListuAnaliza() {
         <h4 style="margin:0 0 8px 0; color:#008080;">${naslovProjekta}</h4>
         <p style="font-size:0.85em; color:#666; margin-bottom:12px;">Datum analize: ${new Date(analiza.datumAnalize).toLocaleString('hr-HR')}</p>
         <button id="btn-otvori-analizu-${analiza.projektId}" class="btn-primary" style="padding:6px 12px; font-size:0.85em;">Otvorite analizu</button>
+        <button id="btn-obrisi-analizu-${analiza.projektId}" class="btn-danger" style="padding:6px 12px; font-size:0.85em; background-color: #d81717a6; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Obriši</button>
       `;
 
       container.appendChild(card);
 
+      // Listener za otvaranje analize
       document.getElementById(`btn-otvori-analizu-${analiza.projektId}`)?.addEventListener('click', () => {
         prikaziKonkordancu(analiza.projektId);
       });
+      // Listener za brisanje analize
+      document.getElementById(`btn-obrisi-analizu-${analiza.projektId}`)?.addEventListener('click', () => {
+        obrisiAnalizirano(analiza.projektId);
+  });
     });
 
   } catch (e) {
     console.error("Greška pri učitavanju analiza:", e);
   }
 }
+
+export async function obrisiAnalizirano(projektId) {
+  if (!confirm("Jeste li sigurni da želite obrisati spremljenu analizu?")) return;
+
+  try {
+    const db = await otvoriBazu();
+    const tx = db.transaction(KONKORDANCA_STORE, 'readwrite');
+    const store = tx.objectStore(KONKORDANCA_STORE);
+    
+    store.delete(projektId);
+    if (!isNaN(projektId)) store.delete(Number(projektId));
+
+    tx.oncomplete = () => {
+      ucitajListuAnaliza();
+    };
+  } catch (err) {
+    console.error("Greška pri brisanju analize:", err);
+  }
+}
+
+window.obrisiAnalizirano = obrisiAnalizirano;
