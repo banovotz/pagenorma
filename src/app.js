@@ -153,3 +153,10 @@ if (document.readyState === 'loading') {
   pokreniAplikaciju();
 }
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker uspješno registriran za scope:', reg.scope))
+      .catch(err => console.error('Greška pri registraciji Service Workera:', err));
+  });
+}
