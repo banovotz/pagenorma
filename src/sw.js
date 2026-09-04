@@ -2,11 +2,11 @@ const CACHE_NAME = 'mojih1500-v5';
 const ASSETS = [
   './',
   './index.html',
-  './style.css',
+  './styles/style.css',
   './app.js',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './assets/icon-192.png',
+  './assets/icon-512.png'
 ];
 
 // Instalacija Service Workera i spremanje datoteka u cache
