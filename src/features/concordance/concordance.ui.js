@@ -10,28 +10,32 @@ export async function prikaziKonkordancu(projektId) {
     console.warn("prikaziKonkordancu pozvan bez važećeg projektId-a:", projektId);
     return;
   }
-
+  
    window.trenutniProjektId = projektId;
 
-   const btnGlosar = document.querySelector('button[onclick="otvoriModalGlosar(this)"]');
+   // 1. Sakrij listu analiza, prikaži kontejner pojedinačne konkordance
+  const analizeListContainer = document.getElementById('analize-page');
+  const konkordancaContainer = document.getElementById('concordance-page');
+
+  if (analizeListContainer) analizeListContainer.style.display = 'none';
+  if (konkordancaContainer) konkordancaContainer.style.display = 'block';
+
+  // Ažuriraj button za glosar
+  const btnGlosar = document.querySelector('button[onclick="otvoriModalGlosar(this)"]');
   if (btnGlosar) {
     btnGlosar.setAttribute('data-projekt-id', projektId);
   }
 
-  // Ako je id proslijeđen kao string
-  const idKey = typeof projektId === 'string' && !isNaN(projektId) ? Number(projektId) : projektId;
-
+  // 2. Dohvati podatke iz baze i napuni stupce...
   const db = await otvoriBazu();
   const tx = db.transaction(KONKORDANCA_STORE, 'readonly');
   const store = tx.objectStore(KONKORDANCA_STORE);
   
   let rezultat = await new Promise((resolve) => {
-    const req = store.get(idKey); // Koristi se provjereni ključ
+    const req = store.get(projektId);
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => resolve(null);
   });
-  
-  prikaziStranicu('concordance-page');
 
   const colIzvor = document.getElementById('col-izvor');
   const colPrijevod = document.getElementById('col-prijevod');
@@ -46,6 +50,15 @@ export async function prikaziKonkordancu(projektId) {
       colIzvor.innerHTML = '<p class="text-muted">Nema podataka za prikaz.</p>';
       return;
     }
+  
+
+
+
+  // Ako je id proslijeđen kao string
+  const idKey = typeof projektId === 'string' && !isNaN(projektId) ? Number(projektId) : projektId;
+  
+  
+  prikaziStranicu('concordance-page');
 
     rezultat.segmenti.forEach((seg, idx) => {
       const pIndex = idx + 1;
@@ -137,7 +150,15 @@ export function skociNaOdlomak(index) {
 }
 
 export async function prikaziSveAnalize() {
-  prikaziStranicu('analize-page');
+  // 1. Sakrij kontejner pojedinačne konkordance, prikaži kontejner liste analiza
+  const konkordancaContainer = document.getElementById('concordance-page');
+  const analizeListContainer = document.getElementById('analize-page');
+
+  if (konkordancaContainer) konkordancaContainer.style.display = 'none';
+  if (analizeListContainer) analizeListContainer.style.display = 'block';
+
+  // 2. Učitaj podatke za listu
+  await ucitajListuAnaliza();
   await ucitajListuAnaliza();
 }
 
@@ -178,7 +199,8 @@ export async function ucitajListuAnaliza() {
 
       const card = document.createElement('div');
       card.className = 'card-analiza';
-      card.style.cssText = 'background:#fff; border-radius:8px; padding:16px; margin-bottom:12px; border:1px solid #e0e0e0;';
+      
+      card.style.cssText = 'background: rgb(255, 255, 255); border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; border: 1px solid rgb(238, 242, 242)';
       card.innerHTML = `
         <h4 style="margin:0 0 8px 0; color:#008080;">${naslovProjekta}</h4>
         <p style="font-size:0.85em; color:#666; margin-bottom:12px;">Datum analize: ${new Date(analiza.datumAnalize).toLocaleString('hr-HR')}</p>
