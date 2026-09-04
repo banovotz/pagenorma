@@ -5,6 +5,7 @@ import { prikaziStranicu } from './core/router.js';
 import { inicijalizirajNavigaciju } from './ui/navigation.js'; 
 import { dohvatiSveProjekte } from './features/projects/projects.js';
 
+
 // Projekt & Dashboard
 import { 
   ucitajDashboard, 
@@ -31,6 +32,8 @@ let aplikacijaInicijalizirana = false;
 document.addEventListener('DOMContentLoaded', () => {
   // Obavezno pozovite inicijalizaciju navigacije!
   inicijalizirajNavigaciju(dohvatiSveProjekte);
+  ucitajDashboard();
+
 });
 
 // 2. INICIJALIZACIJA APLIKACIJE

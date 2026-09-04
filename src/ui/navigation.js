@@ -11,7 +11,12 @@ import { prikaziSveAnalize } from '../features/concordance/concordance.ui.js';
 const routes = {
   'dashboard': {
     sectionId: 'page-dashboard',
-    onActivate: null
+    onActivate: (dohvatiSveProjekteFn) => {
+      // Ako imate posebnu funkciju za prikaz/osvježavanje dashboarda, pozovite je ovdje:
+      if (typeof dohvatiSveProjekteFn === 'function') {
+        dohvatiSveProjekteFn();
+      }
+    }
   },
   'financial-analytics': {
     sectionId: 'page-analytics',
@@ -30,6 +35,7 @@ const routes = {
 /**
  * Prebacuje prikaz na zadanu stranicu prema target ID-u
  */
+
 export function navigirajNa(target, contextData = null) {
   const route = routes[target];
   
@@ -38,17 +44,23 @@ export function navigirajNa(target, contextData = null) {
     return;
   }
 
-  // 1. Sakrij sve sekcije
+  // 1. Sakrij sve sekcije stranica
   document.querySelectorAll('.page-section').forEach(sec => {
     sec.classList.add('hidden');
     sec.style.setProperty('display', 'none', 'important');
   });
 
-  // 2. Prikaži odabranu sekciju
+  // 2. Prikaži odabranu sekciju i sve njezine unutrašnje .page-content kontejnere
   const targetSection = document.getElementById(route.sectionId);
   if (targetSection) {
     targetSection.classList.remove('hidden');
     targetSection.style.setProperty('display', 'block', 'important');
+    
+    // Osiguraj da su i unutrašnji page-content elementi vidljivi
+    const innerContent = targetSection.querySelectorAll('.page-content');
+    innerContent.forEach(content => {
+      content.style.setProperty('display', 'block', 'important');
+    });
   }
 
   // 3. Ažuriraj aktivno stanje gumba u navigaciji
@@ -56,12 +68,11 @@ export function navigirajNa(target, contextData = null) {
     btn.classList.toggle('active', btn.getAttribute('data-target') === target);
   });
 
-  // 4. Pokreni pridruženu funkciju
+  // 4. Pokreni pridruženu funkciju za dohvat/učitavanje podataka
   if (typeof route.onActivate === 'function') {
     route.onActivate(contextData);
   }
 }
-
 
 /**
  * Inicijalizira event delegaciju za navigaciju
