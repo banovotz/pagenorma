@@ -388,3 +388,77 @@ export async function uveziSigurnosnuKopiju(event) {
 
   reader.readAsText(file);
 }
+
+
+export async function povuciPodatkeIzIzvora() {
+  const epubInput = document.getElementById('p-epub-file');
+  const gdocInput = document.getElementById('p-gdoc-url');
+  const statusMsg = document.getElementById('fetch-status-msg');
+
+  const file = epubInput ? epubInput.files[0] : null;
+  const gdocUrl = gdocInput ? gdocInput.value.trim() : "";
+
+  if (!file && !gdocUrl) {
+    alert("Please select an ePub file or enter a Google Docs URL.");
+    return;
+  }
+
+  statusMsg.innerText = "Analyzing and fetching data...";
+  statusMsg.style.display = 'block';
+
+  let origSlova = parseInt(document.getElementById('p-slova-original').value) || 0;
+  let docSlova = parseInt(document.getElementById('p-slova-prijevod').value) || 0;
+
+  try {
+    if (file) {
+      statusMsg.innerText = "Reading ePub and counting characters...";
+      const epubData = await parsirajEpub(file);
+      
+      if (epubData.title && !document.getElementById('p-naslov').value) {
+        document.getElementById('p-naslov').value = epubData.title;
+      }
+
+      if (epubData.coverBase64) {
+        document.getElementById('p-naslovnica-base64').value = epubData.coverBase64;
+        const imgCover = document.getElementById('img-cover-preview');
+        if (imgCover) {
+          imgCover.src = epubData.coverBase64;
+          imgCover.style.display = 'block';
+        }
+      }
+
+      origSlova = epubData.charCount;
+      document.getElementById('p-slova-original').value = origSlova;
+      
+      const karticaOrig = (origSlova / 1800).toFixed(2);
+      document.getElementById('p-ukupno').value = karticaOrig;
+    }
+
+    if (gdocUrl) {
+      statusMsg.innerText = "Dohvaćanje teksta s Google Docsa...";
+      const tekstPrijevoda = await dohvatiCijeliTekstIzGDoca(gdocUrl);
+      docSlova = tekstPrijevoda.length;
+      document.getElementById('p-slova-prijevod').value = docSlova;
+    }
+
+    const lblOrigSlova = document.getElementById('lbl-slova-orig');
+    const lblOrigKartice = document.getElementById('lbl-kartice-orig');
+    const lblDocSlova = document.getElementById('lbl-slova-doc');
+    const lblDocKartice = document.getElementById('lbl-kartice-doc');
+
+    if (lblOrigSlova) lblOrigSlova.innerText = origSlova.toLocaleString();
+    if (lblOrigKartice) lblOrigKartice.innerText = (origSlova / 1800).toFixed(2);
+
+    if (lblDocSlova) lblDocSlova.innerText = docSlova.toLocaleString();
+    if (lblDocKartice) lblDocKartice.innerText = (docSlova / 1800).toFixed(2);
+
+    const metrikaPreview = document.getElementById('metrika-preview');
+    if (metrikaPreview) metrikaPreview.style.display = 'block';
+
+    statusMsg.innerText = "Data successfully fetched!";
+
+  } catch (err) {
+    alert("Error fetching data: " + err.message);
+    statusMsg.innerText = "An error occurred.";
+  }
+}
