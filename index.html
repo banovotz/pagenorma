@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mojih 1500 — Translation Pace & Metrics</title>
-  
+  <link rel="stylesheet" href="./src/styles/style.css">   
+
   <!-- PWA Settings -->
-<link rel="manifest" href="/manifest.json" />
-<link rel="icon" type="image/png" href="/icons/icon-192.png" />
-<link rel="apple-touch-icon" href="/icons/icon-192.png" />
-  <link rel="stylesheet" href="src/styles/style.css">
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
   
   <!-- External Libraries: Tesseract (OCR) and JSZip (ePub extraction) -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -28,10 +28,10 @@
   <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
     <!-- Main Links (Desktop) -->
     <ul class="nav-links" style="display: flex; list-style: none; gap: 16px; margin: 0; padding: 0;">
-      <li><a href="javascript:void(0)" onclick="prikaziDashboard()" class="nav-item">🏠 Dashboard</a></li>
-      <li><a href="javascript:void(0)" onclick="ucitajAnalitiku()" class="nav-item">📊 Financial Analytics</a></li>
-      <li><a href="javascript:void(0)" onclick="prikaziSveAnalize()" class="nav-item">🌐 Tanslations Analytics</a></li>
-      <li><a href="javascript:void(0)" onclick="ucitajPostavke()" class="nav-item">⚙️ Settings</a></li>
+      <li><a href="javascript:void(0)" class="nav-item">🏠 Dashboard</a></li>
+      <li><a href="javascript:void(0)" class="nav-item">📊 Financial Analytics</a></li>
+      <li><a href="javascript:void(0)" class="nav-item">🌐 Tanslations Analytics</a></li>
+      <li><a href="javascript:void(0)" class="nav-item">⚙️ Settings</a></li>
 
     </ul>
   </div>
@@ -40,20 +40,20 @@
 <!-- Side Drawer Menu -->
 <aside class="side-drawer" id="side-drawer">
   <ul class="drawer-menu">
-    <li><a href="javascript:void(0)" class="nav-item" onclick="prikaziDashboard(); toggleMenu();">🏠 Dashboard</a></li>
-    <li><a href="javascript:void(0)" class="nav-item" onclick="ucitajAnalitiku(); toggleMenu();">📊 Analytics</a></li>
-    <li><a href="javascript:void(0)" class="nav-item" onclick="ucitajPostavke(); toggleMenu();">⚙️ Settings</a></li>
+    <li><a href="javascript:void(0)" class="nav-item">🏠 Dashboard</a></li>
+    <li><a href="javascript:void(0)" class="nav-item">📊 Analytics</a></li>
+    <li><a href="javascript:void(0)" class="nav-item">⚙️ Settings</a></li>
   </ul>
 </aside>
 
 <!-- Overlay -->
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div class="overlay" id="overlay" ></div>
 
 <div class="container">
   <header>
     <h1>Mojih1500</h1>
     <div class="lbl">Literary translation management simplified.</div>
-    <button id="btn-novi-projekt" class="btn-primary" onclick="toggleFormaProjekta()">+ New Project</button>
+    <button id="btn-novi-projekt" class="btn-primary" >+ New Project</button>
   </header>
 
   <!-- Project Form -->
@@ -82,7 +82,7 @@
 
       <!-- Fetch and Analyze Action Button -->
       <div class="form-group" style="margin-bottom: 15px;">
-        <button type="button" id="btn-povuci-podatke" class="btn-secondary" style="width: 100%; font-weight: bold; background: #e6f2f2; color: #008080; border: 1px solid #008080;" onclick="povuciPodatkeIzIzvora()">
+        <button type="button" id="btn-povuci-podatke" class="btn-secondary" style="width: 100%; font-weight: bold; background: #e6f2f2; color: #008080; border: 1px solid #008080;" >
           ⚡ Fetch Data from ePub & Doc
         </button>
         <small id="fetch-status-msg" class="text-muted" style="display:none; color: #008080; font-weight: bold; margin-top: 5px; text-align: center; display: block;"></small>
@@ -225,7 +225,7 @@
     Sprema se isključivo lokalno u vašem pregledniku.
    </p>
 </div>
-<button class="btn btn-primary" onclick="spremiGeminiKluc()">Spremi postavke</button>
+<button class="btn btn-primary" >Spremi postavke</button>
 
 </section>
     <!-- SECTION 4: Backup & Restore -->
@@ -236,7 +236,7 @@
       </p>
 
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button onclick="izveziSigurnosnuKopiju()" class="btn-primary" style="padding: 10px 16px; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+        <button  class="btn-primary" style="padding: 10px 16px; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
           📥 Export Database (JSON)
         </button>
 
@@ -248,7 +248,7 @@
 
     <!-- Save Settings Button -->
     <div style="text-align: right; margin-top: 20px;">
-      <button onclick="spremiPostavke()" style="padding: 12px 24px; background: #008080; color: #fff; font-size: 1em; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">
+      <button  style="padding: 12px 24px; background: #008080; color: #fff; font-size: 1em; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">
         💾 Save Settings
       </button>
     </div>
@@ -345,7 +345,7 @@
 
 
 
-<script src="src/app.js?v=4"></script>
+<script type="module" src="src/app.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {
@@ -401,7 +401,7 @@
               <tr>
                 <th scope="col" style="width: 30%;">Izvorni termin</th>
                 <th scope="col" style="width: 30%;">Prevedeni termin</th>
-                <th scope="col" style="width: 30%"><button type="button" class="btn-sync-small" onclick="zatvoriModalGlosar()">❎ Zatvori</button></th>
+                <th scope="col" style="width: 30%"><button type="button" class="btn-sync-small" >❎ Zatvori</button></th>
               </tr>
             </thead>
             <tbody id="glosar-modal-body">
