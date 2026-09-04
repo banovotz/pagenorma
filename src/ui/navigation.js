@@ -4,7 +4,8 @@
 
 import { ucitajAnalitiku } from '../features/analytics/analytics.ui.js';
 import { ucitajPostavke } from '../features/settings/settings.ui.js';
-import { prikaziKonkordancu } from '../features/concordance/concordance.ui.js';
+import { prikaziSveAnalize } from '../features/concordance/concordance.ui.js'; 
+
 
 // Centralni registar ruta i pripadajućih akcija/handlera
 const routes = {
@@ -13,12 +14,12 @@ const routes = {
     onActivate: null
   },
   'financial-analytics': {
-    sectionId: 'page-analytics', // Uslađeno s ID-em u index.html
+    sectionId: 'page-analytics',
     onActivate: (dohvatiSveProjekteFn) => ucitajAnalitiku(dohvatiSveProjekteFn)
   },
   'translation-analytics': {
     sectionId: 'page-translation-analytics',
-    onActivate: (dohvatiSveProjekteFn) => prikaziKonkordancu(dohvatiSveProjekteFn) // Popravljen naziv funkcije
+    onActivate: () => prikaziSveAnalize() 
   },
   'settings': {
     sectionId: 'page-settings',
@@ -37,17 +38,17 @@ export function navigirajNa(target, contextData = null) {
     return;
   }
 
-  // 1. Sakrij sve stranice/sekcije
+  // 1. Sakrij sve sekcije
   document.querySelectorAll('.page-section').forEach(sec => {
     sec.classList.add('hidden');
-    sec.style.display = 'none';
+    sec.style.setProperty('display', 'none', 'important');
   });
 
-  // 2. Prikaži odabranu stranicu
+  // 2. Prikaži odabranu sekciju
   const targetSection = document.getElementById(route.sectionId);
   if (targetSection) {
     targetSection.classList.remove('hidden');
-    targetSection.style.display = 'block';
+    targetSection.style.setProperty('display', 'block', 'important');
   }
 
   // 3. Ažuriraj aktivno stanje gumba u navigaciji
@@ -55,11 +56,12 @@ export function navigirajNa(target, contextData = null) {
     btn.classList.toggle('active', btn.getAttribute('data-target') === target);
   });
 
-  // 4. Pokreni pridruženu funkciju za učitavanje podataka ako postoji
+  // 4. Pokreni pridruženu funkciju
   if (typeof route.onActivate === 'function') {
     route.onActivate(contextData);
   }
 }
+
 
 /**
  * Inicijalizira event delegaciju za navigaciju

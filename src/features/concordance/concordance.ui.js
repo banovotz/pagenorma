@@ -4,16 +4,25 @@ import { otvoriBazu, KONKORDANCA_STORE, STORE_NAME } from '../../core/db.js';
 import { prikaziStranicu } from '../../core/router.js';
 
 export async function prikaziKonkordancu(projektId) {
+  // Zaštita od nevažećih ID-ova ili prosljeđivanja neispravnih tipova
+  if (!projektId || typeof projektId === 'function') {
+    console.warn("prikaziKonkordancu pozvan bez važećeg projektId-a:", projektId);
+    return;
+  }
+
+  // Ako je id proslijeđen kao string, pretvorite ga u broj po potrebi
+  const idKey = typeof projektId === 'string' && !isNaN(projektId) ? Number(projektId) : projektId;
+
   const db = await otvoriBazu();
   const tx = db.transaction(KONKORDANCA_STORE, 'readonly');
   const store = tx.objectStore(KONKORDANCA_STORE);
   
   let rezultat = await new Promise((resolve) => {
-    const req = store.get(projektId);
+    const req = store.get(idKey); // Koristi se provjereni ključ
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => resolve(null);
   });
-
+  
   prikaziStranicu('concordance-page');
 
   const colIzvor = document.getElementById('col-izvor');

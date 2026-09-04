@@ -776,3 +776,7 @@ ul.unosi-list li {
   background-color: rgba(0, 0, 0, 0.149);
   z-index: 1050 !important;
 }
+
+.page-section.hidden {
+  display: none !important;
+}
