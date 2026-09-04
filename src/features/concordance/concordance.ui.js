@@ -4,13 +4,21 @@ import { otvoriBazu, KONKORDANCA_STORE, STORE_NAME } from '../../core/db.js';
 import { prikaziStranicu } from '../../core/router.js';
 
 export async function prikaziKonkordancu(projektId) {
+ 
   // Zaštita od nevažećih ID-ova ili prosljeđivanja neispravnih tipova
   if (!projektId || typeof projektId === 'function') {
     console.warn("prikaziKonkordancu pozvan bez važećeg projektId-a:", projektId);
     return;
   }
 
-  // Ako je id proslijeđen kao string, pretvorite ga u broj po potrebi
+   window.trenutniProjektId = projektId;
+
+   const btnGlosar = document.querySelector('button[onclick="otvoriModalGlosar(this)"]');
+  if (btnGlosar) {
+    btnGlosar.setAttribute('data-projekt-id', projektId);
+  }
+
+  // Ako je id proslijeđen kao string
   const idKey = typeof projektId === 'string' && !isNaN(projektId) ? Number(projektId) : projektId;
 
   const db = await otvoriBazu();

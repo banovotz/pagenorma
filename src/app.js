@@ -4,7 +4,7 @@ import { dohvatiGeminiKluc } from './core/state.js';
 import { prikaziStranicu } from './core/router.js';
 import { inicijalizirajNavigaciju } from './ui/navigation.js'; 
 import { dohvatiSveProjekte } from './features/projects/projects.js';
-
+import './features/glossary/glossary.ui.js';
 
 // Projekt & Dashboard
 import { 

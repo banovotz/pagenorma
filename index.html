@@ -330,7 +330,6 @@
       <h3 style="color: #8e24aa; margin-bottom: 8px;">LLM Komentari  <button 
   type="button" 
   class="btn-sync-small" 
-  data-projekt-id="12345" 
   onclick="otvoriModalGlosar(this)">
   📖 Pogledaj glosar
 </button>
@@ -387,7 +386,7 @@
               <tr>
                 <th scope="col" style="width: 30%;">Izvorni termin</th>
                 <th scope="col" style="width: 30%;">Prevedeni termin</th>
-                <th scope="col" style="width: 30%"><button type="button" class="btn-sync-small" >❎ Zatvori</button></th>
+                <th scope="col" style="width: 30%"><button type="button" class="btn-sync-small" onclick="zatvoriModalGlosar()">❎ Zatvori</button></th>
               </tr>
             </thead>
             <tbody id="glosar-modal-body">
