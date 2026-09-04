@@ -65,3 +65,19 @@ export function inicijalizirajNavigacijuUI() {
     }
   });
 }
+
+//prikaz stranice 
+export function prikaziStranicu(pageId) {
+  const sveStranice = document.querySelectorAll('.page-content');
+  
+  sveStranice.forEach(page => {
+    page.style.display = 'none';
+  });
+
+  const trazenaStranica = document.getElementById(pageId);
+  if (trazenaStranica) {
+    trazenaStranica.style.display = 'block';
+  }
+
+  window.scrollTo(0, 0);
+}

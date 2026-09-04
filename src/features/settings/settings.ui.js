@@ -6,6 +6,10 @@ import {
   osvjeziPrikazFinancija 
 } from '../analytics/analytics.ui.js';
 
+import {
+    prikaziStranicu
+} from '../../ui/navigation.js';
+
 /**
  * Inicijalizira sve događaje (event listeners) na formi postavki.
  */
@@ -112,3 +116,4 @@ export function spremiPostavke() {
   localStorage.setItem(SETTINGS_KEY, JSON.stringify(postavke));
   alert('Settings saved successfully!');
 }
+
