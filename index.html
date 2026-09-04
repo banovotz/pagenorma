@@ -8,8 +8,8 @@
 
   <!-- PWA Settings -->
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/png" href="./icons/icon-192.png" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="icon" type="image/png" href="../public/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="../public/icons/icon-192.png" />
   
   <!-- External Libraries: Tesseract (OCR) and JSZip (ePub extraction) -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -27,24 +27,16 @@
 <nav class="navbar" style="display: flex; justify-content: center; align-items: center; background: #fff; padding: 12px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000;">
   <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
     <!-- Main Links (Desktop) -->
-    <ul class="nav-links" style="display: flex; list-style: none; gap: 16px; margin: 0; padding: 0;">
-      <li><a href="javascript:void(0)" class="nav-item">🏠 Dashboard</a></li>
-      <li><a href="javascript:void(0)" class="nav-item">📊 Financial Analytics</a></li>
-      <li><a href="javascript:void(0)" class="nav-item">🌐 Tanslations Analytics</a></li>
-      <li><a href="javascript:void(0)" class="nav-item">⚙️ Settings</a></li>
-
-    </ul>
+   <nav id="main-nav">
+  <button data-target="dashboard" class="nav-btn active">Dashboard</button>
+  <button data-target="financial-analytics" class="nav-btn">Financial Analytics</button>
+  <button data-target="translation-analytics" class="nav-btn">Translation Analytics</button>
+  <button data-target="settings" class="nav-btn">Settings</button>
+</nav>
   </div>
 </nav>
 
-<!-- Side Drawer Menu -->
-<aside class="side-drawer" id="side-drawer">
-  <ul class="drawer-menu">
-    <li><a href="javascript:void(0)" class="nav-item">🏠 Dashboard</a></li>
-    <li><a href="javascript:void(0)" class="nav-item">📊 Analytics</a></li>
-    <li><a href="javascript:void(0)" class="nav-item">⚙️ Settings</a></li>
-  </ul>
-</aside>
+
 
 <!-- Overlay -->
 <div class="overlay" id="overlay" ></div>
@@ -156,12 +148,15 @@
   </div>
 
   <!-- Dashboard Page -->
+   <section id="page-dashboard" class="page-section">
   <div id="dashboard-page" class="page-content">
     <!-- Projects dynamically loaded via app.js -->
   </div>
+  </section>
 
   <!-- SETTINGS SCREEN -->
-  <div id="settings-page" class="page-content" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
+   <section id="page-settings" class="page-section hidden">
+  <div id="settings-page" class="page-content" style="max-width: 800px; margin: 0 auto; padding: 20px;">
     <h2 style="color: #008080; margin-bottom: 24px;">⚙️ Application Settings</h2>
 
     <!-- SECTION 1: Financial Settings -->
@@ -253,9 +248,11 @@
       </button>
     </div>
   </div>
+  </section>
 
   <!-- ANALYTICS SCREEN -->
-  <div id="analytics-page" class="page-content" style="display: none; max-width: 1000px; margin: 0 auto; padding: 20px;">
+   <section id="page-analytics" class="page-section hidden">
+  <div id="analytics-page" class="page-content" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
     
     <div style="margin-bottom: 24px;">
       <h2 style="color: #008080; margin-bottom: 6px;">📊 Monthly Project Analytics</h2>
@@ -293,6 +290,7 @@
       </table>
     </div>
   </div>
+  </section>
 
 </div>
 
@@ -310,7 +308,8 @@
 
 
 <!-- STRANICA ZA PREGLED KONKORDANCE I AI KOMENTARA -->
-<div id="concordance-page" class="page-content" style="display: none; padding: 20px;">
+ <section id="page-translation-analytics" class="page-section hidden">
+<div id="concordance-page" class="page-content" style="padding: 20px;">
   <h2>🌐 LLM Analiza prijevoda</h2>
   
   <div class="concordance-grid" style="display: flex; gap: 12px; height: 75vh;">
@@ -342,7 +341,7 @@
     
   </div>
 </div>
-
+ </section>
 
 <!-- MODAL ZA WEBLLM PREUZIMANJE I ANALIZU -->
 <div id="llm-status-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">

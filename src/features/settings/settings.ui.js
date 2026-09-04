@@ -8,7 +8,7 @@ import {
 
 import {
     prikaziStranicu
-} from '../../ui/navigation.js';
+} from '../../core/router.js';
 
 /**
  * Inicijalizira sve događaje (event listeners) na formi postavki.

@@ -61,12 +61,8 @@ function postaviGlobalneEventListenere() {
         ucitajDashboard(); // Poziva ucitajDashboard umjesto prikaziDashboard
       } else if (text.includes('Financial Analytics')) {
         ucitajAnalitiku();
-      } else if (text.includes('Analytics') || text.includes('Tanslations Analytics')) {
-        if (text.includes('Tanslations')) {
-          prikaziSveAnalize();
-        } else {
-          ucitajAnalitiku();
-        }
+      } else if (text.includes('Tanslations Analytics')) {
+        prikaziSveAnalize();   
       } else if (text.includes('Settings')) {
         ucitajPostavke();
       }

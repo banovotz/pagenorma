@@ -1,83 +1,104 @@
 /**
- * Modul za upravljanje navigacijom i modalnim prozorima
+ * Modul za upravljanje navigacijom i usmjeravanjem (Routing)
  */
 
+import { ucitajAnalitiku } from '../features/analytics/analytics.ui.js';
+import { ucitajPostavke } from '../features/settings/settings.ui.js';
+import { prikaziKonkordancu } from '../features/concordance/concordance.ui.js';
+
+// Centralni registar ruta i pripadajućih akcija/handlera
+const routes = {
+  'dashboard': {
+    sectionId: 'page-dashboard',
+    onActivate: null
+  },
+  'financial-analytics': {
+    sectionId: 'page-analytics', // Uslađeno s ID-em u index.html
+    onActivate: (dohvatiSveProjekteFn) => ucitajAnalitiku(dohvatiSveProjekteFn)
+  },
+  'translation-analytics': {
+    sectionId: 'page-translation-analytics',
+    onActivate: (dohvatiSveProjekteFn) => prikaziKonkordancu(dohvatiSveProjekteFn) // Popravljen naziv funkcije
+  },
+  'settings': {
+    sectionId: 'page-settings',
+    onActivate: () => ucitajPostavke()
+  }
+};
+
 /**
- * Otvara ili zatvara mobilni/bočni navigacijski izbornik.
+ * Prebacuje prikaz na zadanu stranicu prema target ID-u
  */
+export function navigirajNa(target, contextData = null) {
+  const route = routes[target];
+  
+  if (!route) {
+    console.warn(`Ruta "${target}" nije definirana.`);
+    return;
+  }
+
+  // 1. Sakrij sve stranice/sekcije
+  document.querySelectorAll('.page-section').forEach(sec => {
+    sec.classList.add('hidden');
+    sec.style.display = 'none';
+  });
+
+  // 2. Prikaži odabranu stranicu
+  const targetSection = document.getElementById(route.sectionId);
+  if (targetSection) {
+    targetSection.classList.remove('hidden');
+    targetSection.style.display = 'block';
+  }
+
+  // 3. Ažuriraj aktivno stanje gumba u navigaciji
+  document.querySelectorAll('[data-target]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-target') === target);
+  });
+
+  // 4. Pokreni pridruženu funkciju za učitavanje podataka ako postoji
+  if (typeof route.onActivate === 'function') {
+    route.onActivate(contextData);
+  }
+}
+
+/**
+ * Inicijalizira event delegaciju za navigaciju
+ */
+export function inicijalizirajNavigaciju(dohvatiSveProjekteFn) {
+  const navContainer = document.getElementById('main-nav') || document.body;
+
+  navContainer.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-target]');
+    if (!btn) return;
+
+    event.preventDefault();
+    const target = btn.getAttribute('data-target');
+    
+    navigirajNa(target, dohvatiSveProjekteFn);
+  });
+}
+
+// --- MODAL GLOSAR & MENU LOGIKA ---
+
 export function toggleMenu() {
-  const navMenu = document.getElementById('nav-menu') || document.querySelector('.nav-menu') || document.querySelector('nav');
+  const navMenu = document.getElementById('nav-menu');
   if (navMenu) {
-    navMenu.classList.toggle('active');
     navMenu.classList.toggle('open');
   }
 }
 
-/**
- * Otvara modalni prozor za glosar i postavlja prikaz na vidljivo.
- */
 export function otvoriModalGlosar() {
   const modal = document.getElementById('glosar-modal') || document.getElementById('modal-glosar');
   if (modal) {
     modal.style.display = 'block';
-    modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
   }
 }
 
-/**
- * Zatvara modalni prozor za glosar.
- */
 export function zatvoriModalGlosar() {
   const modal = document.getElementById('glosar-modal') || document.getElementById('modal-glosar');
   if (modal) {
     modal.style.display = 'none';
-    modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
   }
-}
-
-/**
- * Inicijalizira event listenere za navigaciju i zatvaranje modala na klik izvan njega ili tipkom Escape.
- */
-export function inicijalizirajNavigacijuUI() {
-  const menuToggleBtn = document.getElementById('menu-toggle') || document.querySelector('.menu-toggle');
-  if (menuToggleBtn) {
-    menuToggleBtn.addEventListener('click', toggleMenu);
-  }
-
-  const btnZatvoriGlosar = document.getElementById('zatvori-glosar-btn') || document.querySelector('.close-glosar');
-  if (btnZatvoriGlosar) {
-    btnZatvoriGlosar.addEventListener('click', zatvoriModalGlosar);
-  }
-
-  // Zatvaranje modala klikom na pozadinu (backdrop) ili priskom na ESC
-  window.addEventListener('click', (event) => {
-    const modal = document.getElementById('glosar-modal') || document.getElementById('modal-glosar');
-    if (modal && event.target === modal) {
-      zatvoriModalGlosar();
-    }
-  });
-
-  window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      zatvoriModalGlosar();
-    }
-  });
-}
-
-//prikaz stranice 
-export function prikaziStranicu(pageId) {
-  const sveStranice = document.querySelectorAll('.page-content');
-  
-  sveStranice.forEach(page => {
-    page.style.display = 'none';
-  });
-
-  const trazenaStranica = document.getElementById(pageId);
-  if (trazenaStranica) {
-    trazenaStranica.style.display = 'block';
-  }
-
-  window.scrollTo(0, 0);
 }
