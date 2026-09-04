@@ -1,0 +1,778 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --bg-color: #F8F5F2;          /* Warm, paper-like off-white */
+  --card-bg: #FFFFFF;
+  --text-color: #3D3D3D;
+  --heading-color: #1A1A1A;
+  --accent-color: #008080;       /* Sophisticated teal */
+  --accent-color-hover: #006666;
+  --border-color: #E0DCD7;
+  
+  --heading-font: 'Playfair Display', serif;
+  --body-font: 'Lato', sans-serif;
+
+  --success: #2e7d32;
+  --danger: #c62828;
+  --stat-bg: #f2eee9;
+}
+
+body {
+  font-family: var(--body-font);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 30px 20px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--heading-font);
+  color: var(--heading-color);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.2rem;
+  letter-spacing: -0.5px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+form .form-group {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--body-font);
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+button {
+  background: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--body-font);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background: var(--accent-color-hover);
+}
+
+button.btn-secondary {
+  background: #757575;
+}
+
+button.btn-secondary:hover {
+  background: #616161;
+}
+
+button.btn-danger {
+  background: var(--danger);
+}
+
+button.btn-danger:hover {
+  background: #b71c1c;
+}
+
+.form-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.progress-bar-bg {
+  background: var(--border-color);
+  border-radius: 4px;
+  height: 8px;
+  width: 100%;
+  overflow: hidden;
+  margin: 12px 0 20px 0;
+}
+
+.progress-bar-fill {
+  background: var(--accent-color);
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s ease-in-out;
+}
+
+.stat-box {
+  background: var(--stat-bg);
+  padding: 14px;
+  border-radius: 4px;
+  border-left: 3px solid var(--accent-color);
+}
+
+.stat-box .val {
+  font-family: var(--heading-font);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.stat-box .lbl {
+  font-size: 0.75rem;
+  color: var(--text-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.project-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.unosi-box {
+  background: var(--bg-color);
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px dashed var(--border-color);
+  margin-top: 20px;
+}
+
+ul.unosi-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0 0;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+ul.unosi-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.inline-form {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.sakriveno {
+  display: none;
+}
+
+/* Tabs za odabir načina unosa */
+.unos-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.btn-tab {
+  flex: 1;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.btn-tab.active {
+  background: var(--text-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+
+.upute-tekst {
+  font-size: 0.85rem;
+  color: var(--text-color);
+  margin-bottom: 12px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Modal Overlay za Popup */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.modal-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* Spinner animacija */
+.ocr-loading-state {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Mobilna responzivnost i Touch UI
+   ========================================================================== */
+
+/* Osnovna prilagodba za manje ekrane */
+@media (max-width: 640px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  /* Prebacivanje grid rasporeda u jedan stupac */
+  .grid-2, 
+  .grid-4 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Prilagodba zaglavlja */
+  header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  header button {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  /* Card prilagodba */
+  .card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* Reorganizacija gumba u karticama i formama */
+  .project-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .project-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  /* In-line forma u kartici projekta */
+  .inline-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .inline-form button {
+    width: 100%;
+  }
+
+  /* Veće dodirne površine za mobilne prste */
+  input, select, button {
+    min-height: 48px;
+    font-size: 16px; /* Spriječava automatski zoom na iOS Safariju */
+  }
+
+  /* Poboljšan pregled unosa (historije) na mobitelu */
+  ul.unosi-list li {
+    padding: 10px 0;
+    align-items: center;
+  }
+}
+
+.project-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.project-cover {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.project-cover-placeholder {
+  width: 70px;
+  height: 100px;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #888;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.sync-date {
+  font-size: 0.85rem;
+  color: #666;
+  display: block;
+  margin-top: 4px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.progress-bar-container {
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.btn-sync {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-sync:hover {
+  background-color: #1e88e5;
+}
+
+/* Layout Projektne Kartice */
+.project-card {
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card-header-layout {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Naslovnica */
+.card-cover-img {
+  width: 60px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card-cover-placeholder {
+  width: 60px;
+  height: 85px;
+  background: #eef4f4;
+  border: 1px dashed #008080;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #008080;
+}
+
+.card-main-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.project-title {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #222;
+}
+
+.project-client {
+  font-size: 0.85rem;
+  color: #666;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Sync traka */
+.sync-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #555;
+  background: #f9f9f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.btn-sync-small {
+  background: #008080;
+  color: white;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-sync-small:hover {
+  background: #006666;
+}
+
+/* Traka Napretka (Progress bar) */
+.progress-section {
+  margin-bottom: 15px;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #008080;
+  transition: width 0.4s ease;
+}
+
+/* Metrika grid */
+.card-stats-grid {
+  gap: 10px;
+}
+
+.stat-box {
+  background: #f4f8f8;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.stat-box small {
+  display: block;
+  color: #666;
+  font-size: 0.75rem;
+  margin-bottom: 2px;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px 4px;
+}
+
+.side-drawer {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 250px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+  transition: right 0.3s ease-in-out;
+  z-index: 1001;
+  padding: 80px 20px 20px 20px;
+}
+
+.side-drawer.open {
+  right: 0;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 1000;
+}
+
+.overlay.active {
+  display: block;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-item:hover {
+  color: #008080;
+}
+
+/* Konkordanca Layout */
+.concordance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 300px;
+  gap: 16px;
+  height: calc(100vh - 160px);
+}
+
+.concordance-col {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #eef2f2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.col-header {
+  background: #f0f7f7;
+  color: #008080;
+  font-weight: bold;
+  padding: 10px 14px;
+  border-bottom: 2px solid #008080;
+}
+
+.col-body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+/* Odlomci */
+.para-box {
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 0.95em;
+  line-height: 1.5;
+  transition: background 0.3s ease;
+}
+
+/* Kartice komentara */
+.comment-card {
+  background: #f9fbfb;
+  border-left: 3px solid #008080;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.btn-jump {
+  background: none;
+  border: none;
+  color: #008080;
+  cursor: pointer;
+  font-size: 0.82em;
+  padding: 0;
+  margin-top: 6px;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .concordance-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+.para-box {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+.concordance-grid #col-izvor::-webkit-scrollbar,
+.concordance-grid #col-prijevod::-webkit-scrollbar,
+.concordance-grid #col-komentari::-webkit-scrollbar {
+  width: 6px;
+}
+
+.concordance-grid #col-izvor::-webkit-scrollbar-thumb,
+.concordance-grid #col-prijevod::-webkit-scrollbar-thumb,
+.concordance-grid #col-komentari::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* Osigurava da se modal i pozadina prikazuju preko svih kolona i fiksnih zaglavlja */
+#modal-glosar {
+  max-height: 70vh; /* Maksimalna visina: 70% visine ekrana */
+  overflow-y: auto;  /* Automatski prikaži scrollbar ako sadržaj prelazi max-height */
+  background-color: #ccc;
+  position: fixed;
+  top: 0;
+  left: 30%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  padding-left: 20%;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1055 !important; /* Viši z-index od Bootstrapovih zaglavlja i tablica */
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+}
+
+#glosar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.149);
+  z-index: 1050 !important;
+}
