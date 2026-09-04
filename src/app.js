@@ -3,30 +3,7 @@ import { dohvatiGeminiKluc } from './core/state.js';
 import { prikaziStranicu } from './core/router.js';
 import { ucitajDashboard, spremiProjektForma, toggleFormaProjekta, azurirajePrikazImenaEpuba, izveziSigurnosnuKopiju, uveziSigurnosnuKopiju } from './features/projects/projects.ui.js';
 import { prikaziSveAnalize } from './features/concordance/concordance.ui.js';
-import { 
-  prikaziDashboard, 
-  ucitajAnalitiku, 
-  prikaziSveAnalize, 
-  ucitajPostavke, 
-  toggleMenu 
-} from './ui/navigation.js';
 
-import { 
-  toggleFormaProjekta, 
-  spremiProjektForma, 
-  azurirajePrikazImenaEpuba, 
-  povuciPodatkeIzIzvora 
-} from './projects/projectForm.js';
-
-import { 
-  osvjeziPrikazFinancija, 
-  spremiGeminiKluc, 
-  izveziSigurnosnuKopiju, 
-  spremiPostavke 
-} from './settings/settings.js';
-
-import { promijeniGodinuAnalitike } from './analytics/analytics.js';
-import { otvoriModalGlosar, zatvoriModalGlosar } from './ui/modals.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
