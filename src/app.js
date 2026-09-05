@@ -5,13 +5,13 @@ import { prikaziStranicu } from './core/router.js';
 import { inicijalizirajNavigaciju } from './ui/navigation.js'; 
 import { dohvatiSveProjekte } from './features/projects/projects.js';
 import './features/glossary/glossary.ui.js';
+import { azurirajePrikazImenaEpuba } from './features/epub-parser/epub.parser.js'; 
 
 // Projekt & Dashboard
 import { 
   ucitajDashboard, 
   spremiProjektForma, 
   toggleFormaProjekta, 
-  azurirajePrikazImenaEpuba, 
   povuciPodatkeIzIzvora,
   izveziSigurnosnuKopiju, 
   uveziSigurnosnuKopiju 
@@ -25,6 +25,7 @@ import { ucitajAnalitiku, osvjeziPrikazFinancija, promijeniGodinuAnalitike } fro
 import { ucitajPostavke, spremiGeminiKluc, spremiPostavke } from './features/settings/settings.ui.js';
 import { toggleMenu, otvoriModalGlosar, zatvoriModalGlosar } from './ui/navigation.js';
 
+window.azurirajePrikazImenaEpuba = azurirajePrikazImenaEpuba;
 
 let aplikacijaInicijalizirana = false;
 

@@ -3,7 +3,9 @@
 import { otvoriBazu, STORE_NAME, UNOSI_STORE, spremiUStorage } from '../../core/db.js';
 import { dohvatiSveProjekte, dohvatiProjektPoId, obrisiProjektIzStoragea, izracunajPreostaleDane, rucniUnosZnakova } from './projects.js';
 import { pokreniTekstualnuAnalizu } from '../concordance/concordance.js';
-
+import { parseEpubFile } from '../epub-parser/epub.parser.js';
+import { dohvatiCijeliTekstIzEpuba } from '../concordance/concordance.js';
+import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 export async function ucitajDashboard() {
   const dashboardDiv = document.getElementById('dashboard-page');
   if (!dashboardDiv) return;
@@ -412,7 +414,7 @@ export async function povuciPodatkeIzIzvora() {
   try {
     if (file) {
       statusMsg.innerText = "Reading ePub and counting characters...";
-      const epubData = await parsirajEpub(file);
+      const epubData = await parseEpubFile(file);
       
       if (epubData.title && !document.getElementById('p-naslov').value) {
         document.getElementById('p-naslov').value = epubData.title;
