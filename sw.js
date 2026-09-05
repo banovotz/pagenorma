@@ -1,19 +1,51 @@
-const CACHE_NAME = 'mojih1500-v5';
-const ASSETS = [
+const CACHE_NAME = 'mojih1500-v6';
+const  ASSETS_TO_CACHE = [
   './',
   './index.html',
   './src/styles/style.css',
-  './src/app.js',
   './manifest.json',
   './public/icon-192.png',
-  './public/icon-512.png'
+  './public/icon-512.png',
+  './src/app.js',
+  './src/ui/navigation.js',
+  './src/core/db.js',
+  './src/core/router.js',
+  './src/core/state.js',
+  './src/features/settings/settings.ui.js',
+  './src/features/projects/projects.ui.js',
+  './src/features/projects/projects.js',
+  './src/features/epub-parser/epub.parser.js',
+  './src/features/google-drive/drive.auth.js',
+  './src/features/google-drive/drive.api.js',
+  './src/features/glossary/glossary.ui.js',
+  './src/features/glossary/glossary.js',
+  './src/features/concordance/concordance.ui.js',
+  './src/features/concordance/concordance.js',
+  './src/features/analytics/analytics.ui.js',
+  './src/components/modal.js',
+  './src/components/toast.js'
+
 ];
 
 // Instalacija Service Workera i spremanje datoteka u cache
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open('mojih1500-cache-v1').then(async (cache) => {
+      // Umjesto cache.addAll(ASSETS_TO_CACHE):
+      await Promise.allSettled(
+        ASSETS_TO_CACHE.map(async (url) => {
+          try {
+            const response = await fetch(url);
+            if (response.ok) {
+              await cache.put(url, response);
+            } else {
+              console.warn(`[ServiceWorker] Datoteka nije pronađena (404): ${url}`);
+            }
+          } catch (err) {
+            console.warn(`[ServiceWorker] Greška pri dohvaćanju: ${url}`, err);
+          }
+        })
+      );
     })
   );
 });
