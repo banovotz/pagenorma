@@ -145,44 +145,60 @@ export async function ucitajDashboard() {
 export async function spremiProjektForma(event) {
   event.preventDefault();
 
-  const id = document.getElementById('p-id').value || 'proj_' + Date.now();
-  const postojeciProjekt = await dohvatiProjektPoId(id);
-  const epubInput = document.getElementById('p-epub-file');
-  
-  let epubBlob = postojeciProjekt ? postojeciProjekt.epubBlob || null : null;
-  let epubNazivDatoteke = postojeciProjekt ? postojeciProjekt.epubNazivDatoteke || null : null;
+  try {
+    const id = document.getElementById('p-id').value || 'proj_' + Date.now();
+    const postojeciProjekt = await dohvatiProjektPoId(id);
+    const epubInput = document.getElementById('p-epub-file');
+    const form = document.getElementById('form-projekt');
+    
+    let epubBlob = postojeciProjekt ? postojeciProjekt.epubBlob || null : null;
+    let epubNazivDatoteke = postojeciProjekt ? postojeciProjekt.epubNazivDatoteke || null : null;
 
-  if (epubInput && epubInput.files && epubInput.files[0]) {
-    epubBlob = epubInput.files[0];
-    epubNazivDatoteke = epubInput.files[0].name;
+    if (epubInput && epubInput.files && epubInput.files[0]) {
+      epubBlob = epubInput.files[0];
+      epubNazivDatoteke = epubInput.files[0].name;
+    }
+
+    // Preuzimanje privremeno dohvaćenog teksta s Google Docsa
+    const dohvaceniGdocTekst = form ? form.dataset.tempGdocText : null;
+
+    const noviProjekt = {
+      id: id,
+      naslov: document.getElementById('p-naslov').value || 'Neimenovani projekt',
+      klijent: document.getElementById('p-klijent').value || '',
+      ukupnoKartica: parseFloat(document.getElementById('p-ukupno').value) || 0,
+      honorarPoKartici: parseFloat(document.getElementById('p-honorar').value) || 0,
+      datumPocetka: document.getElementById('p-start').value || '',
+      datumRoka: document.getElementById('p-rok').value || '',
+      ciljDnevno: parseFloat(document.getElementById('p-cilj-dnevno').value) || 0,
+      radVikendom: document.getElementById('p-vikend').value || 'ne',
+      
+      naslovnicaBase64: document.getElementById('p-naslovnica-base64').value || null,
+      slovaOriginal: parseInt(document.getElementById('p-slova-original').value) || 0,
+      slovaPrijevod: parseInt(document.getElementById('p-slova-prijevod').value) || 0,
+      gdocUrl: document.getElementById('p-gdoc-url') ? document.getElementById('p-gdoc-url').value : null,
+      lastSynced: new Date().toISOString(),
+      
+      epubBlob: epubBlob,
+      epubNazivDatoteke: epubNazivDatoteke,
+      tekstIzvora: postojeciProjekt ? postojeciProjekt.tekstIzvora || null : null,
+      tekstPrijevoda: dohvaceniGdocTekst || (postojeciProjekt ? postojeciProjekt.tekstPrijevoda : null)
+    };
+
+    // 1. Spremanje u IndexedDB
+    await spremiUStorage(noviProjekt);
+
+    // 2. Očišćenje privremenih podataka s forme
+    if (form) delete form.dataset.tempGdocText;
+
+    // 3. Zatvaranje forme i osvježavanje prikaza Dashboarda
+    toggleFormaProjekta(true);
+    await ucitajDashboard();
+
+  } catch (err) {
+    console.error("Greška pri spremanju projekta u bazu:", err);
+    alert("Došlo je do greške pri spremanju projekta: " + err.message);
   }
-
-  const noviProjekt = {
-    id: id,
-    naslov: document.getElementById('p-naslov').value,
-    klijent: document.getElementById('p-klijent').value,
-    ukupnoKartica: parseFloat(document.getElementById('p-ukupno').value) || 0,
-    honorarPoKartici: parseFloat(document.getElementById('p-honorar').value) || 0,
-    datumPocetka: document.getElementById('p-start').value,
-    datumRoka: document.getElementById('p-rok').value,
-    ciljDnevno: parseFloat(document.getElementById('p-cilj-dnevno').value) || 0,
-    radVikendom: document.getElementById('p-vikend').value,
-    
-    naslovnicaBase64: document.getElementById('p-naslovnica-base64').value || null,
-    slovaOriginal: parseInt(document.getElementById('p-slova-original').value) || 0,
-    slovaPrijevod: parseInt(document.getElementById('p-slova-prijevod').value) || 0,
-    gdocUrl: document.getElementById('p-gdoc-url') ? document.getElementById('p-gdoc-url').value : null,
-    lastSynced: document.getElementById('p-last-synced').value || null,
-    
-    epubBlob: epubBlob,
-    epubNazivDatoteke: epubNazivDatoteke,
-    tekstIzvora: postojeciProjekt ? postojeciProjekt.tekstIzvora || null : null
-  };
-
-  await spremiUStorage(noviProjekt);
-  
-  toggleFormaProjekta(true);
-  await ucitajDashboard();
 }
 
 export async function urediProjekt(id) {
@@ -439,8 +455,15 @@ export async function povuciPodatkeIzIzvora() {
     if (gdocUrl) {
       statusMsg.innerText = "Dohvaćanje teksta s Google Docsa...";
       const tekstPrijevoda = await dohvatiCijeliTekstIzGDoca(gdocUrl);
-      docSlova = tekstPrijevoda.length;
-      document.getElementById('p-slova-prijevod').value = docSlova;
+      docSlova = (tekstPrijevoda && typeof tekstPrijevoda === 'string') ? tekstPrijevoda.length : 0;
+      if (tekstPrijevoda) {
+    docSlova = tekstPrijevoda.length;
+    document.getElementById('p-slova-prijevod').value = docSlova;
+    
+    // Spremanje teksta u data-atribut forme za kasniji upis u bazu
+    const form = document.getElementById('form-projekt');
+    if (form) form.dataset.tempGdocText = tekstPrijevoda;
+        }
     }
 
     const lblOrigSlova = document.getElementById('lbl-slova-orig');
@@ -448,11 +471,14 @@ export async function povuciPodatkeIzIzvora() {
     const lblDocSlova = document.getElementById('lbl-slova-doc');
     const lblDocKartice = document.getElementById('lbl-kartice-doc');
 
-    if (lblOrigSlova) lblOrigSlova.innerText = origSlova.toLocaleString();
-    if (lblOrigKartice) lblOrigKartice.innerText = (origSlova / 1800).toFixed(2);
+    const sigurniOrigSlova = Number(origSlova) || 0;
+    const sigurniDocSlova = Number(docSlova) || 0;
 
-    if (lblDocSlova) lblDocSlova.innerText = docSlova.toLocaleString();
-    if (lblDocKartice) lblDocKartice.innerText = (docSlova / 1800).toFixed(2);
+    if (lblOrigSlova) lblOrigSlova.innerText = sigurniOrigSlova.toLocaleString();
+    if (lblOrigKartice) lblOrigKartice.innerText = (sigurniOrigSlova / 1800).toFixed(2);
+
+    if (lblDocSlova) lblDocSlova.innerText = sigurniDocSlova.toLocaleString();
+    if (lblDocKartice) lblDocKartice.innerText = (sigurniDocSlova / 1800).toFixed(2);
 
     const metrikaPreview = document.getElementById('metrika-preview');
     if (metrikaPreview) metrikaPreview.style.display = 'block';
