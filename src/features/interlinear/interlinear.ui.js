@@ -1,4 +1,4 @@
-// Prikaz konkordance, paralelnih stupaca i sinhroniziranog skrolanja
+// Prikaz interlinearni tekst paralelnih stupaca i sinhroniziranog skrolanja
 
 import { otvoriBazu, INTERLINEARNI_STORE, STORE_NAME } from '../../core/db.js';
 import { prikaziStranicu } from '../../core/router.js';
@@ -29,25 +29,25 @@ function prikaziSekcijuAnalitikePrijevoda() {
   });
 }
 
-export async function prikaziKonkordancu(projektId) {
+export async function prikaziInterlinearniTekst(projektId) {
  
   // Zaštita od nevažećih ID-ova ili prosljeđivanja neispravnih tipova
   if (!projektId || typeof projektId === 'function') {
-    console.warn("prikaziKonkordancu pozvan bez važećeg projektId-a:", projektId);
+    console.warn("prikaziInterlinearniTekst pozvan bez važećeg projektId-a:", projektId);
     return;
   }
   
    window.trenutniProjektId = projektId;
 
    // 1. Prikaži sekciju "Translation Analytics" (bez obzira s koje sekcije dolazimo),
-   //    zatim sakrij listu analiza i prikaži kontejner pojedinačne konkordance
+   //    zatim sakrij listu analiza i prikaži kontejner pojedinačne analize
   prikaziSekcijuAnalitikePrijevoda();
 
   const analizeListContainer = document.getElementById('analize-page');
-  const konkordancaContainer = document.getElementById('interlinear-page');
+  const interlinearniContainer = document.getElementById('interlinear-page');
 
   if (analizeListContainer) analizeListContainer.style.display = 'none';
-  if (konkordancaContainer) konkordancaContainer.style.display = 'block';
+  if (interlinearniContainer) interlinearniContainer.style.display = 'block';
 
   // Ažuriraj button za glosar
   const btnGlosar = document.querySelector('button[onclick="otvoriModalGlosar(this)"]');
@@ -57,8 +57,8 @@ export async function prikaziKonkordancu(projektId) {
 
   // 2. Dohvati podatke iz baze i napuni stupce...
   const db = await otvoriBazu();
-  const tx = db.transaction(KONKORDANCA_STORE, 'readonly');
-  const store = tx.objectStore(KONKORDANCA_STORE);
+  const tx = db.transaction(INTERLINEARNI_STORE, 'readonly');
+  const store = tx.objectStore(INTERLINEARNI_STORE);
   
   let rezultat = await new Promise((resolve) => {
     const req = store.get(projektId);
@@ -180,13 +180,13 @@ export function skociNaOdlomak(index) {
 
 export async function prikaziSveAnalize() {
   // 1. Prikaži sekciju "Translation Analytics", sakrij kontejner pojedinačne
-  //    konkordance, prikaži kontejner liste analiza
+  //   analize, prikaži kontejner liste analiza
   prikaziSekcijuAnalitikePrijevoda();
 
-  const konkordancaContainer = document.getElementById('interlinear-page');
+  const interlinearContainer = document.getElementById('interlinear-page');
   const analizeListContainer = document.getElementById('analize-page');
 
-  if (konkordancaContainer) konkordancaContainer.style.display = 'none';
+  if (interlinearContainer) interlinearContainer.style.display = 'none';
   if (analizeListContainer) analizeListContainer.style.display = 'block';
 
   // 2. Učitaj podatke za listu
@@ -202,9 +202,9 @@ export async function ucitajListuAnaliza() {
   try {
     const db = await otvoriBazu();
 
-    const txKonkordance = db.transaction(KONKORDANCA_STORE, 'readonly');
+    const txInterlinearniTekst = db.transaction(INTERLINEARNI_STORE, 'readonly');
     const sveAnalize = await new Promise((res, rej) => {
-      const req = txKonkordance.objectStore(KONKORDANCA_STORE).getAll();
+      const req = txInterlinearniTekst.objectStore(INTERLINEARNI_STORE).getAll();
       req.onsuccess = () => res(req.result || []);
       req.onerror = () => rej(req.error);
     });
@@ -243,7 +243,7 @@ export async function ucitajListuAnaliza() {
 
       // Listener za otvaranje analize
       document.getElementById(`btn-otvori-analizu-${analiza.projektId}`)?.addEventListener('click', () => {
-        prikaziKonkordancu(analiza.projektId);
+        prikaziInterlinearniTekst(analiza.projektId);
       });
       // Listener za brisanje analize
       document.getElementById(`btn-obrisi-analizu-${analiza.projektId}`)?.addEventListener('click', () => {
@@ -261,8 +261,8 @@ export async function obrisiAnalizirano(projektId) {
 
   try {
     const db = await otvoriBazu();
-    const tx = db.transaction(KONKORDANCA_STORE, 'readwrite');
-    const store = tx.objectStore(KONKORDANCA_STORE);
+    const tx = db.transaction(INTERLINEARNI_STORE, 'readwrite');
+    const store = tx.objectStore(INTERLINEARNI_STORE);
     
     store.delete(projektId);
     if (!isNaN(projektId)) store.delete(Number(projektId));
