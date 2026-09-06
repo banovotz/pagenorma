@@ -1,24 +1,53 @@
-// Prikaz interlinearnitekst, paralelnih stupaca i sinhroniziranog skrolanja
+// Prikaz konkordance, paralelnih stupaca i sinhroniziranog skrolanja
 
 import { otvoriBazu, INTERLINEARNI_STORE, STORE_NAME } from '../../core/db.js';
 import { prikaziStranicu } from '../../core/router.js';
 
-export async function prikaziInterlinearniTekst(projektId) {
+// Osigurava da je na razini CIJELE .page-section (ne samo unutarnjeg sadržaja)
+// vidljiva sekcija "Translation Analytics". Bez ovoga, ako se funkcija pozove
+// iz neke druge sekcije (npr. gumb "Tekstualna analiza" na Dashboardu), roditeljska
+// <section id="page-translation-analytics" class="page-section hidden"> ostaje
+// sakrivena (CSS: .page-section.hidden { display:none !important }), pa se
+// ispod nje popunjeni #interlinear-page/#analize-page nikad ne prikažu - korisnik
+// vidi prazan ekran jer je istovremeno prikaziStranicu() sakrio i sadržaj sekcije
+// s koje je akcija pokrenuta (npr. dashboard-page).
+function prikaziSekcijuAnalitikePrijevoda() {
+  document.querySelectorAll('.page-section').forEach(sec => {
+    sec.classList.add('hidden');
+    sec.style.setProperty('display', 'none', 'important');
+  });
+
+  const sekcija = document.getElementById('page-translation-analytics');
+  if (sekcija) {
+    sekcija.classList.remove('hidden');
+    sekcija.style.setProperty('display', 'block', 'important');
+  }
+
+  // Uskladi i isticanje u navigaciji, ako korisnik dođe ovamo mimo klika na nju
+  document.querySelectorAll('[data-target]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-target') === 'translation-analytics');
+  });
+}
+
+export async function prikaziKonkordancu(projektId) {
  
   // Zaštita od nevažećih ID-ova ili prosljeđivanja neispravnih tipova
   if (!projektId || typeof projektId === 'function') {
-    console.warn("prikaziInterlinearniTekst pozvan bez važećeg projektId-a:", projektId);
+    console.warn("prikaziKonkordancu pozvan bez važećeg projektId-a:", projektId);
     return;
   }
   
    window.trenutniProjektId = projektId;
 
-   // 1. Sakrij listu analiza, prikaži kontejner pojedinačne interlinearnitekst
+   // 1. Prikaži sekciju "Translation Analytics" (bez obzira s koje sekcije dolazimo),
+   //    zatim sakrij listu analiza i prikaži kontejner pojedinačne konkordance
+  prikaziSekcijuAnalitikePrijevoda();
+
   const analizeListContainer = document.getElementById('analize-page');
-  const interlinearniContainer = document.getElementById('interlinear-page');
+  const konkordancaContainer = document.getElementById('interlinear-page');
 
   if (analizeListContainer) analizeListContainer.style.display = 'none';
-  if (interlinearniContainer) interlinearniContainer.style.display = 'block';
+  if (konkordancaContainer) konkordancaContainer.style.display = 'block';
 
   // Ažuriraj button za glosar
   const btnGlosar = document.querySelector('button[onclick="otvoriModalGlosar(this)"]');
@@ -28,8 +57,8 @@ export async function prikaziInterlinearniTekst(projektId) {
 
   // 2. Dohvati podatke iz baze i napuni stupce...
   const db = await otvoriBazu();
-  const tx = db.transaction(INTERLINEARNI_STORE, 'readonly');
-  const store = tx.objectStore(INTERLINEARNI_STORE);
+  const tx = db.transaction(KONKORDANCA_STORE, 'readonly');
+  const store = tx.objectStore(KONKORDANCA_STORE);
   
   let rezultat = await new Promise((resolve) => {
     const req = store.get(projektId);
@@ -150,15 +179,17 @@ export function skociNaOdlomak(index) {
 }
 
 export async function prikaziSveAnalize() {
-  // 1. Sakrij kontejner pojedinačne interlinearnitekst, prikaži kontejner liste analiza
-  const interlinearniContainer = document.getElementById('interlinear-page');
+  // 1. Prikaži sekciju "Translation Analytics", sakrij kontejner pojedinačne
+  //    konkordance, prikaži kontejner liste analiza
+  prikaziSekcijuAnalitikePrijevoda();
+
+  const konkordancaContainer = document.getElementById('interlinear-page');
   const analizeListContainer = document.getElementById('analize-page');
 
-  if (interlinearniContainer) interlinearniContainer.style.display = 'none';
+  if (konkordancaContainer) konkordancaContainer.style.display = 'none';
   if (analizeListContainer) analizeListContainer.style.display = 'block';
 
   // 2. Učitaj podatke za listu
-  await ucitajListuAnaliza();
   await ucitajListuAnaliza();
 }
 
@@ -171,9 +202,9 @@ export async function ucitajListuAnaliza() {
   try {
     const db = await otvoriBazu();
 
-    const txInterlinearniTekst = db.transaction(INTERLINEARNI_STORE, 'readonly');
+    const txKonkordance = db.transaction(KONKORDANCA_STORE, 'readonly');
     const sveAnalize = await new Promise((res, rej) => {
-      const req = txInterlinearniTekst.objectStore(INTERLINEARNI_STORE).getAll();
+      const req = txKonkordance.objectStore(KONKORDANCA_STORE).getAll();
       req.onsuccess = () => res(req.result || []);
       req.onerror = () => rej(req.error);
     });
@@ -212,7 +243,7 @@ export async function ucitajListuAnaliza() {
 
       // Listener za otvaranje analize
       document.getElementById(`btn-otvori-analizu-${analiza.projektId}`)?.addEventListener('click', () => {
-        prikaziInterlinearniTekst(analiza.projektId);
+        prikaziKonkordancu(analiza.projektId);
       });
       // Listener za brisanje analize
       document.getElementById(`btn-obrisi-analizu-${analiza.projektId}`)?.addEventListener('click', () => {
@@ -230,8 +261,8 @@ export async function obrisiAnalizirano(projektId) {
 
   try {
     const db = await otvoriBazu();
-    const tx = db.transaction(INTERLINEARNI_STORE, 'readwrite');
-    const store = tx.objectStore(INTERLINEARNI_STORE);
+    const tx = db.transaction(KONKORDANCA_STORE, 'readwrite');
+    const store = tx.objectStore(KONKORDANCA_STORE);
     
     store.delete(projektId);
     if (!isNaN(projektId)) store.delete(Number(projektId));
