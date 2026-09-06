@@ -29,21 +29,16 @@ window.azurirajePrikazImenaEpuba = azurirajePrikazImenaEpuba;
 
 let aplikacijaInicijalizirana = false;
 
-// 1. Inicijalizacija navigacije
-document.addEventListener('DOMContentLoaded', () => {
-  // Obavezno pozovite inicijalizaciju navigacije!
-  inicijalizirajNavigaciju(dohvatiSveProjekte);
-  ucitajDashboard();
-
-});
-
-// 2. INICIJALIZACIJA APLIKACIJE
+// 1. INICIJALIZACIJA APLIKACIJE (JEDINA točka ulaska - navigacija i dashboard
+//    se učitavaju točno jednom, izbjegavajući race-condition dupliciranje kartica)
 async function pokreniAplikaciju() {
   if (aplikacijaInicijalizirana) return;
   aplikacijaInicijalizirana = true;
 
   try {
     await otvoriBazu();
+
+    inicijalizirajNavigaciju(dohvatiSveProjekte);
     await ucitajDashboard();
 
     const savedKey = dohvatiGeminiKluc();

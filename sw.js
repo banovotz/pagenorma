@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mojih1500-v6';
+const CACHE_NAME = 'mojih1500-v7';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -30,13 +30,22 @@ const  ASSETS_TO_CACHE = [
 
 // Instalacija Service Workera i spremanje datoteka u cache
 self.addEventListener('install', (event) => {
+  // Ne čekaj da se stare kartice zatvore - odmah pređi u "waiting to activate"
+  // i potakni odmah preuzimanje kontrole (vidi 'activate' niže).
+  self.skipWaiting();
+
   event.waitUntil(
-    caches.open('mojih1500-cache-v1').then(async (cache) => {
+    // KLJUČNO: koristiti ISTI CACHE_NAME koji se provjerava i briše u 'activate',
+    // inače se nova verzija sprema u drugi cache, a 'activate' briše sve OSIM
+    // trenutnog CACHE_NAME (pa je efektivno brisao upravo ono što je 'install' napunio).
+    caches.open(CACHE_NAME).then(async (cache) => {
       // Umjesto cache.addAll(ASSETS_TO_CACHE):
       await Promise.allSettled(
         ASSETS_TO_CACHE.map(async (url) => {
           try {
-            const response = await fetch(url);
+            // 'reload' osigurava da i sam install dohvati svježe datoteke s mreže,
+            // a ne stariju verziju koju je eventualno već keširao browser HTTP cache.
+            const response = await fetch(url, { cache: 'reload' });
             if (response.ok) {
               await cache.put(url, response);
             } else {
@@ -51,23 +60,42 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Aktivacija i čišćenje starih verzija cachea
+// Aktivacija, čišćenje starih verzija cachea i PREUZIMANJE KONTROLE nad otvorenim karticama
 self.addEventListener('activate', (e) => {
   e.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
+    caches.keys()
+      .then((keys) => Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
         })
-      );
-    })
+      ))
+      // Bez ovoga nova SW verzija ostaje "activated" ali ne kontrolira već otvorene
+      // kartice/instalirani PWA sve dok se ručno ne zatvore - pa korisnik i dalje
+      // vidi stari JS iako je nova verzija tehnički aktivna.
+      .then(() => self.clients.claim())
   );
 });
 
-// Dohvaćanje resursa: Prvo traži u Cacheu, ako nema - ide na Mrežu
+// Dohvaćanje resursa: Prvo traži u Cacheu, ako nema - ide na Mrežu.
+// Za HTML navigacije (npr. učitavanje/refresh same app) koristimo network-first
+// s cache fallbackom, kako bi korisnik čim prije dobio najnoviju ljusku aplikacije
+// (a ne zauvijek staru index.html iz cachea dok ga SW jednom ne osvježi).
 self.addEventListener('fetch', (e) => {
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       return cachedResponse || fetch(e.request);

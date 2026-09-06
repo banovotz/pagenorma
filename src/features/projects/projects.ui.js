@@ -156,8 +156,12 @@ export async function spremiProjektForma(event) {
     }
 
     const idInput = document.getElementById('p-id');
+    // ID se računa JEDNOM i koristi dosljedno kroz cijelu funkciju (i za provjeru
+    // postojećeg zapisa i za sam upis) - ranije se za upis ponovno zvao Date.now(),
+    // pa je nakon nekoliko await koraka projekt znao završiti pod DRUGIM ID-em
+    // od onog kojim je provjeravan "postojeciProjekt".
     const id = (idInput && idInput.value) ? idInput.value : 'proj_' + Date.now();
-    
+
     const postojeciProjekt = await dohvatiProjektPoId(id);
     const epubInput = document.getElementById('p-epub-file');
 
@@ -169,15 +173,26 @@ export async function spremiProjektForma(event) {
     
     const tempGdocText = form?.dataset?.tempGdocText || null;
 
-    let epubBlob = postojeciProjekt ? postojeciProjekt.epubBlob || null : null;
     let epubNaziv = postojeciProjekt ? postojeciProjekt.epubNazivDatoteke || null : null;
 
-    // 1. ISPRAVAN OBRAĐIVAČ ZA EPUB DATOTEKU
+    // STRATEGIJA SPREMANJA: čuvamo SAMO izvučeni čisti tekst (tekstIzvora), a ne
+    // sirovi ePub Blob. Blob u IndexedDB nepotrebno napuhuje bazu i ovisi o
+    // strukturiranom kloniranju binarnih objekata; za analizu nam treba isključivo
+    // tekst, pa ga izvlačimo odmah pri spremanju i spremamo kao obični string.
+    let tekstIzvora = postojeciProjekt ? postojeciProjekt.tekstIzvora || null : null;
+
     if (epubInput && epubInput.files && epubInput.files[0]) {
-      const selectedFile = epubInput.files[0]; // <-- Definirana varijabla selectedFile
-      const buffer = await selectedFile.arrayBuffer();
-      epubBlob = new Blob([buffer], { type: selectedFile.type || 'application/epub+zip' });
+      const selectedFile = epubInput.files[0];
       epubNaziv = selectedFile.name;
+      try {
+        tekstIzvora = await dohvatiCijeliTekstIzEpuba(selectedFile);
+        if (!tekstIzvora || tekstIzvora.trim().length === 0) {
+          console.warn("ePub je parsiran, ali iz njega nije izvučen tekst (prazan sadržaj).");
+        }
+      } catch (e) {
+        console.error("Nije moguće ekstrahirati tekst iz ePub-a pri spremanju:", e);
+        alert("Odabrana ePub datoteka nije mogla biti obrađena. Projekt će biti spremljen bez izvornog teksta.");
+      }
     }
 
     const citajBroj = (id, pretvoriUFloat = false) => {
@@ -187,18 +202,8 @@ export async function spremiProjektForma(event) {
       return isNaN(val) ? 0 : val;
     };
 
-    // 2. ISPRAVNO IZVLAČENJE TEKSTA IZ EPUB-a ZAJEDNO S AWAIT
-    let tekstIzvora = postojeciProjekt ? postojeciProjekt.tekstIzvora || null : null;
-    if (epubBlob && (!tekstIzvora || epubInput?.files?.length > 0)) {
-      try {
-        tekstIzvora = await dohvatiCijeliTekstIzEpuba(epubBlob); // <-- Dodan await
-      } catch (e) {
-        console.warn("Nije moguće ekstrahirati tekst iz ePub-a pri spremanju:", e);
-      }
-    }
-
     const noviProjekt = {
-      id: postojeciProjekt?.id || ("proj_" + Date.now()),
+      id: id,
       naslov: document.getElementById('p-naslov')?.value.trim() || "Bez naslova",
       klijent: document.getElementById('p-klijent')?.value.trim() || '',
       slovaOriginal: slovaOriginal,
@@ -212,7 +217,6 @@ export async function spremiProjektForma(event) {
       naslovnicaBase64: document.getElementById('p-naslovnica-base64')?.value || null,
       gdocUrl: document.getElementById('p-gdoc-url')?.value.trim() || "",
       lastSynced: new Date().toISOString(),
-      epubBlob: epubBlob, 
       epubNazivDatoteke: epubNaziv,
       tekstIzvora: tekstIzvora,
       tekstPrijevoda: tempGdocText || (postojeciProjekt ? postojeciProjekt.tekstPrijevoda : null)
@@ -261,9 +265,9 @@ export async function urediProjekt(id) {
 
   const epubNameLabel = document.getElementById('p-epub-file-name');
   if (epubNameLabel) {
-    if (p.epubBlob) {
-      const fileName = p.epubBlob.name || p.epubNazivDatoteke || "Učitani EPUB spremljen u bazi";
-      epubNameLabel.innerHTML = `📄 Učitana datoteka: <strong>${fileName}</strong>`;
+    if (p.tekstIzvora) {
+      const fileName = p.epubNazivDatoteke || "Učitani EPUB spremljen u bazi";
+      epubNameLabel.innerHTML = `📄 Učitana datoteka: <strong>${fileName}</strong> (tekst spremljen ✓)`;
       epubNameLabel.style.color = '#2e7d32';
     } else {
       epubNameLabel.innerText = "Nije priložena EPUB datoteka.";

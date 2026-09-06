@@ -238,21 +238,26 @@ export async function zapocniAnaliziranje(projekt) {
     let izvorTekst = "";
     let prijevodTekst = "";
 
-    const epubInput = document.getElementById('p-epub-file');
-    let epubDatoteka = (epubInput && epubInput.files && epubInput.files[0]) ? epubInput.files[0] : projekt.epubBlob;
-
-    if (epubDatoteka) {
-      if (statusText) statusText.innerText = "⏳ Čitanje izvornog ePub-a...";
-      izvorTekst = await dohvatiCijeliTekstIzEpuba(epubDatoteka);
-      projekt.tekstIzvora = izvorTekst;
-      projekt.epubBlob = epubDatoteka;
-      await spremiUStorage(projekt);
-    } else if (projekt.tekstIzvora) {
+    if (projekt.tekstIzvora && projekt.tekstIzvora.trim().length > 0) {
+      // Uobičajen slučaj: tekst je već izvučen i spremljen prilikom spremanja projekta.
       izvorTekst = projekt.tekstIzvora;
+    } else {
+      // Rubni slučaj: projekt (npr. star zapis iz baze) nema spremljen tekst, ali
+      // korisnik trenutno ima otvorenu formu s odabranom, još nespremljenom ePub
+      // datotekom - iskoristimo je, a rezultat odmah trajno spremimo u projekt.
+      const epubInput = document.getElementById('p-epub-file');
+      const epubDatoteka = (epubInput && epubInput.files && epubInput.files[0]) ? epubInput.files[0] : null;
+
+      if (epubDatoteka) {
+        if (statusText) statusText.innerText = "⏳ Čitanje izvornog ePub-a...";
+        izvorTekst = await dohvatiCijeliTekstIzEpuba(epubDatoteka);
+        projekt.tekstIzvora = izvorTekst;
+        await spremiUStorage(projekt);
+      }
     }
 
     if (!izvorTekst || izvorTekst.trim().length === 0) {
-      throw new Error("Nije pronađen tekst izvornika.");
+      throw new Error("Nije pronađen tekst izvornika. Otvorite projekt za uređivanje, ponovno odaberite ePub datoteku i spremite projekt.");
     }
 
     const gdocInput = document.getElementById('p-gdoc-url');
