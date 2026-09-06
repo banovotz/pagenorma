@@ -20,8 +20,8 @@ const  ASSETS_TO_CACHE = [
   './src/features/google-drive/drive.api.js',
   './src/features/glossary/glossary.ui.js',
   './src/features/glossary/glossary.js',
-  './src/features/concordance/concordance.ui.js',
-  './src/features/concordance/concordance.js',
+  './src/features/interlinear/interlinear.ui.js',
+  './src/features/interlinear/interlinear.js',
   './src/features/analytics/analytics.ui.js',
   './src/components/modal.js',
   './src/components/toast.js'

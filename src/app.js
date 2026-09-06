@@ -18,7 +18,7 @@ import {
 } from './features/projects/projects.ui.js';
 
 // Analize & Concordance
-import { prikaziSveAnalize } from './features/concordance/concordance.ui.js';
+import { prikaziSveAnalize } from './features/interlinear/interlinear.ui.js';
 
 // Postavke, Analitika i UI navigacija (prilagodite putanje prema vašoj strukturi mapa)
 import { ucitajAnalitiku, osvjeziPrikazFinancija, promijeniGodinuAnalitike } from './features/analytics/analytics.ui.js';
@@ -129,7 +129,7 @@ function postaviGlobalneEventListenere() {
   document.getElementById('odabir-godine')?.addEventListener('change', promijeniGodinuAnalitike);
 
   // --- MODALI ---
-  const btnGlosar = document.querySelector('#concordance-page .btn-sync-small');
+  const btnGlosar = document.querySelector('#interlinear-page .btn-sync-small');
   if (btnGlosar) {
     btnGlosar.addEventListener('click', function() {
       otvoriModalGlosar(this);

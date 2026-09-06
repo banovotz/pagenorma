@@ -2,9 +2,9 @@
 
 import { otvoriBazu, STORE_NAME, UNOSI_STORE, spremiUStorage } from '../../core/db.js';
 import { dohvatiSveProjekte, dohvatiProjektPoId, obrisiProjektIzStoragea, izracunajPreostaleDane, rucniUnosZnakova } from './projects.js';
-import { pokreniTekstualnuAnalizu } from '../concordance/concordance.js';
+import { pokreniTekstualnuAnalizu } from '../interlinear/interlinear.js';
 import { parseEpubFile } from '../epub-parser/epub.parser.js';
-import { dohvatiCijeliTekstIzEpuba } from '../concordance/concordance.js';
+import { dohvatiCijeliTekstIzEpuba } from '../interlinear/interlinear.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 export async function ucitajDashboard() {
   const dashboardDiv = document.getElementById('dashboard-page');

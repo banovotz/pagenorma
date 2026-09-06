@@ -4,7 +4,7 @@ import { otvoriBazu, STORE_NAME, KONKORDANCA_STORE, spremiUStorage } from '../..
 import { dohvatiGeminiKluc } from '../../core/state.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 import { dohvatiGlosarIzIndexedDB, spremiGlosarUIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
-import { prikaziKonkordancu } from './concordance.ui.js';
+import { prikaziKonkordancu } from './interlinear.ui.js';
 
 function skratiZaPrompt(tekst, maxZnakova = 2000) {
   if (!tekst) return "";

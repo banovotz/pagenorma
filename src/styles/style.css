@@ -658,14 +658,14 @@ ul.unosi-list li {
 }
 
 /* Konkordanca Layout */
-.concordance-grid {
+.interlinear-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 300px;
   gap: 16px;
   height: calc(100vh - 160px);
 }
 
-.concordance-col {
+.interlinear-col {
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -723,7 +723,7 @@ ul.unosi-list li {
 }
 
 @media (max-width: 900px) {
-  .concordance-grid {
+  .interlinear-grid {
     grid-template-columns: 1fr;
     height: auto;
   }
@@ -735,15 +735,15 @@ ul.unosi-list li {
   word-wrap: break-word;
 }
 
-.concordance-grid #col-izvor::-webkit-scrollbar,
-.concordance-grid #col-prijevod::-webkit-scrollbar,
-.concordance-grid #col-komentari::-webkit-scrollbar {
+.interlinear-grid #col-izvor::-webkit-scrollbar,
+.interlinear-grid #col-prijevod::-webkit-scrollbar,
+.interlinear-grid #col-komentari::-webkit-scrollbar {
   width: 6px;
 }
 
-.concordance-grid #col-izvor::-webkit-scrollbar-thumb,
-.concordance-grid #col-prijevod::-webkit-scrollbar-thumb,
-.concordance-grid #col-komentari::-webkit-scrollbar-thumb {
+.interlinear-grid #col-izvor::-webkit-scrollbar-thumb,
+.interlinear-grid #col-prijevod::-webkit-scrollbar-thumb,
+.interlinear-grid #col-komentari::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 3px;
 }

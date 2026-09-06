@@ -4,7 +4,7 @@
 
 import { ucitajAnalitiku } from '../features/analytics/analytics.ui.js';
 import { ucitajPostavke } from '../features/settings/settings.ui.js';
-import { prikaziSveAnalize } from '../features/concordance/concordance.ui.js'; 
+import { prikaziSveAnalize } from '../features/interlinear/interlinear.ui.js'; 
 
 
 // Centralni registar ruta i pripadajućih akcija/handlera

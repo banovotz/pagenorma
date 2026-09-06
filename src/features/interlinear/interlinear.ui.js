@@ -15,7 +15,7 @@ export async function prikaziKonkordancu(projektId) {
 
    // 1. Sakrij listu analiza, prikaži kontejner pojedinačne konkordance
   const analizeListContainer = document.getElementById('analize-page');
-  const konkordancaContainer = document.getElementById('concordance-page');
+  const konkordancaContainer = document.getElementById('interlinear-page');
 
   if (analizeListContainer) analizeListContainer.style.display = 'none';
   if (konkordancaContainer) konkordancaContainer.style.display = 'block';
@@ -58,7 +58,7 @@ export async function prikaziKonkordancu(projektId) {
   const idKey = typeof projektId === 'string' && !isNaN(projektId) ? Number(projektId) : projektId;
   
   
-  prikaziStranicu('concordance-page');
+  prikaziStranicu('interlinear-page');
 
     rezultat.segmenti.forEach((seg, idx) => {
       const pIndex = idx + 1;
@@ -151,7 +151,7 @@ export function skociNaOdlomak(index) {
 
 export async function prikaziSveAnalize() {
   // 1. Sakrij kontejner pojedinačne konkordance, prikaži kontejner liste analiza
-  const konkordancaContainer = document.getElementById('concordance-page');
+  const konkordancaContainer = document.getElementById('interlinear-page');
   const analizeListContainer = document.getElementById('analize-page');
 
   if (konkordancaContainer) konkordancaContainer.style.display = 'none';
