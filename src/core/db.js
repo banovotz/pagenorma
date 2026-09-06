@@ -14,7 +14,7 @@ export const DB_NAME = 'Mojih1500DB';
 export const DB_VERSION = 6;
 export const STORE_NAME = 'projekti';
 export const UNOSI_STORE = 'unosi';
-export const KONKORDANCA_STORE = 'konkordance';
+export const INTERLINEARNI_STORE = 'interlinearnitekst';
 export const GLOSAR_STORE = 'glosari';
 
 export function otvoriBazu() {
@@ -33,8 +33,8 @@ export function otvoriBazu() {
         unosiStore.createIndex('projektId', 'projektId', { unique: false });
       }
 
-      if (!db.objectStoreNames.contains(KONKORDANCA_STORE)) {
-        db.createObjectStore(KONKORDANCA_STORE, { keyPath: 'projektId' });
+      if (!db.objectStoreNames.contains(INTERLINEARNI_STORE)) {
+        db.createObjectStore(INTERLINEARNI_STORE, { keyPath: 'projektId' });
       }
 
       if (!db.objectStoreNames.contains(GLOSAR_STORE)) {

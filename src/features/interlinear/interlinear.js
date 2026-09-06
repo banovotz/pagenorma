@@ -1,10 +1,10 @@
 // Izvršna logika tekstualne analize, ePub parsiranja i komunikacije s Gemini API-jem
 
-import { otvoriBazu, STORE_NAME, KONKORDANCA_STORE, spremiUStorage } from '../../core/db.js';
+import { otvoriBazu, STORE_NAME, INTERLINEARNI_STORE, spremiUStorage } from '../../core/db.js';
 import { dohvatiGeminiKluc } from '../../core/state.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 import { dohvatiGlosarIzIndexedDB, spremiGlosarUIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
-import { prikaziKonkordancu } from './interlinear.ui.js';
+import { prikaziInterlinearniTekst } from './interlinear.ui.js';
 
 function skratiZaPrompt(tekst, maxZnakova = 2000) {
   if (!tekst) return "";
@@ -322,8 +322,8 @@ export async function zapocniAnaliziranje(projekt) {
     };
 
     const db = await otvoriBazu();
-    const tx = db.transaction(KONKORDANCA_STORE, 'readwrite');
-    const store = tx.objectStore(KONKORDANCA_STORE);
+    const tx = db.transaction(INTERLINEARNI_STORE, 'readwrite');
+    const store = tx.objectStore(INTERLINEARNI_STORE);
     store.put(rezultatObjekt);
 
     await new Promise((resolve, reject) => {
@@ -332,7 +332,7 @@ export async function zapocniAnaliziranje(projekt) {
     });
 
     if (modal) modal.style.display = 'none';
-    await prikaziKonkordancu(projekt.id);  
+    await prikaziInterlinearniTekst(projekt.id);  
 
   } catch (err) {
     console.error("Greška tijekom analize:", err);
@@ -358,8 +358,8 @@ export async function pokreniTekstualnuAnalizu(projektId, event) {
 
   const postojeciRezultat = await new Promise((resolve) => {
     try {
-      const tx = db.transaction(KONKORDANCA_STORE, 'readonly');
-      const req = tx.objectStore(KONKORDANCA_STORE).get(projektId);
+      const tx = db.transaction(INTERLINEARNI_STORE, 'readonly');
+      const req = tx.objectStore(INTERLINEARNI_STORE).get(projektId);
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => resolve(null);
     } catch (e) {
