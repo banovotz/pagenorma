@@ -1,11 +1,11 @@
 // 1. ISPRVALJENI I POTPUNI IMPORTI
 import { otvoriBazu } from './core/db.js';
 import { dohvatiGeminiKluc } from './core/state.js';
-import { prikaziStranicu } from './core/router.js';
 import { inicijalizirajNavigaciju } from './ui/navigation.js'; 
 import { dohvatiSveProjekte } from './features/projects/projects.js';
 import './features/glossary/glossary.ui.js';
 import { azurirajePrikazImenaEpuba } from './features/epub-parser/epub.parser.js'; 
+import { inicijalizirajRouter} from './core/router.js';
 
 // Projekt & Dashboard
 import { 
@@ -144,10 +144,20 @@ function postaviGlobalneEventListenere() {
 
 // 4. POKRETANJE
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', pokreniAplikaciju);
+
+  document.addEventListener('DOMContentLoaded', () => {
+  // Pokreni router i postavi 'dashboard-page' kao zadanu stranicu
+  pokreniAplikaciju();
+  inicijalizirajRouter('dashboard-page');
+
+});
 } else {
   pokreniAplikaciju();
 }
+
+
+
+
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

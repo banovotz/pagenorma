@@ -12,13 +12,12 @@ const routes = {
   'dashboard': {
     sectionId: 'page-dashboard',
     onActivate: (dohvatiSveProjekteFn) => {
-      // Ako imate posebnu funkciju za prikaz/osvježavanje dashboarda, pozovite je ovdje:
       if (typeof dohvatiSveProjekteFn === 'function') {
         dohvatiSveProjekteFn();
       }
     }
   },
-  'financial-analytics': {
+  'analytics': {
     sectionId: 'page-analytics',
     onActivate: (dohvatiSveProjekteFn) => ucitajAnalitiku(dohvatiSveProjekteFn)
   },
@@ -94,12 +93,14 @@ export function inicijalizirajNavigaciju(dohvatiSveProjekteFn) {
 // --- MODAL GLOSAR & MENU LOGIKA ---
 
 export function toggleMenu() {
-  const navMenu = document.getElementById('nav-menu');
-  if (navMenu) {
-    navMenu.classList.toggle('open');
+  const sideDrawer = document.getElementById('side-drawer');
+  const overlay = document.getElementById('overlay');
+  
+  if (sideDrawer && overlay) {
+    sideDrawer.classList.toggle('open');
+    overlay.classList.toggle('active');
   }
 }
-
 export function otvoriModalGlosar() {
   const modal = document.getElementById('glosar-modal') || document.getElementById('modal-glosar');
   if (modal) {
