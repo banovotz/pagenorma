@@ -2,6 +2,17 @@
 
 import { otvoriBazu, INTERLINEARNI_STORE, STORE_NAME } from '../../core/db.js';
 import { navigirajNa } from '../../core/router.js';
+import {
+  findMatchingParagraphIndices,
+  getInterlinearSearchSuggestions,
+  normalizeInterlinearSearchText
+} from '../../utils/interlinearSearch.js';
+
+const INTERLINEAR_PAGE_SIZE = 20;
+const INTERLINEAR_MIN_SEARCH_LENGTH = 3;
+let interlinearState = null;
+let searchDebounceTimer = null;
+let interlinearOutsideClickBound = false;
 
 export async function prikaziInterlinearniTekst(projektId) {
  
@@ -38,76 +49,208 @@ export async function prikaziInterlinearniTekst(projektId) {
   const colPrijevod = document.getElementById('col-prijevod');
   const colKomentari = document.getElementById('col-komentari');
 
-  if (colIzvor && colPrijevod && colKomentari) {
-    colIzvor.innerHTML = '';
-    colPrijevod.innerHTML = '';
-    colKomentari.innerHTML = '';
+  if (!colIzvor || !colPrijevod || !colKomentari) return;
 
-    if (!rezultat || !rezultat.segmenti || rezultat.segmenti.length === 0) {
-      colIzvor.innerHTML = '<p class="text-muted">Nema podataka za prikaz.</p>';
-      return;
-    }
-  
-
-
-
-  // Ako je id proslijeđen kao string
-  const idKey = typeof projektId === 'string' && !isNaN(projektId) ? Number(projektId) : projektId;
-
-    rezultat.segmenti.forEach((seg, idx) => {
-      const pIndex = idx + 1;
-      const komentarZaOdlomak = rezultat.komentari 
-        ? rezultat.komentari.find(k => k.odlomakIndex === idx) 
-        : null;
-
-      const divIzvor = document.createElement('div');
-      divIzvor.className = 'segment-item para-box';
-      divIzvor.dataset.index = idx;
-      divIzvor.innerHTML = `<small style="color:#008080; font-weight:bold;">#${pIndex}</small><br>${seg.izvor || '<em>(Prazno)</em>'}`;
-      colIzvor.appendChild(divIzvor);
-
-      const divPrijevod = document.createElement('div');
-      divPrijevod.className = 'segment-item para-box';
-      divPrijevod.dataset.index = idx;
-      divPrijevod.innerHTML = `<small style="color:#2e7d32; font-weight:bold;">#${pIndex}</small><br>${seg.prijevod || '<em>(Prazno)</em>'}`;
-      colPrijevod.appendChild(divPrijevod);
-
-      const divKomentar = document.createElement('div');
-      divKomentar.className = 'segment-item para-box';
-      divKomentar.dataset.index = idx;
-      
-      if (komentarZaOdlomak && (komentarZaOdlomak.sugestija || komentarZaOdlomak.term)) {
-        divKomentar.innerHTML = `
-          <div style="background: #f3e5f5; border-left: 3px solid #8e24aa; padding: 6px; border-radius: 4px; font-size: 0.85em;">
-            <strong style="color: #8e24aa;">✨ Gemini Napomena #${pIndex}:</strong><br>
-            ${komentarZaOdlomak.sugestija || komentarZaOdlomak.term}
-          </div>
-        `;
-      } else {
-        divKomentar.innerHTML = `<small style="color:#ccc;">#${pIndex}</small> <span style="color:#eee;">—</span>`;
-      }
-      colKomentari.appendChild(divKomentar);
-    });
-
-    setTimeout(() => {
-      const iNodes = colIzvor.querySelectorAll('.para-box');
-      const pNodes = colPrijevod.querySelectorAll('.para-box');
-      const kNodes = colKomentari.querySelectorAll('.para-box');
-
-      iNodes.forEach((node, idx) => {
-        const h1 = node.offsetHeight;
-        const h2 = pNodes[idx] ? pNodes[idx].offsetHeight : 0;
-        const h3 = kNodes[idx] ? kNodes[idx].offsetHeight : 0;
-        const maxHeight = Math.max(h1, h2, h3);
-
-        node.style.minHeight = `${maxHeight}px`;
-        if (pNodes[idx]) pNodes[idx].style.minHeight = `${maxHeight}px`;
-        if (kNodes[idx]) kNodes[idx].style.minHeight = `${maxHeight}px`;
-      });
-    }, 50);
-
-    sinkronizirajTrostrukiSkrol(colIzvor, colPrijevod, colKomentari);
+  const segmenti = Array.isArray(rezultat?.segmenti) ? rezultat.segmenti : [];
+  if (segmenti.length === 0) {
+    colIzvor.innerHTML = '<p class="text-muted">Nema podataka za prikaz.</p>';
+    return;
   }
+
+  const sourceParagraphs = rezultat.sourceParagraphs || rezultat.odlomciIzvor || segmenti.map(seg => seg.izvor || '');
+  const targetParagraphs = rezultat.targetParagraphs || rezultat.odlomciPrijevod || segmenti.map(seg => seg.prijevod || '');
+  interlinearState = {
+    segmenti,
+    sourceParagraphs,
+    targetParagraphs,
+    komentari: rezultat.komentari || [],
+    filteredIndices: Array.from({ length: Math.max(sourceParagraphs.length, targetParagraphs.length) }, (_, index) => index),
+    currentPage: 1,
+    query: ''
+  };
+
+  const searchInput = document.getElementById('interlinear-search');
+  if (searchInput) searchInput.value = '';
+  const suggestions = document.getElementById('interlinear-suggestions');
+  if (suggestions) {
+    suggestions.innerHTML = '';
+    suggestions.hidden = true;
+  }
+  postaviInterlinearPretragu();
+  renderInterlinearPage();
+}
+
+function postaviInterlinearPretragu() {
+  const searchInput = document.getElementById('interlinear-search');
+  if (!searchInput || searchInput.dataset.bound === 'true') return;
+
+  searchInput.dataset.bound = 'true';
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => primijeniInterlinearPretragu(searchInput.value), 250);
+  });
+  searchInput.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      clearTimeout(searchDebounceTimer);
+      primijeniInterlinearPretragu(searchInput.value);
+    }
+  });
+
+  if (!interlinearOutsideClickBound) {
+    document.addEventListener('click', event => {
+      const searchArea = searchInput.closest('.interlinear-search-wrap');
+      const suggestions = document.getElementById('interlinear-suggestions');
+      if (suggestions && searchArea && !searchArea.contains(event.target)) {
+        suggestions.hidden = true;
+      }
+    });
+    interlinearOutsideClickBound = true;
+  }
+}
+
+function primijeniInterlinearPretragu(query) {
+  if (!interlinearState) return;
+  const trimmedQuery = query.trim();
+  interlinearState.query = trimmedQuery;
+  interlinearState.filteredIndices = trimmedQuery.length < INTERLINEAR_MIN_SEARCH_LENGTH
+    ? Array.from(
+      { length: Math.max(interlinearState.sourceParagraphs.length, interlinearState.targetParagraphs.length) },
+      (_, index) => index
+    )
+    : findMatchingParagraphIndices(
+      interlinearState.sourceParagraphs,
+      interlinearState.targetParagraphs,
+      trimmedQuery
+    );
+  interlinearState.currentPage = 1;
+  renderInterlinearSuggestions();
+  renderInterlinearPage();
+}
+
+function renderInterlinearSuggestions() {
+  const suggestions = document.getElementById('interlinear-suggestions');
+  if (!suggestions || !interlinearState) return;
+  const query = interlinearState.query;
+  suggestions.innerHTML = '';
+  if (query.length < INTERLINEAR_MIN_SEARCH_LENGTH) {
+    suggestions.hidden = true;
+    return;
+  }
+
+  const indices = getInterlinearSearchSuggestions(
+    interlinearState.sourceParagraphs,
+    interlinearState.targetParagraphs,
+    query
+  );
+  suggestions.hidden = indices.length === 0;
+  indices.forEach(index => {
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'interlinear-suggestion';
+    item.innerHTML = `#${index + 1}: ${istakniPojam(
+      interlinearState.sourceParagraphs[index] || interlinearState.targetParagraphs[index],
+      query
+    )}`;
+    item.addEventListener('click', () => {
+      const searchInput = document.getElementById('interlinear-search');
+      if (searchInput) searchInput.value = query;
+      suggestions.hidden = true;
+      primijeniInterlinearPretragu(query);
+    });
+    suggestions.appendChild(item);
+  });
+}
+
+function istakniPojam(value, query) {
+  const text = String(value || '(Prazno)');
+  const normalizedQuery = normalizeInterlinearSearchText(query);
+  const words = text.split(/(\s+)/);
+  return words.map(word => normalizeInterlinearSearchText(word).includes(normalizedQuery)
+    ? `<strong>${siguranTekst(word)}</strong>`
+    : siguranTekst(word)).join('');
+}
+
+function siguranTekst(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[character]));
+}
+
+function renderInterlinearPage() {
+  if (!interlinearState) return;
+  const colIzvor = document.getElementById('col-izvor');
+  const colPrijevod = document.getElementById('col-prijevod');
+  const colKomentari = document.getElementById('col-komentari');
+  if (!colIzvor || !colPrijevod || !colKomentari) return;
+
+  const totalPages = Math.max(1, Math.ceil(interlinearState.filteredIndices.length / INTERLINEAR_PAGE_SIZE));
+  interlinearState.currentPage = Math.min(interlinearState.currentPage, totalPages);
+  const start = (interlinearState.currentPage - 1) * INTERLINEAR_PAGE_SIZE;
+  const pageIndices = interlinearState.filteredIndices.slice(start, start + INTERLINEAR_PAGE_SIZE);
+  colIzvor.innerHTML = '';
+  colPrijevod.innerHTML = '';
+  colKomentari.innerHTML = '';
+  colIzvor.scrollTop = 0;
+  colPrijevod.scrollTop = 0;
+  colKomentari.scrollTop = 0;
+
+  pageIndices.forEach(index => {
+    const pIndex = index + 1;
+    const komentar = interlinearState.komentari.find(item => item.odlomakIndex === index);
+    colIzvor.appendChild(stvoriOdlomak(index, pIndex, interlinearState.sourceParagraphs[index], '#008080'));
+    colPrijevod.appendChild(stvoriOdlomak(index, pIndex, interlinearState.targetParagraphs[index], '#2e7d32'));
+    const comment = document.createElement('div');
+    comment.className = 'segment-item para-box';
+    comment.dataset.index = index;
+    comment.innerHTML = komentar && (komentar.sugestija || komentar.term)
+      ? `<div class="interlinear-comment"><strong>✨ Gemini Napomena #${pIndex}:</strong><br>${komentar.sugestija || komentar.term}</div>`
+      : `<small class="empty-comment">#${pIndex}</small> <span class="empty-comment">—</span>`;
+    colKomentari.appendChild(comment);
+  });
+
+  renderInterlinearPagination(totalPages);
+  sinkronizirajTrostrukiSkrol(colIzvor, colPrijevod, colKomentari);
+  setTimeout(() => izjednaciVisineOdlomaka(colIzvor, colPrijevod, colKomentari), 50);
+}
+
+function stvoriOdlomak(index, pIndex, text, color) {
+  const element = document.createElement('div');
+  element.className = 'segment-item para-box';
+  element.dataset.index = index;
+  element.innerHTML = `<small style="color:${color}; font-weight:bold;">#${pIndex}</small><br>${siguranTekst(text || '(Prazno)')}`;
+  return element;
+}
+
+function izjednaciVisineOdlomaka(...columns) {
+  const nodes = columns.map(column => Array.from(column.querySelectorAll('.para-box')));
+  nodes[0].forEach((node, index) => {
+    const maxHeight = Math.max(...nodes.map(column => column[index]?.offsetHeight || 0));
+    nodes.forEach(column => { if (column[index]) column[index].style.minHeight = `${maxHeight}px`; });
+  });
+}
+
+function renderInterlinearPagination(totalPages) {
+  const pagination = document.getElementById('interlinear-pagination');
+  const status = document.getElementById('interlinear-results-count');
+  if (!pagination || !status) return;
+  status.textContent = `${interlinearState.filteredIndices.length} odlomaka · stranica ${interlinearState.currentPage} od ${totalPages}`;
+  pagination.innerHTML = '';
+  const addButton = (label, page, disabled = false) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = label;
+    button.disabled = disabled;
+    button.className = page === interlinearState.currentPage ? 'active' : '';
+    button.addEventListener('click', () => {
+      interlinearState.currentPage = page;
+      renderInterlinearPage();
+      document.getElementById('interlinear-page')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    pagination.appendChild(button);
+  };
+  addButton('Prethodna', interlinearState.currentPage - 1, interlinearState.currentPage === 1);
+  for (let page = 1; page <= totalPages; page++) addButton(String(page), page);
+  addButton('Sljedeća', interlinearState.currentPage + 1, interlinearState.currentPage === totalPages);
 }
 
 export function sinkronizirajTrostrukiSkrol(...elements) {

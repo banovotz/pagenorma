@@ -355,6 +355,14 @@
 
 <div id="interlinear-page" class="page-content" style="padding: 20px;">
   <h2>🌐 LLM Analiza prijevoda</h2>
+  <div class="interlinear-toolbar">
+    <div class="interlinear-search-wrap">
+      <label for="interlinear-search">Pretraži izvor ili prijevod</label>
+      <input id="interlinear-search" type="search" placeholder="Upišite najmanje 3 znaka..." autocomplete="off">
+      <div id="interlinear-suggestions" class="interlinear-suggestions" hidden></div>
+    </div>
+    <span id="interlinear-results-count" class="interlinear-results-count"></span>
+  </div>
   
   <div class="interlinear-grid" style="display: flex; gap: 12px; height: 75vh;">
     <!-- STUPAC 1: IZVORNIK -->
@@ -382,6 +390,7 @@
     </div>
     
   </div>
+  <nav id="interlinear-pagination" class="interlinear-pagination" aria-label="Stranice interlinearnog teksta"></nav>
 </div>
  </section>
 
