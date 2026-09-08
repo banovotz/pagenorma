@@ -128,7 +128,7 @@ function postaviGlobalneEventListenere() {
 
   document.getElementById('btn-povuci-podatke')?.addEventListener('click', povuciPodatkeIzIzvora);
 
-  const btnCancelProjekt = document.querySelector('#projekt-forma .btn-secondary');
+  const btnCancelProjekt = document.getElementById('btn-cancel-projekt');
   if (btnCancelProjekt) {
     btnCancelProjekt.addEventListener('click', () => toggleFormaProjekta(true));
   }
