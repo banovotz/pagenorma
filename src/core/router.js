@@ -298,8 +298,13 @@ async function otvoriModalGlosar(projektId) {
 
 export function zatvoriModalGlosar() {
   const modal = document.getElementById('glosar-modal') || document.getElementById('modal-glosar');
+  const backdrop = document.getElementById('glosar-backdrop');
+
   if (modal) {
     modal.style.display = 'none';
     modal.setAttribute('aria-hidden', 'true');
   }
+
+  backdrop?.remove();
+  document.body.classList.remove('modal-open');
 }

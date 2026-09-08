@@ -1,60 +1,17 @@
 // Glosar logika i komunikacija s IndexedDB-om
 
-import { otvoriBazu, GLOSAR_STORE } from '../../core/db.js';
+import { otvoriBazu, INTERLINEARNI_STORE } from '../../core/db.js';
 
-export async function dohvatiGlosarIzIndexedDB() {
-  // Ako već imate u aplikaciji aktivni ID projekta/analize (npr. window.trenutniAnalizaId ili window.trenutniProjektId)
-  const trenutniId = window.trenutniAnalizaId || window.trenutniProjektId;
+export async function dohvatiGlosarIzIndexedDB(projektId = null) {
+  const trenutniId = projektId ?? window.trenutniAnalizaId ?? window.trenutniProjektId;
+  if (trenutniId == null) return {};
 
-  // Primjer pretpostavljene baze (prilagodite naziv vaše IndexedDB baze i objektnog spremnika)
+  const db = await otvoriBazu();
   return new Promise((resolve, reject) => {
-    // Ako imate postojeću funkciju ili DB instancu u aplikaciji, iskoristite je:
-    if (typeof dohvatiProjektIzBaze === 'function' && trenutniId) {
-      dohvatiProjektIzBaze(trenutniId)
-        .then(projekt => resolve(projekt?.glosar || {}))
-        .catch(reject);
-      return;
-    }
-
-    // Izravan pristup IndexedDB-u ako nemate pomoćne funkcije
-    const request = indexedDB.open('Mojih1500DB'); // Zamijenite točnim nazivom vaše baze
-
-    request.onerror = () => reject('Neuspješno otvaranje IndexedDB baze');
-    
-    request.onsuccess = (e) => {
-      const db = e.target.result;
-      
-      // Provjera postojanja store-a za glosar ili analize
-      const storeName = db.objectStoreNames.contains('glosari') ? 'glosari' : 
-                        (db.objectStoreNames.contains('analize') ? 'analize' : null);
-
-      if (!storeName) {
-        resolve({});
-        return;
-      }
-
-      const tx = db.transaction(storeName, 'readonly');
-      const store = tx.objectStore(storeName);
-
-      // Ako imamo ID dohvaćamo po ključu, u suprotnom uzimamo posljednji zapis
-      if (trenutniId) {
-        const getReq = store.get(trenutniId);
-        getReq.onsuccess = () => resolve(getReq.result?.glosar || getReq.result || {});
-        getReq.onerror = () => resolve({});
-      } else {
-        const getAllReq = store.getAll();
-        getAllReq.onsuccess = () => {
-          const rezultati = getAllReq.result;
-          if (rezultati && rezultati.length > 0) {
-            const zadnji = rezultati[rezultati.length - 1];
-            resolve(zadnji.glosar || zadnji);
-          } else {
-            resolve({});
-          }
-        };
-        getAllReq.onerror = () => resolve({});
-      }
-    };
+    const tx = db.transaction(INTERLINEARNI_STORE, 'readonly');
+    const request = tx.objectStore(INTERLINEARNI_STORE).get(trenutniId);
+    request.onsuccess = () => resolve(request.result?.glosar || {});
+    request.onerror = () => reject(request.error);
   });
 }
 
@@ -115,24 +72,15 @@ ${prevedeniTekst}
   }
 
   const data = await response.json();
-  const rawText = data.candidates[0].content.parts[0].text;
-  return JSON.parse(rawText);
-}
-
-
-export async function spremiGlosarUIndexedDB(projektId, glosar) {
-  try {
-    const db = await otvoriBazu();
-    const tx = db.transaction(GLOSAR_STORE, 'readwrite');
-    const store = tx.objectStore(GLOSAR_STORE);
-    store.put({ id: projektId, glosar, datum: new Date().toISOString() });
-    return new Promise((resolve, reject) => {
-      tx.oncomplete = () => resolve(true);
-      tx.onerror = () => reject(tx.error);
-    });
-  } catch (e) {
-    console.error("Greška pri spremanju glosara:", e);
+  const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!rawText) {
+    throw new Error('Gemini nije vratio sadržaj glosara.');
   }
+
+  const glosar = JSON.parse(rawText);
+  if (!Array.isArray(glosar?.terms) || glosar.terms.length === 0) {
+    throw new Error('Gemini je vratio prazan glosar.');
+  }
+
+  return glosar;
 }
-
-

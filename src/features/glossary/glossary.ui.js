@@ -7,7 +7,11 @@ export async function prikaziGlosarZaProjekt(projektId, containerId) {
 
   const glosar = await dohvatiGlosarIzIndexedDB(projektId);
 
-  if (!glosar || glosar.length === 0) {
+  const stavke = Array.isArray(glosar)
+    ? glosar
+    : glosar?.terms || glosar?.items || glosar?.entries || [];
+
+  if (stavke.length === 0) {
     container.innerHTML = '<p class="text-muted">Glosar još nije generiran za ovaj projekt.</p>';
     return;
   }
@@ -22,7 +26,7 @@ export async function prikaziGlosarZaProjekt(projektId, containerId) {
     </thead>
     <tbody>`;
 
-  glosar.forEach(item => {
+  stavke.forEach(item => {
     html += `
       <tr style="border-bottom: 1px solid #eee;">
         <td style="padding: 8px; font-weight: bold;">${item.termin || item.term || item.source_term || '-'}</td>

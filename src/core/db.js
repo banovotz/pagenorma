@@ -11,11 +11,10 @@ if (navigator.storage && navigator.storage.persist) {
 }
 
 export const DB_NAME = 'Mojih1500DB';
-export const DB_VERSION = 6;
+export const DB_VERSION = 7;
 export const STORE_NAME = 'projekti';
 export const UNOSI_STORE = 'unosi';
 export const INTERLINEARNI_STORE = 'interlinearnitekst';
-export const GLOSAR_STORE = 'glosari';
 
 export function otvoriBazu() {
   return new Promise((resolve, reject) => {
@@ -37,8 +36,8 @@ export function otvoriBazu() {
         db.createObjectStore(INTERLINEARNI_STORE, { keyPath: 'projektId' });
       }
 
-      if (!db.objectStoreNames.contains(GLOSAR_STORE)) {
-        db.createObjectStore(GLOSAR_STORE, { keyPath: "id" });
+      if (db.objectStoreNames.contains('glosari')) {
+        db.deleteObjectStore('glosari');
       }
     };
 

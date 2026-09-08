@@ -3,7 +3,7 @@
 import { otvoriBazu, STORE_NAME, INTERLINEARNI_STORE, spremiUStorage } from '../../core/db.js';
 import { dohvatiGeminiKluc } from '../../core/state.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
-import { dohvatiGlosarIzIndexedDB, spremiGlosarUIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
+import { dohvatiGlosarIzIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
 import { navigirajNa } from '../../core/router.js';
 
 function skratiZaPrompt(tekst, maxZnakova = 2000) {
@@ -286,10 +286,26 @@ export async function zapocniAnaliziranje(projekt) {
     const procisceniPrijevod = normaliziraniSegmenti.map(s => s.prijevod).join("\n\n");
 
     let glosar = await dohvatiGlosarIzIndexedDB(projekt.id);
-    if (!glosar) {
+    const glosarStavke = glosar && typeof glosar === 'object'
+      ? (glosar.terms || glosar.items || glosar.entries)
+      : null;
+    const imaGlosar = Array.isArray(glosar)
+      ? glosar.length > 0
+      : Array.isArray(glosarStavke)
+        ? glosarStavke.length > 0
+        : Boolean(glosar && typeof glosar === 'object' && Object.keys(glosar).length > 0);
+
+    if (!imaGlosar) {
       if (statusText) statusText.innerText = "⏳ Generiranje glosara...";
       glosar = await stvoriGlosar(skratiZaPrompt(procisceniIzvor), skratiZaPrompt(procisceniPrijevod), apiKey);
-      await spremiGlosarUIndexedDB(projekt.id, glosar);
+      const generiraneStavke = Array.isArray(glosar?.terms)
+        ? glosar.terms
+        : Array.isArray(glosar)
+          ? glosar
+          : [];
+      if (generiraneStavke.length === 0) {
+        throw new Error("Gemini je vratio prazan glosar.");
+      }
     }
 
     if (statusText) statusText.innerText = "⏳ Pokretanje analize odlomaka uz glosar...";
