@@ -1,9 +1,9 @@
 // 1. IMPORTI
 import { otvoriBazu } from './core/db.js';
 import { dohvatiGeminiKluc } from './core/state.js';
-import { registerRoutes, initRouter, toggleMenu, otvoriModalGlosar, zatvoriModalGlosar } from './core/router.js';
+import { registerRoutes, initRouter, toggleMenu, zatvoriModalGlosar } from './core/router.js';
 import { dohvatiSveProjekte } from './features/projects/projects.js';
-import './features/glossary/glossary.ui.js';
+import {otvoriModalGlosar }from './features/glossary/glossary.ui.js';
 import { azurirajePrikazImenaEpuba } from './features/epub-parser/epub.parser.js';
 
 // Projekt & Dashboard
