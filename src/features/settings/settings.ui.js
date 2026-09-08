@@ -6,39 +6,6 @@ import {
   osvjeziPrikazFinancija 
 } from '../analytics/analytics.ui.js';
 
-import {
-    prikaziStranicu
-} from '../../core/router.js';
-
-/**
- * Inicijalizira sve događaje (event listeners) na formi postavki.
- */
-export function inicijalizirajSettingsUI(prikaziStranicuCallback) {
-  const forma = document.getElementById('settings-form');
-  const elObrt = document.getElementById('model-obrt');
-  const elPostotak = document.getElementById('model-postotak');
-
-  // Promjena modela doprinosa (obrt vs postotak) Dinamički prikazuje odgovarajuća polja
-  if (elObrt) {
-    elObrt.addEventListener('change', () => osvjeziPrikazFinancija());
-  }
-
-  if (elPostotak) {
-    elPostotak.addEventListener('change', () => osvjeziPrikazFinancija());
-  }
-
-  // Spremanje postavki na submit forme
-  if (forma) {
-    forma.addEventListener('submit', (e) => {
-      e.preventDefault();
-      spremiPostavke();
-    });
-  }
-
-  // Učitavanje početnih vrijednosti u formu
-  ucitajPostavke(prikaziStranicuCallback);
-}
-
 /**
  * Pomoćna funkcija za dohvaćanje trenutno odabranih postavki iz forme.
  */
@@ -77,8 +44,6 @@ export function dohvatiGeminiKluc() {
 const SETTINGS_KEY = 'mojih1500_postavke';
 
 export function ucitajPostavke() {
-  prikaziStranicu('settings-page');
-
   const postojacePostavke = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {
     modelDoprinosa: 'obrt',
     fiksniIznos: 0,

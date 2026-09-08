@@ -1,36 +1,74 @@
-// 1. ISPRVALJENI I POTPUNI IMPORTI
+// 1. IMPORTI
 import { otvoriBazu } from './core/db.js';
 import { dohvatiGeminiKluc } from './core/state.js';
-import { inicijalizirajNavigaciju } from './ui/navigation.js'; 
+import { registerRoutes, initRouter, toggleMenu, otvoriModalGlosar, zatvoriModalGlosar } from './core/router.js';
 import { dohvatiSveProjekte } from './features/projects/projects.js';
 import './features/glossary/glossary.ui.js';
-import { azurirajePrikazImenaEpuba } from './features/epub-parser/epub.parser.js'; 
-import { inicijalizirajRouter} from './core/router.js';
+import { azurirajePrikazImenaEpuba } from './features/epub-parser/epub.parser.js';
 
 // Projekt & Dashboard
-import { 
-  ucitajDashboard, 
-  spremiProjektForma, 
-  toggleFormaProjekta, 
+import {
+  ucitajDashboard,
+  spremiProjektForma,
+  toggleFormaProjekta,
   povuciPodatkeIzIzvora,
-  izveziSigurnosnuKopiju, 
-  uveziSigurnosnuKopiju 
+  izveziSigurnosnuKopiju,
+  uveziSigurnosnuKopiju
 } from './features/projects/projects.ui.js';
 
-// Analize & Concordance
-import { prikaziSveAnalize } from './features/interlinear/interlinear.ui.js';
+// Analize / Interlinearni tekst
+import { prikaziSveAnalize, prikaziInterlinearniTekst } from './features/interlinear/interlinear.ui.js';
 
-// Postavke, Analitika i UI navigacija (prilagodite putanje prema vašoj strukturi mapa)
+// Postavke i Analitika
 import { ucitajAnalitiku, osvjeziPrikazFinancija, promijeniGodinuAnalitike } from './features/analytics/analytics.ui.js';
 import { ucitajPostavke, spremiGeminiKluc, spremiPostavke } from './features/settings/settings.ui.js';
-import { toggleMenu, otvoriModalGlosar, zatvoriModalGlosar } from './ui/navigation.js';
 
 window.azurirajePrikazImenaEpuba = azurirajePrikazImenaEpuba;
 
 let aplikacijaInicijalizirana = false;
 
-// 1. INICIJALIZACIJA APLIKACIJE (JEDINA točka ulaska - navigacija i dashboard
-//    se učitavaju točno jednom, izbjegavajući race-condition dupliciranje kartica)
+// ----------------------------------------------------------------------------
+// REGISTAR RUTA - jedino mjesto u aplikaciji koje definira koje ekrane
+// aplikacija ima i što se učitava pri ulasku u svaki od njih. Router (vidi
+// core/router.js) se brine za prikaz/sakrivanje DOM-a i za browser
+// history/hash (gumb Natrag); ovdje se samo opisuje ŠTO gdje živi.
+// ----------------------------------------------------------------------------
+registerRoutes({
+  'dashboard': {
+    section: 'page-dashboard',
+    view: 'dashboard-page',
+    onEnter: () => ucitajDashboard()
+  },
+  'analytics': {
+    section: 'page-analytics',
+    view: 'analytics-page',
+    onEnter: () => ucitajAnalitiku(dohvatiSveProjekte)
+  },
+  'translation-analytics': {
+    section: 'page-translation-analytics',
+    view: 'analize-page',
+    onEnter: () => prikaziSveAnalize()
+  },
+  // Pod-ruta za pojedinu otvorenu analizu - ista sekcija kao gore, ali drugi
+  // view i drugi onEnter. Omogućuje da URL (npr. #translation-analytics/interlinear/proj_123)
+  // i gumb Natrag ispravno razlikuju "lista analiza" od "otvorena pojedina analiza".
+  'translation-analytics/interlinear': {
+    section: 'page-translation-analytics',
+    view: 'interlinear-page',
+    onEnter: (params) => {
+      if (params && params.projektId) prikaziInterlinearniTekst(params.projektId);
+    }
+  },
+  'settings': {
+    section: 'page-settings',
+    view: 'settings-page',
+    onEnter: () => ucitajPostavke()
+  }
+}, { defaultRoute: 'dashboard' });
+
+// ----------------------------------------------------------------------------
+// INICIJALIZACIJA APLIKACIJE (JEDINA točka ulaska)
+// ----------------------------------------------------------------------------
 async function pokreniAplikaciju() {
   if (aplikacijaInicijalizirana) return;
   aplikacijaInicijalizirana = true;
@@ -38,8 +76,10 @@ async function pokreniAplikaciju() {
   try {
     await otvoriBazu();
 
-    inicijalizirajNavigaciju(dohvatiSveProjekte);
-    await ucitajDashboard();
+    // initRouter sam postavlja početni prikaz (prema URL hashu ili zadanoj
+    // ruti) i poziva pripadajući onEnter - nije potrebno posebno zvati
+    // ucitajDashboard() ovdje, to radi 'dashboard' ruta.
+    initRouter();
 
     const savedKey = dohvatiGeminiKluc();
     const input = document.getElementById('gemini-api-key');
@@ -53,41 +93,20 @@ async function pokreniAplikaciju() {
   }
 }
 
-// 3. CENTRALIZIRANI EVENT LISTENERI
+// ----------------------------------------------------------------------------
+// CENTRALIZIRANI EVENT LISTENERI (ne uključuje navigaciju - to radi router.js
+// preko delegiranog klika na [data-target], postavljenog unutar initRouter())
+// ----------------------------------------------------------------------------
 function postaviGlobalneEventListenere() {
 
-  // --- NAVIGACIJA I SIDE DRAWER ---
-  const navLinks = document.querySelectorAll('.nav-links .nav-item, .drawer-menu .nav-item');
-  
-  navLinks.forEach(link => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      const text = link.textContent.trim();
-
-      if (text.includes('Dashboard')) {
-        ucitajDashboard(); // Poziva ucitajDashboard umjesto prikaziDashboard
-      } else if (text.includes('Financial Analytics')) {
-        ucitajAnalitiku();
-      } else if (text.includes('Tanslations Analytics')) {
-        prikaziSveAnalize();   
-      } else if (text.includes('Settings')) {
-        ucitajPostavke();
-      }
-
-      if (link.closest('.side-drawer') && typeof toggleMenu === 'function') {
-        toggleMenu();
-      }
-    });
-  });
-
   const overlay = document.getElementById('overlay');
-  if (overlay && typeof toggleMenu === 'function') {
+  if (overlay) {
     overlay.addEventListener('click', toggleMenu);
   }
 
   // --- OBRASCI I GUMBI ZA PROJEKTE ---
   document.getElementById('btn-novi-projekt')?.addEventListener('click', () => toggleFormaProjekta());
-  
+
   const projektForma = document.getElementById('projekt-forma');
   if (projektForma) {
     projektForma.addEventListener('submit', (e) => {
@@ -142,22 +161,19 @@ function postaviGlobalneEventListenere() {
   }
 }
 
-// 4. POKRETANJE
+// ----------------------------------------------------------------------------
+// POKRETANJE - jedna točka ulaska, bez obzira na trenutni document.readyState.
+// (Ranije je inicijalizacija routera bila ugniježđena SAMO u
+// 'DOMContentLoaded' grani, a budući da se ovaj modul učitava kao
+// type="module" - što se ponaša kao "defer" - readyState u trenutku
+// izvođenja ovog koda gotovo nikad nije 'loading', pa se router u praksi
+// gotovo nikad nije inicijalizirao.)
+// ----------------------------------------------------------------------------
 if (document.readyState === 'loading') {
-
-  document.addEventListener('DOMContentLoaded', () => {
-  // Pokreni router i postavi 'dashboard-page' kao zadanu stranicu
-  pokreniAplikaciju();
-  inicijalizirajRouter('dashboard-page');
-
-});
+  document.addEventListener('DOMContentLoaded', pokreniAplikaciju);
 } else {
   pokreniAplikaciju();
 }
-
-
-
-
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

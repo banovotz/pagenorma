@@ -4,7 +4,7 @@ import { otvoriBazu, STORE_NAME, INTERLINEARNI_STORE, spremiUStorage } from '../
 import { dohvatiGeminiKluc } from '../../core/state.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 import { dohvatiGlosarIzIndexedDB, spremiGlosarUIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
-import { prikaziInterlinearniTekst } from './interlinear.ui.js';
+import { navigirajNa } from '../../core/router.js';
 
 function skratiZaPrompt(tekst, maxZnakova = 2000) {
   if (!tekst) return "";
@@ -332,7 +332,7 @@ export async function zapocniAnaliziranje(projekt) {
     });
 
     if (modal) modal.style.display = 'none';
-    await prikaziInterlinearniTekst(projekt.id);  
+    navigirajNa('translation-analytics/interlinear', { projektId: projekt.id });
 
   } catch (err) {
     console.error("Greška tijekom analize:", err);

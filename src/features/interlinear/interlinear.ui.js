@@ -1,33 +1,7 @@
 // Prikaz interlinearni tekst paralelnih stupaca i sinhroniziranog skrolanja
 
 import { otvoriBazu, INTERLINEARNI_STORE, STORE_NAME } from '../../core/db.js';
-import { prikaziStranicu } from '../../core/router.js';
-
-// Osigurava da je na razini CIJELE .page-section (ne samo unutarnjeg sadržaja)
-// vidljiva sekcija "Translation Analytics". Bez ovoga, ako se funkcija pozove
-// iz neke druge sekcije (npr. gumb "Tekstualna analiza" na Dashboardu), roditeljska
-// <section id="page-translation-analytics" class="page-section hidden"> ostaje
-// sakrivena (CSS: .page-section.hidden { display:none !important }), pa se
-// ispod nje popunjeni #interlinear-page/#analize-page nikad ne prikažu - korisnik
-// vidi prazan ekran jer je istovremeno prikaziStranicu() sakrio i sadržaj sekcije
-// s koje je akcija pokrenuta (npr. dashboard-page).
-function prikaziSekcijuAnalitikePrijevoda() {
-  document.querySelectorAll('.page-section').forEach(sec => {
-    sec.classList.add('hidden');
-    sec.style.setProperty('display', 'none', 'important');
-  });
-
-  const sekcija = document.getElementById('page-translation-analytics');
-  if (sekcija) {
-    sekcija.classList.remove('hidden');
-    sekcija.style.setProperty('display', 'block', 'important');
-  }
-
-  // Uskladi i isticanje u navigaciji, ako korisnik dođe ovamo mimo klika na nju
-  document.querySelectorAll('[data-target]').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-target') === 'translation-analytics');
-  });
-}
+import { navigirajNa } from '../../core/router.js';
 
 export async function prikaziInterlinearniTekst(projektId) {
  
@@ -37,17 +11,11 @@ export async function prikaziInterlinearniTekst(projektId) {
     return;
   }
   
-   window.trenutniProjektId = projektId;
+  window.trenutniProjektId = projektId;
 
-   // 1. Prikaži sekciju "Translation Analytics" (bez obzira s koje sekcije dolazimo),
-   //    zatim sakrij listu analiza i prikaži kontejner pojedinačne analize
-  prikaziSekcijuAnalitikePrijevoda();
-
-  const analizeListContainer = document.getElementById('analize-page');
-  const interlinearniContainer = document.getElementById('interlinear-page');
-
-  if (analizeListContainer) analizeListContainer.style.display = 'none';
-  if (interlinearniContainer) interlinearniContainer.style.display = 'block';
+  // Prikaz sekcije/view-a (page-translation-analytics + interlinear-page) je
+  // već odradio router PRIJE nego što je pozvao ovu funkciju (kao onEnter
+  // rute 'translation-analytics/interlinear') - ovdje se brinemo samo za podatke.
 
   // Ažuriraj button za glosar
   const btnGlosar = document.querySelector('button[onclick="otvoriModalGlosar(this)"]');
@@ -85,9 +53,6 @@ export async function prikaziInterlinearniTekst(projektId) {
 
   // Ako je id proslijeđen kao string
   const idKey = typeof projektId === 'string' && !isNaN(projektId) ? Number(projektId) : projektId;
-  
-  
-  prikaziStranicu('interlinear-page');
 
     rezultat.segmenti.forEach((seg, idx) => {
       const pIndex = idx + 1;
@@ -179,17 +144,9 @@ export function skociNaOdlomak(index) {
 }
 
 export async function prikaziSveAnalize() {
-  // 1. Prikaži sekciju "Translation Analytics", sakrij kontejner pojedinačne
-  //   analize, prikaži kontejner liste analiza
-  prikaziSekcijuAnalitikePrijevoda();
-
-  const interlinearContainer = document.getElementById('interlinear-page');
-  const analizeListContainer = document.getElementById('analize-page');
-
-  if (interlinearContainer) interlinearContainer.style.display = 'none';
-  if (analizeListContainer) analizeListContainer.style.display = 'block';
-
-  // 2. Učitaj podatke za listu
+  // Prikaz sekcije/view-a (page-translation-analytics + analize-page) je već
+  // odradio router prije poziva ove funkcije (onEnter rute
+  // 'translation-analytics') - ovdje samo učitavamo podatke za listu.
   await ucitajListuAnaliza();
 }
 
@@ -243,7 +200,7 @@ export async function ucitajListuAnaliza() {
 
       // Listener za otvaranje analize
       document.getElementById(`btn-otvori-analizu-${analiza.projektId}`)?.addEventListener('click', () => {
-        prikaziInterlinearniTekst(analiza.projektId);
+        navigirajNa('translation-analytics/interlinear', { projektId: analiza.projektId });
       });
       // Listener za brisanje analize
       document.getElementById(`btn-obrisi-analizu-${analiza.projektId}`)?.addEventListener('click', () => {

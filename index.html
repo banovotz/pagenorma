@@ -64,7 +64,7 @@
       <div class="grid-2">
         <div class="form-group">
           <label for="p-epub-file">Select source ePub</label>
-          <input type="file" id="p-epub-file" accept=".epub" onchange="azurirajePrikazImenaEpuba(this)">
+          <input type="file" id="p-epub-file" accept=".epub">
           <div id="p-epub-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">Nije odabrana datoteka  </div>
         </div>
 
@@ -73,13 +73,13 @@
           <input type="url" id="p-gdoc-url" placeholder="https://docs.google.com/document/d/...">
         </div>
       </div>
-      <!-- onclick="event.preventDefault(); event.stopPropagation(); povuciPodatkeIzIzvora(event); return false;" -->          class="btn-secondary" 
-     
+
       <!-- Fetch and Analyze Action Button -->
       <div class="form-group" style="margin-bottom: 15px;">
         <button 
           type="button" 
           id="btn-povuci-podatke" 
+          class="btn-secondary" 
           style="width: 100%; font-weight: bold; background: #e6f2f2; color: #008080; border: 1px solid #008080;">
         ⚡ Fetch Data from ePub & Doc
         </button>
@@ -148,7 +148,7 @@
 
       <div class="form-actions">
         <button type="submit">Save Project</button>
-        <button type="button" class="btn-secondary" onclick="toggleFormaProjekta(true)">Cancel</button>
+        <button type="button" class="btn-secondary">Cancel</button>
       </div>
     </form>
   </div>
@@ -176,12 +176,12 @@
         <label style="font-weight: bold; display: block; margin-bottom: 8px;">Deduction model:</label>
         
         <div style="margin-bottom: 8px;">
-          <input type="radio" id="model-obrt" name="modelDoprinosa" value="obrt" onchange="osvjeziPrikazFinancija()" checked>
+          <input type="radio" id="model-obrt" name="modelDoprinosa" value="obrt" checked>
           <label for="model-obrt">Sole proprietorship / Business (Fixed monthly contribution deductions)</label>
         </div>
         
         <div>
-          <input type="radio" id="model-postotak" name="modelDoprinosa" value="postotak" onchange="osvjeziPrikazFinancija()">
+          <input type="radio" id="model-postotak" name="modelDoprinosa" value="postotak">
           <label for="model-postotak">Percentage deduction per contract (Author contract / Freelance)</label>
         </div>
       </div>
@@ -269,7 +269,7 @@
 
     <div style="background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
       <label for="odabir-godine" style="font-weight: bold; color: #333;">Select year:</label>
-      <select id="odabir-godine" onchange="promijeniGodinuAnalitike()" style="padding: 8px 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer;">
+      <select id="odabir-godine" style="padding: 8px 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer;">
       </select>
     </div>
 
@@ -334,8 +334,7 @@
     <div style="flex: 1; display: flex; flex-direction: column;">
       <h3 style="color: #8e24aa; margin-bottom: 8px;">LLM Komentari  <button 
   type="button" 
-  class="btn-sync-small" 
-  onclick="otvoriModalGlosar(this)">
+  class="btn-sync-small">
   📖 Pogledaj glosar
 </button>
 </h3>
@@ -391,7 +390,7 @@
               <tr>
                 <th scope="col" style="width: 30%;">Izvorni termin</th>
                 <th scope="col" style="width: 30%;">Prevedeni termin</th>
-                <th scope="col" style="width: 30%"><button type="button" class="btn-sync-small" onclick="zatvoriModalGlosar()">❎ Zatvori</button></th>
+                <th scope="col" style="width: 30%"><button type="button" class="btn-sync-small">❎ Zatvori</button></th>
               </tr>
             </thead>
             <tbody id="glosar-modal-body">

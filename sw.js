@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mojih1500-v7';
+const CACHE_NAME = 'mojih1500-v8';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -8,7 +8,6 @@ const  ASSETS_TO_CACHE = [
   './public/icons/icon-512.png',
   './public/icons/apple-splash.png',
   './src/app.js',
-  './src/ui/navigation.js',
   './src/core/db.js',
   './src/core/router.js',
   './src/core/state.js',
