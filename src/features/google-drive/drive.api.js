@@ -1,80 +1,68 @@
-// Integracija i dohvaćanje dokumenata s Google Docsa / Drivea
+import { googleAuthenticatedFetch } from './drive.auth.js';
+
+function extractDocumentId(gdocUrl) {
+  let url;
+  try {
+    url = new URL(gdocUrl);
+  } catch {
+    throw new Error('Neispravan Google Docs URL.');
+  }
+
+  if (url.protocol !== 'https:' || !['docs.google.com', 'drive.google.com'].includes(url.hostname)) {
+    throw new Error('URL mora voditi na Google Docs dokument.');
+  }
+
+  const match = url.pathname.match(/\/document\/d\/([a-zA-Z0-9_-]+)/);
+  if (!match) throw new Error('Neispravan Google Docs URL.');
+  return match[1];
+}
+
+function extractText(content = []) {
+  return content.map(element => {
+    if (element.paragraph) {
+      return element.paragraph.elements
+        .map(item => item.textRun?.content || '')
+        .join('');
+    }
+    if (element.table) {
+      return element.table.tableRows
+        .flatMap(row => row.tableCells.flatMap(cell => extractText(cell.content)))
+        .join('');
+    }
+    if (element.tableOfContents) return extractText(element.tableOfContents.content);
+    return '';
+  }).join('');
+}
 
 export async function dohvatiCijeliTekstIzGDoca(gdocUrl) {
-  if (!gdocUrl || typeof gdocUrl !== 'string') return "";
+  if (!gdocUrl || typeof gdocUrl !== 'string') return '';
 
-  const match = gdocUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
-  if (!match || !match[1]) {
-    throw new Error("Nevažeći Google Docs URL format.");
-  }
-
-  const docId = match[1];
-  const exportUrl = `https://docs.google.com/document/d/${docId}/export?format=txt`;
-
-  try {
-    const response = await fetch(exportUrl);
-    if (!response.ok) {
-      throw new Error(`Nije moguće dohvatiti Google Doc (Status: ${response.status}). Provjerite je li pristup postavljen na 'Svatko s vezom' (Anyone with the link).`);
-    }
-    const tekst = await response.text();
-    return tekst;
-  } catch (err) {
-    console.error("Greška pri dohvaćanju Google Dokumenta:", err);
-    throw new Error(`Greška pri dohvaćanju Google Doc-a: ${err.message}`);
-  }
-}
-
-//  Funkcija za Sinkronizaciju (Sync) Google Doc-a
-export async function syncProjectDoc(projectId) {
-  const project = getProjectById(projectId); 
-  if (!project || !project.gdocUrl) {
-    alert("Ovaj projekt nema postavljen Google Docs URL.");
-    return;
-  }
-
-  try {
-    // 1. Ponovno brojanje iz Google Doc-a
-    const docData = await fetchGoogleDocCharCount(project.gdocUrl);
-
-    // 2. Ažuriranje podataka projekta
-    project.docCharCount = docData.docCharCount;
-    project.docPages = docData.docPages;
-    project.lastSyncedAt = new Date().toISOString(); // Obnavljanje datuma synca
-
-    // 3. Spremanje u lokalnu bazu / IndexedDB / LocalStorage
-    await saveProject(project);
-
-    // 4. Ponovno rendersiranje kartice
-    renderProjectCard(project);
-    alert(`Sinkronizirano! Novi broj slova u prijevodu: ${docData.docCharCount.toLocaleString()} (${docData.docPages} kartica).`);
-
-  } catch (err) {
-    alert("Sinkronizacija nije uspjela: " + err.message);
-  }
-}
-
-/**
- * Dohvaća broj znakova s razmacima iz javnog Google Doc-a.
- */
-export async function fetchGoogleDocCharCount(docUrl) {
-  const match = docUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
-  if (!match) {
-    throw new Error("Neispravan Google Docs URL.");
-  }
-
-  const docId = match[1];
-  const exportUrl = `https://docs.google.com/document/d/${docId}/export?format=txt`;
-
-  const response = await fetch(exportUrl);
+  const docId = extractDocumentId(gdocUrl);
+  const response = await googleAuthenticatedFetch(`https://docs.googleapis.com/v1/documents/${docId}`);
   if (!response.ok) {
-    throw new Error("Dokument nije dostupan. Provjerite je li podijeljen kao 'Svatko s poveznicom' (Anyone with the link).");
+    let errorDetails = null;
+    try {
+      errorDetails = await response.json();
+    } catch {
+      errorDetails = null;
+    }
+
+    if (response.status === 403) {
+      const reason = errorDetails?.error?.details?.find(detail => detail.reason)?.reason
+        || errorDetails?.error?.status;
+      if (reason === 'SERVICE_DISABLED' || reason === 'accessNotConfigured') {
+        throw new Error('Google Docs API nije omogućen za ovu aplikaciju. Omogućite Google Docs API u Google Cloud projektu koji koristi OAuth klijent.');
+      }
+      if (reason === 'PERMISSION_DENIED' || reason === 'insufficientPermissions') {
+        throw new Error('Prijavljeni Google račun nema pristup ovom dokumentu ili OAuth dozvola nije dovoljna. Odjavite se, prijavite račun koji vidi dokument i pokušajte ponovno.');
+      }
+      throw new Error('Google je odbio pristup dokumentu. Provjerite da je prijavljeni račun vlasnik dokumenta ili da mu je dokument podijeljen.');
+    }
+    throw new Error(`Nije moguće dohvatiti Google Doc (status: ${response.status}).`);
   }
 
-  const text = await response.text();
-  const charCount = text.length;
-
-  return {
-    docCharCount: charCount,
-    docPages: (charCount / 1800).toFixed(2)
-  };
+  const document = await response.json();
+  return extractText(document.body?.content);
 }
+
+export { extractDocumentId };

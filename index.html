@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
   <title>Mojih 1500 — Translation Pace & Metrics</title>
   <link rel="stylesheet" href="./src/styles/style.css">   
 
@@ -14,6 +15,8 @@
   <!-- External Libraries: Tesseract (OCR) and JSZip (ePub extraction) -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 
   <!-- iOS PWA Capabilities -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -73,7 +76,7 @@
           <input type="url" id="p-gdoc-url" placeholder="https://docs.google.com/document/d/...">
         </div>
       </div>
-
+      
       <!-- Fetch and Analyze Action Button -->
       <div class="form-group" style="margin-bottom: 15px;">
         <button 
@@ -229,7 +232,24 @@
 <button class="btn btn-primary" >Spremi postavke</button>
 
 </section>
-    <!-- SECTION 4: Backup & Restore -->
+    <!-- SECTION 4: Google Docs -->
+    <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
+      <h3 style="margin-top: 0; color: #333;">🔐 Private Google Docs</h3>
+      <p style="color: #666; font-size: 0.9em; margin-bottom: 0;">
+        Authenticate with the Google account that owns or can access the private documents.
+        Your access token is kept only for this browser session.
+      </p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
+        <button type="button" id="btn-google-authenticate" class="btn-primary" style="padding: 10px 16px; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+          🔐 Authenticate Google Drive
+        </button>
+        <button type="button" id="btn-google-signout" class="btn-secondary" style="padding: 10px 16px;">
+          Sign out
+        </button>
+      </div>
+      <p id="google-auth-status" role="status" style="margin: 10px 0 0; font-size: 0.9em;"></p>
+    </section>
+<!-- SECTION 5: Backup & Restore -->
     <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
       <h3 style="margin-top: 0; color: #333;">💾 Database Backup (Export & Import)</h3>
       <p style="color: #666; font-size: 0.9em; margin-bottom: 16px;">

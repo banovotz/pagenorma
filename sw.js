@@ -95,6 +95,21 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
+    // Application modules must be refreshed from the network so security fixes
+  // cannot remain hidden behind an older service-worker cache.
+  if (new URL(e.request.url).pathname.endsWith('.js')) {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       return cachedResponse || fetch(e.request);

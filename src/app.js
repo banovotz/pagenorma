@@ -19,9 +19,15 @@ import {
 // Analize / Interlinearni tekst
 import { prikaziSveAnalize, prikaziInterlinearniTekst } from './features/interlinear/interlinear.ui.js';
 
-// Postavke i Analitika
+// Postavke, Analitika i UI navigacija (prilagodite putanje prema vašoj strukturi mapa)
 import { ucitajAnalitiku, osvjeziPrikazFinancija, promijeniGodinuAnalitike } from './features/analytics/analytics.ui.js';
-import { ucitajPostavke, spremiGeminiKluc, spremiPostavke } from './features/settings/settings.ui.js';
+import {
+  ucitajPostavke,
+  spremiGeminiKluc,
+  spremiPostavke,
+  autentificirajGoogleDriveIzPostavki,
+  odjaviGoogleDriveIzPostavki
+} from './features/settings/settings.ui.js';
 
 window.azurirajePrikazImenaEpuba = azurirajePrikazImenaEpuba;
 
@@ -128,6 +134,8 @@ function postaviGlobalneEventListenere() {
   }
 
   // --- POSTAVKE (SETTINGS) ---
+  document.getElementById('btn-google-authenticate')?.addEventListener('click', autentificirajGoogleDriveIzPostavki);
+  document.getElementById('btn-google-signout')?.addEventListener('click', odjaviGoogleDriveIzPostavki);
   document.getElementById('model-obrt')?.addEventListener('change', osvjeziPrikazFinancija);
   document.getElementById('model-postotak')?.addEventListener('change', osvjeziPrikazFinancija);
 

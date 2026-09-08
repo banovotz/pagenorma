@@ -118,6 +118,7 @@ export async function ucitajDashboard() {
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button id="btn-unos-${p.id}" class="btn-primary" style="padding: 6px 12px; font-size: 0.85em; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">📝 Unos znakova</button>
               <button id="btn-edit-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">✏️ Edit</button>
+              <button id="btn-refresh-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; background: #f0f7f7; color: #008080; border: 1px solid #008080;">🔄 Refresh translation</button>
               <button id="btn-del-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; color: #c62828;">🗑️ Delete</button>
               <button id="btn-analiza-${p.id}" type="button" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; background: #f0f7f7; color: #008080; border: 1px solid #008080;">🧠 Tekstualna analiza</button>
             </div>
@@ -133,6 +134,7 @@ export async function ucitajDashboard() {
     projekti.forEach(p => {
       document.getElementById(`btn-unos-${p.id}`)?.addEventListener('click', () => rucniUnosZnakova(p.id, ucitajDashboard));
       document.getElementById(`btn-edit-${p.id}`)?.addEventListener('click', () => urediProjekt(p.id));
+      document.getElementById(`btn-refresh-${p.id}`)?.addEventListener('click', () => osvjeziPrijevodProjekta(p.id));
       document.getElementById(`btn-del-${p.id}`)?.addEventListener('click', () => obrisiProjekt(p.id));
       document.getElementById(`btn-analiza-${p.id}`)?.addEventListener('click', (e) => pokreniTekstualnuAnalizu(p.id, e));
     });
@@ -141,6 +143,27 @@ export async function ucitajDashboard() {
     console.error("Error loading dashboard:", err);
   }
 }
+
+export async function osvjeziPrijevodProjekta(id) {
+  const projekt = await dohvatiProjektPoId(id);
+  if (!projekt?.gdocUrl) {
+    alert('Ovaj projekt nema postavljen Google Docs URL.');
+    return;
+  }
+
+  try {
+    const translation = await dohvatiCijeliTekstIzGDoca(projekt.gdocUrl);
+    projekt.tekstPrijevoda = translation;
+    projekt.slovaPrijevod = translation.length;
+    projekt.lastSynced = new Date().toISOString();
+    await spremiUStorage(projekt);
+    await ucitajDashboard();
+  } catch (error) {
+    console.error('Greška pri osvježavanju prijevoda:', error);
+    alert(`Osvježavanje prijevoda nije uspjelo: ${error.message}`);
+  }
+}
+
 
 export async function spremiProjektForma(event) {
   if (event) event.preventDefault();

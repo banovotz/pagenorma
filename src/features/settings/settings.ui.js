@@ -6,6 +6,12 @@ import {
   osvjeziPrikazFinancija 
 } from '../analytics/analytics.ui.js';
 
+import {
+  forceGoogleDriveAuthentication,
+  odjaviGDrive
+} from '../google-drive/drive.auth.js';
+
+
 /**
  * Pomoćna funkcija za dohvaćanje trenutno odabranih postavki iz forme.
  */
@@ -81,4 +87,36 @@ export function spremiPostavke() {
   localStorage.setItem(SETTINGS_KEY, JSON.stringify(postavke));
   alert('Settings saved successfully!');
 }
+
+export async function autentificirajGoogleDriveIzPostavki() {
+  const status = document.getElementById('google-auth-status');
+  if (status) {
+    status.textContent = 'Opening Google authentication...';
+    status.style.color = '#666';
+  }
+
+  try {
+    await forceGoogleDriveAuthentication();
+    if (status) {
+      status.textContent = 'Google Drive authenticated. You can now import private Docs.';
+      status.style.color = '#2e7d32';
+    }
+  } catch (error) {
+    console.error('Google Drive authentication failed:', error);
+    if (status) {
+      status.textContent = error.message;
+      status.style.color = '#c62828';
+    }
+  }
+}
+
+export function odjaviGoogleDriveIzPostavki() {
+  odjaviGDrive();
+  const status = document.getElementById('google-auth-status');
+  if (status) {
+    status.textContent = 'Google Drive authentication removed.';
+    status.style.color = '#666';
+  }
+}
+
 
