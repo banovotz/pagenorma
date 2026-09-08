@@ -1,5 +1,6 @@
 // UI komponente i prikazi glosara
-import { dohvatiGlosarIzIndexedDB } from './glossary.js';
+import { dohvatiGlosarIzIndexedDB, dohvatiAnalizuIzIndexedDB } from './glossary.js';
+import { findLocalMatches } from '../../services/concordanceService.js';
 
 export async function prikaziGlosarZaProjekt(projektId, containerId) {
   const container = document.getElementById(containerId);
@@ -75,6 +76,7 @@ export async function otvoriModalGlosar(targetParam) {
 
   try {
     let rawGlosar = window.trenutniGlosar || window.glosar;
+    const analiza = await dohvatiAnalizuIzIndexedDB(projektId);
 
     // Ako nemamo glosar u memoriji, dohvaćamo ga iz IndexedDB baze za projektId
     if (!rawGlosar || (Array.isArray(rawGlosar) && rawGlosar.length === 0) || Object.keys(rawGlosar).length === 0) {
@@ -114,21 +116,31 @@ export async function otvoriModalGlosar(targetParam) {
     porukaPrazno.style.display = 'none';
     tablica.style.display = 'table';
 
+    const sourceParagraphs = analiza?.sourceParagraphs || analiza?.odlomciIzvor ||
+      (analiza?.segmenti || []).map(segment => segment.izvor || '');
+    const targetParagraphs = analiza?.targetParagraphs || analiza?.odlomciPrijevod ||
+      (analiza?.segmenti || []).map(segment => segment.prijevod || '');
+    const contextCache = new Map();
+
     // POPUNJAVANJE REDOVA TABLICE:
-    podaciZaPrikaz.forEach((stavka) => {
+    podaciZaPrikaz.forEach((stavka, index) => {
       let izvorTekst = '';
       let prijevodTekst = '';
+      let termId = `term-${index}`;
 
       if (Array.isArray(stavka)) {
         izvorTekst = stavka[0];
         prijevodTekst = stavka[1];
       } else if (typeof stavka === 'object' && stavka !== null) {
+        termId = String(stavka.id || termId);
         izvorTekst = stavka.source_term || stavka.izvor || stavka.source || stavka.term || stavka.termin || stavka.original || '';
         prijevodTekst = stavka.primary_translation || stavka.prijevod || stavka.target || stavka.translation || stavka.definition || '';
       }
 
       if (izvorTekst || prijevodTekst) {
         const tr = document.createElement('tr');
+        tr.className = 'glossary-term-row';
+        tr.dataset.termId = termId;
         
         const tdIzvor = document.createElement('td');
         tdIzvor.className = 'fw-bold';
@@ -141,6 +153,47 @@ export async function otvoriModalGlosar(targetParam) {
 
         const tdAkcija = document.createElement('td');
         tdAkcija.style.padding = '8px';
+        const contexts = findLocalMatches(
+          izvorTekst,
+          prijevodTekst,
+          sourceParagraphs,
+          targetParagraphs
+        ).slice(0, 5);
+        contextCache.set(termId, contexts);
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'glossary-context-toggle';
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = `🔍 ${contexts.length} ${contexts.length === 1 ? 'kontekst' : 'konteksta'}`;
+        toggle.addEventListener('click', () => {
+          const existing = tr.nextElementSibling?.dataset.contextFor === termId
+            ? tr.nextElementSibling
+            : null;
+          if (existing) {
+            existing.remove();
+            toggle.setAttribute('aria-expanded', 'false');
+            return;
+          }
+
+          const contextRow = document.createElement('tr');
+          contextRow.dataset.contextFor = termId;
+          const contextCell = document.createElement('td');
+          contextCell.colSpan = 3;
+          contextCell.className = 'glossary-context-cell';
+          const items = contextCache.get(termId) || [];
+          contextCell.innerHTML = items.length
+            ? `<div class="glossary-context-list">${items.map(item => `
+                <article class="glossary-context-item">
+                  <span class="glossary-context-index">#${item.paragraphIndex + 1}</span>
+                  <div><strong>Izvor</strong><p>${item.sourceSnippet}</p></div>
+                  <div><strong>Prijevod</strong><p>${item.targetSnippet}</p></div>
+                </article>`).join('')}</div>`
+            : '<p class="text-muted glossary-context-empty">Nema lokalnih podudaranja u poravnatim odlomcima.</p>';
+          contextRow.appendChild(contextCell);
+          tr.insertAdjacentElement('afterend', contextRow);
+          toggle.setAttribute('aria-expanded', 'true');
+        });
+        tdAkcija.appendChild(toggle);
 
         tr.appendChild(tdIzvor);
         tr.appendChild(tdPrijevod);

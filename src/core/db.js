@@ -11,7 +11,7 @@ if (navigator.storage && navigator.storage.persist) {
 }
 
 export const DB_NAME = 'Mojih1500DB';
-export const DB_VERSION = 7;
+export const DB_VERSION = 8;
 export const STORE_NAME = 'projekti';
 export const UNOSI_STORE = 'unosi';
 export const INTERLINEARNI_STORE = 'interlinearnitekst';

@@ -6,6 +6,7 @@ import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 import { dohvatiGlosarIzIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
 import { navigirajNa } from '../../core/router.js';
 import { dohvatiCijeliTekstIzPdfa, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
+import { createParagraphAligner } from '../../utils/textAligner.js';
 
 function skratiZaPrompt(tekst, maxZnakova = 2000) {
   if (!tekst) return "";
@@ -289,6 +290,7 @@ export async function zapocniAnaliziranje(projekt) {
 
     const procisceniIzvor = normaliziraniSegmenti.map(s => s.izvor).join("\n\n");
     const procisceniPrijevod = normaliziraniSegmenti.map(s => s.prijevod).join("\n\n");
+    const paragraphAligner = createParagraphAligner(procisceniIzvor, procisceniPrijevod);
 
     let glosar = await dohvatiGlosarIzIndexedDB(projekt.id);
     const glosarStavke = glosar && typeof glosar === 'object'
@@ -339,7 +341,9 @@ export async function zapocniAnaliziranje(projekt) {
       odlomciIzvor: normaliziraniSegmenti.map(s => s.izvor),
       odlomciPrijevod: normaliziraniSegmenti.map(s => s.prijevod),
       komentari: komentari,
-      glosar: glosar
+      glosar: glosar,
+      sourceParagraphs: paragraphAligner.source,
+      targetParagraphs: paragraphAligner.target
     };
 
     const db = await otvoriBazu();

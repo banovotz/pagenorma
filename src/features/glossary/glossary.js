@@ -15,6 +15,19 @@ export async function dohvatiGlosarIzIndexedDB(projektId = null) {
   });
 }
 
+export async function dohvatiAnalizuIzIndexedDB(projektId = null) {
+  const trenutniId = projektId ?? window.trenutniAnalizaId ?? window.trenutniProjektId;
+  if (trenutniId == null) return null;
+
+  const db = await otvoriBazu();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(INTERLINEARNI_STORE, 'readonly');
+    const request = tx.objectStore(INTERLINEARNI_STORE).get(trenutniId);
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => reject(request.error);
+  });
+}
+
 
 export async function stvoriGlosar(izvorniTekst, prevedeniTekst, apiKey) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
