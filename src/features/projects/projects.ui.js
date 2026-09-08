@@ -195,6 +195,7 @@ export async function spremiProjektForma(event) {
     const slovaPrijevod = slovaDocInput ? (parseInt(slovaDocInput.value, 10) || 0) : 0;
     
     const tempGdocText = form?.dataset?.tempGdocText || null;
+    const tempEpubText = form?.dataset?.tempEpubText || null;
 
     let epubNaziv = postojeciProjekt ? postojeciProjekt.epubNazivDatoteke || null : null;
 
@@ -202,7 +203,7 @@ export async function spremiProjektForma(event) {
     // sirovi ePub Blob. Blob u IndexedDB nepotrebno napuhuje bazu i ovisi o
     // strukturiranom kloniranju binarnih objekata; za analizu nam treba isključivo
     // tekst, pa ga izvlačimo odmah pri spremanju i spremamo kao obični string.
-    let tekstIzvora = postojeciProjekt ? postojeciProjekt.tekstIzvora || null : null;
+    let tekstIzvora = tempEpubText || (postojeciProjekt ? postojeciProjekt.tekstIzvora || null : null);
 
     if (epubInput && epubInput.files && epubInput.files[0]) {
       const selectedFile = epubInput.files[0];
@@ -226,6 +227,7 @@ export async function spremiProjektForma(event) {
     };
 
     const noviProjekt = {
+      ...(postojeciProjekt || {}),
       id: id,
       naslov: document.getElementById('p-naslov')?.value.trim() || "Bez naslova",
       klijent: document.getElementById('p-klijent')?.value.trim() || '',
@@ -238,8 +240,8 @@ export async function spremiProjektForma(event) {
       ciljDnevno: citajBroj('p-cilj-dnevno', true),
       radVikendom: document.getElementById('p-vikend')?.value || 'ne',
       naslovnicaBase64: document.getElementById('p-naslovnica-base64')?.value || null,
-      gdocUrl: document.getElementById('p-gdoc-url')?.value.trim() || "",
-      lastSynced: new Date().toISOString(),
+      gdocUrl: document.getElementById('p-gdoc-url')?.value.trim() || postojeciProjekt?.gdocUrl || "",
+      lastSynced: postojeciProjekt?.lastSynced || new Date().toISOString(),
       epubNazivDatoteke: epubNaziv,
       tekstIzvora: tekstIzvora,
       tekstPrijevoda: tempGdocText || (postojeciProjekt ? postojeciProjekt.tekstPrijevoda : null)
@@ -251,7 +253,10 @@ export async function spremiProjektForma(event) {
     await spremiUStorage(noviProjekt);
     console.log("Projekt uspješno upisan u IndexedDB!");
 
-    if (form) delete form.dataset.tempGdocText;
+    if (form) {
+      delete form.dataset.tempGdocText;
+      delete form.dataset.tempEpubText;
+    }
 
     // 4. Zatvaranje forme i osvježavanje prikaza
     toggleFormaProjekta(true);
@@ -267,21 +272,27 @@ export async function urediProjekt(id) {
   const p = await dohvatiProjektPoId(id);
   if (!p) return;
 
+  const form = document.getElementById('projekt-forma');
+  if (form) {
+    delete form.dataset.tempGdocText;
+    delete form.dataset.tempEpubText;
+  }
+
   document.getElementById('p-id').value = p.id;
   document.getElementById('p-naslov').value = p.naslov || '';
   document.getElementById('p-klijent').value = p.klijent || '';
-  document.getElementById('p-ukupno').value = p.ukupnoKartica || '';
-  document.getElementById('p-honorar').value = p.honorarPoKartici || '';
+  document.getElementById('p-ukupno').value = p.ukupnoKartica ?? '';
+  document.getElementById('p-honorar').value = p.honorarPoKartici ?? '';
   document.getElementById('p-start').value = p.datumPocetka || '';
   document.getElementById('p-rok').value = p.datumRoka || '';
-  document.getElementById('p-cilj-dnevno').value = p.ciljDnevno || '';
+  document.getElementById('p-cilj-dnevno').value = p.ciljDnevno ?? '';
   document.getElementById('p-vikend').value = p.radVikendom || 'ne';
   
   document.getElementById('p-naslovnica-base64').value = p.naslovnicaBase64 || '';
   
   // POPRAVLJENO: p.slovaOriginal umjesto epubData.charCount
-  document.getElementById('p-slova-original').value = p.slovaOriginal || 0;
-  document.getElementById('p-slova-prijevod').value = p.slovaPrijevod || 0;
+  document.getElementById('p-slova-original').value = p.slovaOriginal ?? 0;
+  document.getElementById('p-slova-prijevod').value = p.slovaPrijevod ?? 0;
 
   const epubInput = document.getElementById('p-epub-file');
   if (epubInput) epubInput.value = '';
@@ -313,6 +324,8 @@ export async function urediProjekt(id) {
 
   const formaNaslov = document.getElementById('forma-naslov');
   if (formaNaslov) formaNaslov.innerText = 'Edit Project';
+  const btnNovi = document.getElementById('btn-novi-projekt');
+  if (btnNovi) btnNovi.innerText = '✕ Close Form';
   
   const formaContainer = document.getElementById('forma-projekt-container');
   if (formaContainer) {
@@ -367,6 +380,12 @@ export function ocistiFormuProjekta() {
   if (statusMsg) {
     statusMsg.innerText = '';
     statusMsg.style.display = 'none';
+  }
+
+  const epubNameLabel = document.getElementById('p-epub-file-name');
+  if (epubNameLabel) {
+    epubNameLabel.innerText = 'Nije odabrana datoteka';
+    epubNameLabel.style.color = '#555';
   }
 
   const imgCover = document.getElementById('img-cover-preview');
@@ -521,6 +540,10 @@ export async function povuciPodatkeIzIzvora(e) {
         const inputCover = document.getElementById('p-naslovnica-base64');
         if (inputCover) inputCover.value = epubData.coverDataUrl;
       }
+
+      const epubText = await dohvatiCijeliTekstIzEpuba(file);
+      const formElement = document.getElementById('projekt-forma');
+      if (formElement) formElement.dataset.tempEpubText = epubText;
     }
 
     // 2. Parsiranje Google Docsa
@@ -543,7 +566,8 @@ export async function povuciPodatkeIzIzvora(e) {
       elUkupnoKartica.value = (charCountOrig / 1800).toFixed(2);
     }
 
-    // Privremeno spremamo čisti tekst prijevoda na element forme kako bi ga spremiProjektForma preuzela
+    // Privremeno spremamo dohvaćene tekstove kako bi ih spremiProjektForma
+    // preuzela bez oslanjanja na kasnije čitanje file inputa.
     const formElement = document.getElementById('projekt-forma');
     if (formElement && dohvaceniTekstGDoca) {
       formElement.dataset.tempGdocText = dohvaceniTekstGDoca;
