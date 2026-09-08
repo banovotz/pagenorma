@@ -68,7 +68,7 @@
       <input type="hidden" id="p-slova-prijevod">
       <input type="hidden" id="p-last-synced">
 
-      <!-- Data Sources: ePub/PDF & Google Doc -->
+      <!-- Data Sources: ePub/PDF & translation document -->
       <div class="grid-2">
         <div class="form-group">
           <label for="p-epub-file">Select source ePub or PDF</label>
@@ -77,8 +77,22 @@
         </div>
 
         <div class="form-group">
-          <label for="p-gdoc-url">Translation Google Docs URL</label>
-          <input type="url" id="p-gdoc-url" placeholder="https://docs.google.com/document/d/...">
+          <div class="unos-tabs" role="tablist" aria-label="Translation source">
+            <button type="button" class="btn-tab active" id="tab-gdoc" role="tab" aria-selected="true">Translation Google Docs URL</button>
+            <button type="button" class="btn-tab" id="tab-document-file" role="tab" aria-selected="false">Document file (docx/rtf/odt/txt)</button>
+          </div>
+          <div id="translation-gdoc-panel">
+            <label for="p-gdoc-url">Translation Google Docs URL</label>
+            <input type="url" id="p-gdoc-url" placeholder="https://docs.google.com/document/d/...">
+          </div>
+          <div id="translation-file-panel" class="sakriveno">
+            <label for="p-translation-file">Document file (docx/rtf/odt/txt)</label>
+            <input type="file" id="p-translation-file" accept=".docx,.rtf,.odt,.txt,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,text/plain">
+            <button type="button" id="btn-choose-translation-file" class="btn-secondary" style="margin-top: 8px;">Choose file with change tracking</button>
+            <div id="p-translation-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">Nije odabrana datoteka</div>
+            <small>Za praćenje promjena na originalnoj putanji koristite gumb za odabir datoteke.</small>
+          </div>
+          <input type="hidden" id="p-translation-source-mode" value="gdoc">
         </div>
       </div>
       
@@ -89,7 +103,7 @@
           id="btn-povuci-podatke" 
           class="btn-secondary" 
           style="width: 100%; font-weight: bold; background: #e6f2f2; color: #008080; border: 1px solid #008080;">
-        ⚡         Fetch Data from ePub/PDF & Doc
+        ⚡         Fetch Data from ePub/PDF & Translation
         </button>
         <small id="fetch-status-msg" class="text-muted" style="display:none; color: #008080; font-weight: bold; margin-top: 5px; text-align: center; display: block;"></small>
       </div>
@@ -100,7 +114,7 @@
           <img id="img-cover-preview" src="" alt="" style="display:none; width: 45px; height: 65px; object-fit: cover; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
           <div>
             <div><strong>Source (ePub/PDF):</strong> <span id="lbl-slova-orig">0</span> characters (~<span id="lbl-kartice-orig">0</span> standard pages)</div>
-            <div><strong>Translation (GDoc):</strong> <span id="lbl-slova-doc">0</span> characters (~<span id="lbl-kartice-doc">0</span> standard pages)</div>
+            <div><strong>Translation:</strong> <span id="lbl-slova-doc">0</span> characters (~<span id="lbl-kartice-doc">0</span> standard pages)</div>
           </div>
         </div>
       </div>

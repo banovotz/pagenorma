@@ -126,11 +126,72 @@ function postaviGlobalneEventListenere() {
     epubInput.addEventListener('change', (e) => azurirajePrikazImenaEpuba(e.target));
   }
 
+  document.getElementById('tab-gdoc')?.addEventListener('click', () => prebaciIzvorPrijevoda('gdoc'));
+  document.getElementById('tab-document-file')?.addEventListener('click', () => prebaciIzvorPrijevoda('file'));
+  document.getElementById('p-translation-file')?.addEventListener('change', (e) => {
+    const file = e.target.files?.[0];
+    postaviDokumentPrijevoda(file);
+    window.dispatchEvent(new CustomEvent('translation-file-selected', { detail: { file, handle: null } }));
+  });
+  document.getElementById('btn-choose-translation-file')?.addEventListener('click', odaberiDokumentPrijevoda);
   document.getElementById('btn-povuci-podatke')?.addEventListener('click', povuciPodatkeIzIzvora);
 
   const btnCancelProjekt = document.getElementById('btn-cancel-projekt');
   if (btnCancelProjekt) {
     btnCancelProjekt.addEventListener('click', () => toggleFormaProjekta(true));
+  }
+
+  function prebaciIzvorPrijevoda(source) {
+    const isFile = source === 'file';
+    document.getElementById('p-translation-source-mode').value = source;
+    document.getElementById('translation-gdoc-panel').classList.toggle('sakriveno', isFile);
+    document.getElementById('translation-file-panel').classList.toggle('sakriveno', !isFile);
+    document.getElementById('tab-gdoc').classList.toggle('active', !isFile);
+    document.getElementById('tab-document-file').classList.toggle('active', isFile);
+    document.getElementById('tab-gdoc').setAttribute('aria-selected', String(!isFile));
+    document.getElementById('tab-document-file').setAttribute('aria-selected', String(isFile));
+  }
+
+  function postaviDokumentPrijevoda(file) {
+    if (!file) return;
+    prebaciIzvorPrijevoda('file');
+    const label = document.getElementById('p-translation-file-name');
+    if (label) {
+      label.textContent = `📄 Odabrana datoteka: ${file.name}`;
+      label.style.color = '#1976d2';
+    }
+  }
+
+  async function odaberiDokumentPrijevoda() {
+    if (!window.showOpenFilePicker) {
+      document.getElementById('p-translation-file')?.click();
+      return;
+    }
+    try {
+      const [handle] = await window.showOpenFilePicker({
+        multiple: false,
+        types: [{ description: 'Translation document', accept: {
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+          'application/rtf': ['.rtf'],
+          'application/vnd.oasis.opendocument.text': ['.odt'],
+          'text/plain': ['.txt']
+        } }]
+      });
+      const file = await handle.getFile();
+      const input = document.getElementById('p-translation-file');
+      if (input) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        input.files = dataTransfer.files;
+      }
+      postaviDokumentPrijevoda(file);
+      window.dispatchEvent(new CustomEvent('translation-file-selected', { detail: { file, handle } }));
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error('Odabir dokumenta nije uspio:', error);
+        alert(`Odabir dokumenta nije uspio: ${error.message}`);
+      }
+    }
   }
 
   // --- POSTAVKE (SETTINGS) ---

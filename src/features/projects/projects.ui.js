@@ -7,6 +7,27 @@ import { parseEpubFile } from '../epub-parser/epub.parser.js';
 import { dohvatiCijeliTekstIzEpuba } from '../interlinear/interlinear.js';
 import { parsePdfFile, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
+import { parseDocumentFile, jePodrzanaDokumentDatoteka } from '../document-parser/document.parser.js';
+
+let pendingTranslationFileHandle = null;
+if (typeof window !== 'undefined') {
+  window.addEventListener('translation-file-selected', event => {
+    pendingTranslationFileHandle = event.detail?.handle || null;
+  });
+}
+
+async function dohvatiDatotekuPrijevoda(projekt, selectedFile) {
+  if (selectedFile) return selectedFile;
+  if (pendingTranslationFileHandle) return pendingTranslationFileHandle.getFile();
+  if (projekt?.translationFileHandle) {
+    try {
+      return await projekt.translationFileHandle.getFile();
+    } catch (error) {
+      throw new Error('Dokument više nije na izvornoj putanji. Ponovno uploadajte dokument prije nastavka.');
+    }
+  }
+  return projekt?.translationFile || null;
+}
 export async function ucitajDashboard() {
   const dashboardDiv = document.getElementById('dashboard-page');
   if (!dashboardDiv) return;
@@ -147,15 +168,24 @@ export async function ucitajDashboard() {
 
 export async function osvjeziPrijevodProjekta(id) {
   const projekt = await dohvatiProjektPoId(id);
-  if (!projekt?.gdocUrl) {
-    alert('Ovaj projekt nema postavljen Google Docs URL.');
+  const sourceMode = projekt?.translationSource || (projekt?.gdocUrl ? 'gdoc' : 'file');
+  if (!projekt || (sourceMode === 'gdoc' && !projekt.gdocUrl)) {
+    alert('Ovaj projekt nema postavljen izvor prijevoda.');
     return;
   }
 
   try {
-    const translation = await dohvatiCijeliTekstIzGDoca(projekt.gdocUrl);
+    const file = sourceMode === 'file' ? await dohvatiDatotekuPrijevoda(projekt) : null;
+    const translation = sourceMode === 'file'
+      ? await parseDocumentFile(file)
+      : await dohvatiCijeliTekstIzGDoca(projekt.gdocUrl);
     projekt.tekstPrijevoda = translation;
     projekt.slovaPrijevod = translation.length;
+    if (file) {
+      projekt.translationFileName = file.name;
+      projekt.translationFileModified = file.lastModified;
+      projekt.translationFileSize = file.size;
+    }
     projekt.lastSynced = new Date().toISOString();
     await spremiUStorage(projekt);
     await ucitajDashboard();
@@ -188,6 +218,7 @@ export async function spremiProjektForma(event) {
 
     const postojeciProjekt = await dohvatiProjektPoId(id);
     const epubInput = document.getElementById('p-epub-file');
+    const translationFileInput = document.getElementById('p-translation-file');
 
     const slovaOrigInput = document.getElementById('p-slova-original');
     const slovaDocInput = document.getElementById('p-slova-prijevod');
@@ -197,6 +228,10 @@ export async function spremiProjektForma(event) {
     
     const tempGdocText = form?.dataset?.tempGdocText || null;
     const tempEpubText = form?.dataset?.tempEpubText || null;
+    const translationSource = document.getElementById('p-translation-source-mode')?.value || 'gdoc';
+    const selectedTranslationFile = translationSource === 'file' && translationFileInput?.files?.[0]
+      ? translationFileInput.files[0]
+      : null;
 
     let epubNaziv = postojeciProjekt ? postojeciProjekt.epubNazivDatoteke || postojeciProjekt.izvorNazivDatoteke || null : null;
 
@@ -205,6 +240,8 @@ export async function spremiProjektForma(event) {
     // strukturiranom kloniranju binarnih objekata; za analizu nam treba isključivo
     // tekst, pa ga izvlačimo odmah pri spremanju i spremamo kao obični string.
     let tekstIzvora = tempEpubText || (postojeciProjekt ? postojeciProjekt.tekstIzvora || null : null);
+    let translationFile = postojeciProjekt?.translationFile || null;
+    let translationFileHandle = postojeciProjekt?.translationFileHandle || null;
 
     if (epubInput && epubInput.files && epubInput.files[0]) {
       const selectedFile = epubInput.files[0];
@@ -217,9 +254,22 @@ export async function spremiProjektForma(event) {
           if (coverInput && !coverInput.value && pdfData.coverDataUrl) {
             coverInput.value = pdfData.coverDataUrl;
           }
+
           const titleInput = document.getElementById('p-naslov');
           if (titleInput && !titleInput.value && pdfData.title) {
             titleInput.value = pdfData.title;
+          }
+
+          if (translationSource === 'file') {
+            const file = await dohvatiDatotekuPrijevoda(postojeciProjekt, selectedTranslationFile);
+            if (!jePodrzanaDokumentDatoteka(file)) {
+              throw new Error('Podržani formati su DOCX, RTF, ODT i TXT.');
+            }
+            translationFile = file;
+            translationFileHandle = selectedTranslationFile ? pendingTranslationFileHandle : translationFileHandle;
+            const translationText = await parseDocumentFile(file);
+            if (!translationText.trim()) throw new Error('Odabrani dokument ne sadrži tekst.');
+            if (form) form.dataset.tempGdocText = translationText;
           }
         } else {
           tekstIzvora = await dohvatiCijeliTekstIzEpuba(selectedFile);
@@ -254,7 +304,15 @@ export async function spremiProjektForma(event) {
       ciljDnevno: citajBroj('p-cilj-dnevno', true),
       radVikendom: document.getElementById('p-vikend')?.value || 'ne',
       naslovnicaBase64: document.getElementById('p-naslovnica-base64')?.value || null,
-      gdocUrl: document.getElementById('p-gdoc-url')?.value.trim() || postojeciProjekt?.gdocUrl || "",
+      gdocUrl: translationSource === 'gdoc'
+        ? document.getElementById('p-gdoc-url')?.value.trim() || postojeciProjekt?.gdocUrl || ""
+        : "",
+      translationSource,
+      translationFile,
+      translationFileHandle,
+      translationFileName: translationFile?.name || postojeciProjekt?.translationFileName || null,
+      translationFileModified: translationFile?.lastModified || postojeciProjekt?.translationFileModified || null,
+      translationFileSize: translationFile?.size || postojeciProjekt?.translationFileSize || null,
       lastSynced: postojeciProjekt?.lastSynced || new Date().toISOString(),
       epubNazivDatoteke: epubNaziv,
       izvorNazivDatoteke: epubNaziv,
@@ -327,6 +385,21 @@ export async function urediProjekt(id) {
   if (document.getElementById('p-gdoc-url')) {
     document.getElementById('p-gdoc-url').value = p.gdocUrl || '';
   }
+  document.getElementById('p-translation-source-mode').value = p.translationSource || (p.gdocUrl ? 'gdoc' : 'file');
+  const translationFileInput = document.getElementById('p-translation-file');
+  if (translationFileInput) translationFileInput.value = '';
+  const translationFileLabel = document.getElementById('p-translation-file-name');
+  if (translationFileLabel) {
+    translationFileLabel.textContent = p.translationFileName
+      ? `📄 Spremljena datoteka: ${p.translationFileName}`
+      : 'Nije odabrana datoteka';
+    translationFileLabel.style.color = p.translationFileName ? '#2e7d32' : '#555';
+  }
+  pendingTranslationFileHandle = p.translationFileHandle || null;
+  document.getElementById('tab-gdoc')?.click();
+  if ((p.translationSource || (p.gdocUrl ? 'gdoc' : 'file')) === 'file') {
+    document.getElementById('tab-document-file')?.click();
+  }
   document.getElementById('p-last-synced').value = p.lastSynced || '';
 
   const imgPreview = document.getElementById('img-cover-preview');
@@ -380,7 +453,7 @@ export function ocistiFormuProjekta() {
   const form = document.getElementById('projekt-forma');
   if (form) form.reset();
 
-  const fields = ['p-id', 'p-gdoc-url', 'p-naslovnica-base64', 'p-last-synced'];
+  const fields = ['p-id', 'p-gdoc-url', 'p-naslovnica-base64', 'p-last-synced', 'p-translation-source-mode'];
   fields.forEach(f => {
     const el = document.getElementById(f);
     if (el) el.value = '';
@@ -402,6 +475,16 @@ export function ocistiFormuProjekta() {
     epubNameLabel.innerText = 'Nije odabrana datoteka';
     epubNameLabel.style.color = '#555';
   }
+
+  const translationFileLabel = document.getElementById('p-translation-file-name');
+  if (translationFileLabel) {
+    translationFileLabel.innerText = 'Nije odabrana datoteka';
+    translationFileLabel.style.color = '#555';
+  }
+  const translationFileInput = document.getElementById('p-translation-file');
+  if (translationFileInput) translationFileInput.value = '';
+  pendingTranslationFileHandle = null;
+  document.getElementById('tab-gdoc')?.click();
 
   const imgCover = document.getElementById('img-cover-preview');
   if (imgCover) {
@@ -515,13 +598,16 @@ export async function povuciPodatkeIzIzvora(e) {
 
   const epubInput = document.getElementById('p-epub-file');
   const gdocInput = document.getElementById('p-gdoc-url');
+  const translationFileInput = document.getElementById('p-translation-file');
+  const sourceMode = document.getElementById('p-translation-source-mode')?.value || 'gdoc';
   const statusMsg = document.getElementById('fetch-status-msg');
 
   const file = epubInput?.files[0];
   const gdocUrl = gdocInput?.value.trim();
+  const selectedTranslationFile = translationFileInput?.files?.[0] || null;
 
-  if (!file && !gdocUrl) {
-    alert("Molimo odaberite ePub/PDF datoteku ili unesite Google Docs URL.");
+  if (!file && !gdocUrl && !(sourceMode === 'file' && selectedTranslationFile)) {
+    alert("Molimo odaberite ePub/PDF datoteku i izvor prijevoda.");
     return false;
   }
 
@@ -567,8 +653,20 @@ export async function povuciPodatkeIzIzvora(e) {
       if (formElement) formElement.dataset.tempEpubText = epubText;
     }
 
-    // 2. Parsiranje Google Docsa
-    if (gdocUrl) {
+    // 2. Parsiranje Google Docsa ili lokalnog dokumenta
+    if (sourceMode === 'file') {
+      const projectId = document.getElementById('p-id')?.value;
+      const existingProject = projectId ? await dohvatiProjektPoId(projectId) : null;
+      const translationFile = await dohvatiDatotekuPrijevoda(existingProject, selectedTranslationFile);
+      if (!jePodrzanaDokumentDatoteka(translationFile)) {
+        throw new Error('Podržani formati su DOCX, RTF, ODT i TXT.');
+      }
+      dohvaceniTekstGDoca = await parseDocumentFile(translationFile);
+      const formElement = document.getElementById('projekt-forma');
+      if (formElement) formElement.dataset.tempTranslationFile = 'selected';
+      pendingTranslationFileHandle = pendingTranslationFileHandle || null;
+      charCountDoc = dohvaceniTekstGDoca.length;
+    } else if (gdocUrl) {
       dohvaceniTekstGDoca = await dohvatiCijeliTekstIzGDoca(gdocUrl);
       if (dohvaceniTekstGDoca && typeof dohvaceniTekstGDoca === 'string') {
         charCountDoc = dohvaceniTekstGDoca.length;
@@ -582,6 +680,14 @@ export async function povuciPodatkeIzIzvora(e) {
 
     if (elSlovaOrig) elSlovaOrig.value = charCountOrig;
     if (elSlovaDoc) elSlovaDoc.value = charCountDoc;
+    const elKarticeOrig = document.getElementById('lbl-kartice-orig');
+    const elKarticeDoc = document.getElementById('lbl-kartice-doc');
+    const elLblSlovaOrig = document.getElementById('lbl-slova-orig');
+    const elLblSlovaDoc = document.getElementById('lbl-slova-doc');
+    if (elLblSlovaOrig) elLblSlovaOrig.textContent = charCountOrig.toLocaleString('en-US');
+    if (elLblSlovaDoc) elLblSlovaDoc.textContent = charCountDoc.toLocaleString('en-US');
+    if (elKarticeOrig) elKarticeOrig.textContent = (charCountOrig / 1800).toFixed(2);
+    if (elKarticeDoc) elKarticeDoc.textContent = (charCountDoc / 1800).toFixed(2);
 
     if (elUkupnoKartica && charCountOrig > 0) {
       elUkupnoKartica.value = (charCountOrig / 1800).toFixed(2);
