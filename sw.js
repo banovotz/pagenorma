@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mojih1500-v8';
+const CACHE_NAME = 'mojih1500-v9';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const  ASSETS_TO_CACHE = [
   './src/features/projects/projects.ui.js',
   './src/features/projects/projects.js',
   './src/features/epub-parser/epub.parser.js',
+  './src/features/pdf-parser/pdf.parser.js',
   './src/features/google-drive/drive.auth.js',
   './src/features/google-drive/drive.api.js',
   './src/features/glossary/glossary.ui.js',
@@ -118,4 +119,3 @@ self.addEventListener('fetch', (e) => {
 });
 
 let trenutniProjektId = null; // ID projekta kojem dodajemo unos
-

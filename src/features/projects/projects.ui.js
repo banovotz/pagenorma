@@ -5,6 +5,7 @@ import { dohvatiSveProjekte, dohvatiProjektPoId, obrisiProjektIzStoragea, izracu
 import { pokreniTekstualnuAnalizu } from '../interlinear/interlinear.js';
 import { parseEpubFile } from '../epub-parser/epub.parser.js';
 import { dohvatiCijeliTekstIzEpuba } from '../interlinear/interlinear.js';
+import { parsePdfFile, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 export async function ucitajDashboard() {
   const dashboardDiv = document.getElementById('dashboard-page');
@@ -197,7 +198,7 @@ export async function spremiProjektForma(event) {
     const tempGdocText = form?.dataset?.tempGdocText || null;
     const tempEpubText = form?.dataset?.tempEpubText || null;
 
-    let epubNaziv = postojeciProjekt ? postojeciProjekt.epubNazivDatoteke || null : null;
+    let epubNaziv = postojeciProjekt ? postojeciProjekt.epubNazivDatoteke || postojeciProjekt.izvorNazivDatoteke || null : null;
 
     // STRATEGIJA SPREMANJA: čuvamo SAMO izvučeni čisti tekst (tekstIzvora), a ne
     // sirovi ePub Blob. Blob u IndexedDB nepotrebno napuhuje bazu i ovisi o
@@ -209,7 +210,20 @@ export async function spremiProjektForma(event) {
       const selectedFile = epubInput.files[0];
       epubNaziv = selectedFile.name;
       try {
-        tekstIzvora = await dohvatiCijeliTekstIzEpuba(selectedFile);
+        if (jePdfDatoteka(selectedFile)) {
+          const pdfData = await parsePdfFile(selectedFile);
+          tekstIzvora = pdfData.text;
+          const coverInput = document.getElementById('p-naslovnica-base64');
+          if (coverInput && !coverInput.value && pdfData.coverDataUrl) {
+            coverInput.value = pdfData.coverDataUrl;
+          }
+          const titleInput = document.getElementById('p-naslov');
+          if (titleInput && !titleInput.value && pdfData.title) {
+            titleInput.value = pdfData.title;
+          }
+        } else {
+          tekstIzvora = await dohvatiCijeliTekstIzEpuba(selectedFile);
+        }
         if (!tekstIzvora || tekstIzvora.trim().length === 0) {
           console.warn("ePub je parsiran, ali iz njega nije izvučen tekst (prazan sadržaj).");
         }
@@ -243,6 +257,7 @@ export async function spremiProjektForma(event) {
       gdocUrl: document.getElementById('p-gdoc-url')?.value.trim() || postojeciProjekt?.gdocUrl || "",
       lastSynced: postojeciProjekt?.lastSynced || new Date().toISOString(),
       epubNazivDatoteke: epubNaziv,
+      izvorNazivDatoteke: epubNaziv,
       tekstIzvora: tekstIzvora,
       tekstPrijevoda: tempGdocText || (postojeciProjekt ? postojeciProjekt.tekstPrijevoda : null)
     };
@@ -300,7 +315,7 @@ export async function urediProjekt(id) {
   const epubNameLabel = document.getElementById('p-epub-file-name');
   if (epubNameLabel) {
     if (p.tekstIzvora) {
-      const fileName = p.epubNazivDatoteke || "Učitani EPUB spremljen u bazi";
+      const fileName = p.epubNazivDatoteke || p.izvorNazivDatoteke || "Učitani izvor spremljen u bazi";
       epubNameLabel.innerHTML = `📄 Učitana datoteka: <strong>${fileName}</strong> (tekst spremljen ✓)`;
       epubNameLabel.style.color = '#2e7d32';
     } else {
@@ -506,7 +521,7 @@ export async function povuciPodatkeIzIzvora(e) {
   const gdocUrl = gdocInput?.value.trim();
 
   if (!file && !gdocUrl) {
-    alert("Molimo odaberite ePub datoteku ili unesite Google Docs URL.");
+    alert("Molimo odaberite ePub/PDF datoteku ili unesite Google Docs URL.");
     return false;
   }
 
@@ -520,28 +535,34 @@ export async function povuciPodatkeIzIzvora(e) {
     let charCountDoc = 0;
     let dohvaceniTekstGDoca = null;
 
-    // 1. Parsiranje ePub datoteke
+    // 1. Parsiranje ePub/PDF datoteke
     if (file) {
-      const epubData = await parseEpubFile(file);
-      console.log("Parsirani ePub:", epubData);
+      const sourceData = jePdfDatoteka(file)
+        ? await parsePdfFile(file, progress => {
+          if (statusMsg && progress.pages) {
+            statusMsg.innerText = `OCR obrada stranice ${progress.page}/${progress.pages}...`;
+          }
+        })
+        : await parseEpubFile(file);
+      console.log("Parsirani izvor:", sourceData);
 
-      if (epubData && epubData.origCharCount) {
-        charCountOrig = epubData.origCharCount;
+      if (sourceData && sourceData.origCharCount) {
+        charCountOrig = sourceData.origCharCount;
       }
 
       // Popunjavanje naslova ako je prazan
       const elNaslov = document.getElementById('p-naslov');
-      if (elNaslov && !elNaslov.value && epubData.title) {
-        elNaslov.value = epubData.title;
+      if (elNaslov && !elNaslov.value && sourceData.title) {
+        elNaslov.value = sourceData.title;
       }
 
       // Naslovnica ako postoji
-      if (epubData?.coverDataUrl) {
+      if (sourceData?.coverDataUrl) {
         const inputCover = document.getElementById('p-naslovnica-base64');
-        if (inputCover) inputCover.value = epubData.coverDataUrl;
+        if (inputCover) inputCover.value = sourceData.coverDataUrl;
       }
 
-      const epubText = await dohvatiCijeliTekstIzEpuba(file);
+      const epubText = sourceData.text || await dohvatiCijeliTekstIzEpuba(file);
       const formElement = document.getElementById('projekt-forma');
       if (formElement) formElement.dataset.tempEpubText = epubText;
     }

@@ -5,6 +5,7 @@ import { dohvatiGeminiKluc } from '../../core/state.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 import { dohvatiGlosarIzIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
 import { navigirajNa } from '../../core/router.js';
+import { dohvatiCijeliTekstIzPdfa, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
 
 function skratiZaPrompt(tekst, maxZnakova = 2000) {
   if (!tekst) return "";
@@ -249,15 +250,19 @@ export async function zapocniAnaliziranje(projekt) {
       const epubDatoteka = (epubInput && epubInput.files && epubInput.files[0]) ? epubInput.files[0] : null;
 
       if (epubDatoteka) {
-        if (statusText) statusText.innerText = "⏳ Čitanje izvornog ePub-a...";
-        izvorTekst = await dohvatiCijeliTekstIzEpuba(epubDatoteka);
+        if (statusText) statusText.innerText = jePdfDatoteka(epubDatoteka)
+          ? "⏳ Čitanje izvornog PDF-a i OCR obrada..."
+          : "⏳ Čitanje izvornog ePub-a...";
+        izvorTekst = jePdfDatoteka(epubDatoteka)
+          ? await dohvatiCijeliTekstIzPdfa(epubDatoteka)
+          : await dohvatiCijeliTekstIzEpuba(epubDatoteka);
         projekt.tekstIzvora = izvorTekst;
         await spremiUStorage(projekt);
       }
     }
 
     if (!izvorTekst || izvorTekst.trim().length === 0) {
-      throw new Error("Nije pronađen tekst izvornika. Otvorite projekt za uređivanje, ponovno odaberite ePub datoteku i spremite projekt.");
+      throw new Error("Nije pronađen tekst izvornika. Otvorite projekt za uređivanje, ponovno odaberite ePub/PDF datoteku i spremite projekt.");
     }
 
     const gdocInput = document.getElementById('p-gdoc-url');
