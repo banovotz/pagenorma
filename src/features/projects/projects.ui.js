@@ -138,7 +138,18 @@ export async function ucitajDashboard() {
             </div>
 
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button id="btn-unos-${p.id}" class="btn-primary" style="padding: 6px 12px; font-size: 0.85em; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">📝 Unos znakova</button>
+              <button id="btn-unos-${p.id}" class="btn-primary">
+              <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <!-- Stranica/Polje za unos -->
+                <rect x="3" y="4" width="18" height="16" rx="2" stroke="#D97706" stroke-width="1.75"/>
+                <!-- Znakovi / Kursor -->
+                  <path d="M7 9H13" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
+                  <path d="M7 13H17" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
+                  <path d="M7 17H11" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
+                  <!-- Kursor za unos -->
+                  <path d="M15 8V10" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
+                </svg>
+              Unos znakova</button>
               <button id="btn-edit-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">✏️ Edit</button>
               <button id="btn-refresh-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; background: #f0f7f7; color: #008080; border: 1px solid #008080;">🔄 Refresh translation</button>
               <button id="btn-del-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; color: #c62828;">🗑️ Delete</button>

@@ -146,6 +146,8 @@ input:focus, select:focus {
 }
 
 button {
+  display: inline-flex;
+  align-items: center;
   background: var(--accent-color);
   color: #ffffff;
   border: none;
@@ -161,7 +163,14 @@ button {
 button:hover {
   background: var(--accent-color-hover);
 }
-
+button.btn.primary {
+  padding: 6px 12px; 
+  font-size: 0.85em; 
+  background: #008080; 
+  color: #fff; 
+  border: none; border-radius: 
+  4px; cursor: pointer;
+}
 button.btn-secondary {
   background: #757575;
 }
@@ -176,6 +185,11 @@ button.btn-danger {
 
 button.btn-danger:hover {
   background: #b71c1c;
+}
+
+.btn svg {
+  display: block;
+  flex-shrink: 0;
 }
 
 .form-actions {
@@ -988,4 +1002,19 @@ ul.unosi-list li {
 
 .page-section.hidden {
   display: none !important;
+}
+
+/* Poravnanje stavke navigacije */
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* Razmak između ikone i teksta */
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Opcionalno prilagođavanje ikone */
+.nav-icon {
+  display: block;
+  height: auto; /* Zadržava omjer ako je width postavljen u HTML-u */
 }

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none">
+  <!-- Dokument -->
+  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#008080" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M14 2v6h6" stroke="#008080" stroke-width="1.75"/>
+  <!-- Linije teksta -->
+  <path d="M8 12h4" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M8 16h3" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Povećalo / Analiza -->
+  <circle cx="15.5" cy="15.5" r="2.5" stroke="#D97706" stroke-width="1.75"/>
+  <path d="M17.3 17.3L19.5 19.5" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
+</svg>
