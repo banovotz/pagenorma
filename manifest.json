@@ -1,7 +1,7 @@
 {
-  "name": "Mojih1500",
-  "short_name": "Mojih1500",
-  "description": "Aplikacija za književne prevoditelje - Mojih 1500. Praćenje tempa prevođenja, rokova i zarade.",
+  "name": "pagenorma",
+  "short_name": "pagenorma",
+  "description": "Aplikacija za književne prevoditelje - pagenorma. Praćenje tempa prevođenja, rokova i zarade.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F8F5F2",
