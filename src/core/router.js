@@ -312,6 +312,7 @@ export function zatvoriModalGlosar() {
 
   if (modal) {
     modal.style.display = 'none';
+    modal.classList.remove('show');
     modal.setAttribute('aria-hidden', 'true');
   }
 

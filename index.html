@@ -403,7 +403,7 @@
 </div>
 
 <div id="interlinear-page" class="page-content" style="padding: 20px;">
-  <h2>🌐 LLM Analiza prijevoda</h2>
+  <h2>LLM Analiza prijevoda</h2>
   <div class="interlinear-toolbar">
     <div class="interlinear-search-wrap">
       <label for="interlinear-search">Pretraži izvor ili prijevod</label>
@@ -466,28 +466,40 @@
   </div>
 </div>
 <!-- Modal za prikaz cijelog glosara -->
-<div id="modal-glosar" class="modal" tabindex="-1" style="display: none;">
+<div id="modal-glosar" class="modal glossary-modal" tabindex="-1" aria-hidden="true" style="display: none;">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
-    
       <div class="modal-header">
-    
-        <h5 class="modal-title">📖 Glosar projekta
-        </h5>
-           </div>
+        <div>
+          <p class="glossary-modal-kicker">Alati za prijevod</p>
+          <h2 class="modal-title">Glosar projekta</h2>
+        </div>
+        <button type="button" class="glossary-modal-close" aria-label="Zatvori glosar">×</button>
+      </div>
       <div class="modal-body">
-       
+        <div class="glossary-toolbar">
+          <label class="glossary-search-wrap" for="glossary-search">
+            <span class="sr-only">Pretraži glosar</span>
+            <input id="glossary-search" type="search" placeholder="Pretraži izvorni ili prevedeni termin..." autocomplete="off">
+            <button type="button" id="glossary-search-reset" class="glossary-search-reset" aria-label="Očisti pretragu" title="Očisti pretragu">×</button>
+          </label>
+          <p id="glossary-result-count" class="glossary-result-count" aria-live="polite"></p>
+        </div>
         <div id="prazan-glosar-poruka" class="text-center text-muted my-3" style="display: none;">
           Glosar je prazan ili nije učitan za trenutnu analizu.
         </div>
         <div class="table-responsive">
-          <table class="table table-striped table-hover" id="tablica-glosara">
+          <table class="table table-striped table-hover glossary-table" id="tablica-glosara">
+            <colgroup>
+              <col class="glossary-source-column">
+              <col class="glossary-target-column">
+              <col class="glossary-action-column">
+            </colgroup>
             <thead>
-       
               <tr>
-                <th scope="col" style="width: 30%;">Izvorni termin</th>
-                <th scope="col" style="width: 30%;">Prevedeni termin</th>
-                <th scope="col" style="width: 30%"><button type="button" class="btn-sync-small">❎</button></th>
+                <th scope="col"><button type="button" class="glossary-sort-button" data-sort="source">Izvorni termin <span aria-hidden="true">↕</span></button></th>
+                <th scope="col"><button type="button" class="glossary-sort-button" data-sort="target">Prevedeni termin <span aria-hidden="true">↕</span></button></th>
+                <th scope="col" class="glossary-action-heading"><button type="button" class="glossary-sort-button" data-sort="contexts">Kontekst <span aria-hidden="true">↕</span></button></th>
               </tr>
             </thead>
             <tbody id="glosar-modal-body">
@@ -495,10 +507,10 @@
             </tbody>
           </table>
         </div>
+        <nav id="glossary-pagination" class="glossary-pagination" aria-label="Stranice glosara"></nav>
       </div>
       <div class="modal-footer">
-        
-         </div>
+      </div>
     </div>
   </div>
 </div>

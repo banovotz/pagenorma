@@ -49,6 +49,10 @@ export async function otvoriModalGlosar(targetParam) {
   const tbody = document.getElementById('glosar-modal-body');
   const porukaPrazno = document.getElementById('prazan-glosar-poruka');
   const tablica = document.getElementById('tablica-glosara');
+  const searchInput = document.getElementById('glossary-search');
+  const searchReset = document.getElementById('glossary-search-reset');
+  const resultCount = document.getElementById('glossary-result-count');
+  const pagination = document.getElementById('glossary-pagination');
 
   if (!modal || !tbody) return;
 
@@ -70,6 +74,9 @@ export async function otvoriModalGlosar(targetParam) {
   }
 
   tbody.innerHTML = '<tr><td colspan="3" class="text-center py-3">Učitavanje glosara...</td></tr>';
+  if (searchInput) searchInput.value = '';
+  if (resultCount) resultCount.textContent = '';
+  if (pagination) pagination.innerHTML = '';
   porukaPrazno.style.display = 'none';
   tablica.style.display = 'table';
   prikaziModalSloj(modal);
@@ -84,8 +91,6 @@ export async function otvoriModalGlosar(targetParam) {
         rawGlosar = await dohvatiGlosarIzIndexedDB(projektId);
       }
     }
-
-    tbody.innerHTML = '';
 
     // NORMALIZACIJA STRUKTURE GLOSARA:
     let podaciZaPrikaz = [];
@@ -113,17 +118,13 @@ export async function otvoriModalGlosar(targetParam) {
       return;
     }
 
-    porukaPrazno.style.display = 'none';
-    tablica.style.display = 'table';
-
     const sourceParagraphs = analiza?.sourceParagraphs || analiza?.odlomciIzvor ||
       (analiza?.segmenti || []).map(segment => segment.izvor || '');
     const targetParagraphs = analiza?.targetParagraphs || analiza?.odlomciPrijevod ||
       (analiza?.segmenti || []).map(segment => segment.prijevod || '');
     const contextCache = new Map();
-
-    // POPUNJAVANJE REDOVA TABLICE:
-    podaciZaPrikaz.forEach((stavka, index) => {
+    const collator = new Intl.Collator('hr', { sensitivity: 'base', numeric: true });
+    const entries = podaciZaPrikaz.map((stavka, index) => {
       let izvorTekst = '';
       let prijevodTekst = '';
       let termId = `term-${index}`;
@@ -138,35 +139,96 @@ export async function otvoriModalGlosar(targetParam) {
       }
 
       if (izvorTekst || prijevodTekst) {
-        const tr = document.createElement('tr');
-        tr.className = 'glossary-term-row';
-        tr.dataset.termId = termId;
-        
-        const tdIzvor = document.createElement('td');
-        tdIzvor.className = 'fw-bold';
-        tdIzvor.style.padding = '8px';
-        tdIzvor.textContent = izvorTekst;
-
-        const tdPrijevod = document.createElement('td');
-        tdPrijevod.style.padding = '8px';
-        tdPrijevod.textContent = prijevodTekst;
-
-        const tdAkcija = document.createElement('td');
-        tdAkcija.style.padding = '8px';
         const contexts = findLocalMatches(
           izvorTekst,
           prijevodTekst,
           sourceParagraphs,
           targetParagraphs
-        ).slice(0, 5);
+        );
         contextCache.set(termId, contexts);
+        return { termId, izvorTekst: String(izvorTekst), prijevodTekst: String(prijevodTekst), contexts };
+      }
+      return null;
+    }).filter(Boolean);
+
+    if (entries.length === 0) {
+      porukaPrazno.style.display = 'block';
+      tablica.style.display = 'none';
+      if (pagination) pagination.innerHTML = '';
+      return;
+    }
+
+    let sortKey = 'source';
+    let sortDirection = 1;
+    let currentPage = 1;
+    const pageSize = 50;
+
+    const renderPagination = (pageCount) => {
+      if (!pagination) return;
+      pagination.innerHTML = '';
+      if (pageCount <= 1) return;
+
+      for (let page = 1; page <= pageCount; page++) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'glossary-page-button';
+        button.textContent = String(page);
+        button.setAttribute('aria-label', `Stranica ${page}`);
+        if (page === currentPage) {
+          button.classList.add('active');
+          button.setAttribute('aria-current', 'page');
+        }
+        button.addEventListener('click', () => {
+          currentPage = page;
+          render();
+        });
+        pagination.appendChild(button);
+      }
+    };
+
+    const render = () => {
+      const query = (searchInput?.value || '').trim().toLocaleLowerCase('hr');
+      const filtered = query.length >= 3
+        ? entries.filter(entry =>
+          entry.izvorTekst.toLocaleLowerCase('hr').includes(query) ||
+          entry.prijevodTekst.toLocaleLowerCase('hr').includes(query)
+        )
+        : entries;
+
+      const sorted = [...filtered].sort((left, right) => {
+        if (sortKey === 'contexts') {
+          return (left.contexts.length - right.contexts.length) * sortDirection ||
+            collator.compare(left.izvorTekst, right.izvorTekst);
+        }
+        const leftValue = sortKey === 'target' ? left.prijevodTekst : left.izvorTekst;
+        const rightValue = sortKey === 'target' ? right.prijevodTekst : right.izvorTekst;
+        return collator.compare(leftValue, rightValue) * sortDirection;
+      });
+      const pageCount = Math.max(1, Math.ceil(sorted.length / pageSize));
+      currentPage = Math.min(currentPage, pageCount);
+      const pageEntries = sorted.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+      tbody.innerHTML = '';
+
+      pageEntries.forEach(entry => {
+        const tr = document.createElement('tr');
+        tr.className = 'glossary-term-row';
+        tr.dataset.termId = entry.termId;
+        
+        const tdIzvor = document.createElement('td');
+        tdIzvor.className = 'fw-bold';
+        tdIzvor.textContent = entry.izvorTekst;
+
+        const tdPrijevod = document.createElement('td');
+        tdPrijevod.textContent = entry.prijevodTekst;
+
+        const tdAkcija = document.createElement('td');
         const toggle = document.createElement('button');
         toggle.type = 'button';
         toggle.className = 'glossary-context-toggle';
         toggle.setAttribute('aria-expanded', 'false');
-        toggle.textContent = `🔍 ${contexts.length} ${contexts.length === 1 ? 'kontekst' : 'konteksta'}`;
+        toggle.textContent = `🔍 ${entry.contexts.length} ${entry.contexts.length === 1 ? 'kontekst' : 'konteksta'}`;
         toggle.addEventListener('click', () => {
-          const existing = tr.nextElementSibling?.dataset.contextFor === termId
+          const existing = tr.nextElementSibling?.dataset.contextFor === entry.termId
             ? tr.nextElementSibling
             : null;
           if (existing) {
@@ -176,11 +238,11 @@ export async function otvoriModalGlosar(targetParam) {
           }
 
           const contextRow = document.createElement('tr');
-          contextRow.dataset.contextFor = termId;
+          contextRow.dataset.contextFor = entry.termId;
           const contextCell = document.createElement('td');
           contextCell.colSpan = 3;
           contextCell.className = 'glossary-context-cell';
-          const items = contextCache.get(termId) || [];
+          const items = contextCache.get(entry.termId) || [];
           contextCell.innerHTML = items.length
             ? `<div class="glossary-context-list">${items.map(item => `
                 <article class="glossary-context-item">
@@ -199,8 +261,40 @@ export async function otvoriModalGlosar(targetParam) {
         tr.appendChild(tdPrijevod);
         tr.appendChild(tdAkcija);
         tbody.appendChild(tr);
+      });
+      if (resultCount) {
+        resultCount.textContent = query.length >= 3
+          ? `${filtered.length} pronađenih pojmova`
+          : `${entries.length} pojmova`;
       }
+      renderPagination(pageCount);
+    };
+
+    const sortButtons = document.querySelectorAll('#tablica-glosara .glossary-sort-button');
+    sortButtons.forEach(button => {
+      button.onclick = () => {
+        const nextKey = button.dataset.sort;
+        if (sortKey === nextKey) {
+          sortDirection *= -1;
+        } else {
+          sortKey = nextKey;
+          sortDirection = 1;
+        }
+        currentPage = 1;
+        render();
+      };
     });
+    if (searchInput) searchInput.oninput = () => {
+      currentPage = 1;
+      render();
+    };
+    if (searchReset) searchReset.onclick = () => {
+      if (searchInput) searchInput.value = '';
+      currentPage = 1;
+      render();
+      searchInput?.focus();
+    };
+    render();
 
   } catch (err) {
     console.error("Greška pri dohvatu/prikazu glosara:", err);
@@ -225,6 +319,7 @@ function prikaziModalSloj(modal) {
 
   modal.style.display = 'block';
   modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
   document.body.classList.add('modal-open');
 }
 
@@ -238,6 +333,7 @@ export function zatvoriModalGlosar() {
   if (modal) {
     modal.style.display = 'none';
     modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
   }
 
   if (backdrop) {

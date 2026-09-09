@@ -237,7 +237,7 @@ function postaviGlobalneEventListenere() {
     });
   }
 
-  const btnZatvoriGlosar = document.querySelector('#tablica-glosara .btn-sync-small');
+  const btnZatvoriGlosar = document.querySelector('#modal-glosar .glossary-modal-close');
   if (btnZatvoriGlosar) {
     btnZatvoriGlosar.addEventListener('click', zatvoriModalGlosar);
   }
