@@ -58,8 +58,18 @@ function parsirajHash(hash) {
       const ostatak = dijelovi.slice(duljina);
       return { routeKey: kandidatKey, params: ostatak[0] ? { projektId: ostatak[0] } : {} };
     }
+
   }
 
+  return { routeKey: defaultRouteKey, params: {} };
+}
+
+function parsirajTrenutniURL() {
+  if (window.location.hash) return parsirajHash(window.location.hash);
+  const path = window.location.pathname.replace(/\/+$/, '');
+  for (const routeKey of routes.keys()) {
+    if (path.endsWith(`/${routeKey}`)) return { routeKey, params: {} };
+  }
   return { routeKey: defaultRouteKey, params: {} };
 }
 
@@ -154,7 +164,7 @@ export function initRouter() {
     if (event.state && event.state.routeKey) {
       navigirajNa(event.state.routeKey, event.state.params || {}, { pushState: false });
     } else {
-      const { routeKey, params } = parsirajHash(window.location.hash);
+      const { routeKey, params } = parsirajTrenutniURL();
       navigirajNa(routeKey, params, { pushState: false });
     }
   });
@@ -167,7 +177,7 @@ export function initRouter() {
     navigirajNa(btn.getAttribute('data-target'), {});
   });
 
-  const { routeKey, params } = parsirajHash(window.location.hash);
+  const { routeKey, params } = parsirajTrenutniURL();
   // replaceState (ne pushState) za početno stanje - ne želimo da prvi ekran
   // koji korisnik vidi stvori dodatni "prazan" korak u povijesti.
   history.replaceState({ routeKey, params }, '', izgradiHash(routeKey, params));

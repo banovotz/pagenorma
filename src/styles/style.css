@@ -52,6 +52,46 @@ h1 {
   letter-spacing: -0.5px;
 }
 
+h1 #pagenorma-logo {
+  display: block;
+  width: min(280px, 80vw);
+  height: auto;
+}
+
+.subscription-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.subscription-card form {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+  margin-top: 18px;
+}
+
+.subscription-card ul {
+  padding-left: 20px;
+}
+
+.subscription-google {
+  background: #4285f4;
+}
+
+.subscription-choice {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.subscription-error {
+  color: var(--danger);
+}
+
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -276,6 +316,10 @@ ul.unosi-list li {
   z-index: 1000;
   padding: 16px;
   box-sizing: border-box;
+}
+
+.modal-overlay.sakriveno {
+  display: none;
 }
 
 .modal-card {

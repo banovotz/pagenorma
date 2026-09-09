@@ -28,6 +28,7 @@ import {
   autentificirajGoogleDriveIzPostavki,
   odjaviGoogleDriveIzPostavki
 } from './features/settings/settings.ui.js';
+import { initSubscriptionModule } from './features/subscription/subscription.js';
 
 window.azurirajePrikazImenaEpuba = azurirajePrikazImenaEpuba;
 
@@ -68,7 +69,19 @@ registerRoutes({
   'settings': {
     section: 'page-settings',
     view: 'settings-page',
-    onEnter: () => ucitajPostavke()
+    onEnter: () => {
+      ucitajPostavke();
+      initSubscriptionModule();
+    }
+  },
+  'settings/subscription': {
+    section: 'page-settings',
+    view: 'settings-page',
+    onEnter: () => {
+      ucitajPostavke();
+      initSubscriptionModule();
+      document.getElementById('subscription-page')?.scrollIntoView({ block: 'start' });
+    }
   }
 }, { defaultRoute: 'dashboard' });
 

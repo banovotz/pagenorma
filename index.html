@@ -53,7 +53,7 @@
 
 <div class="container">
   <header>
-    <h1>pagenorma</h1>
+    <h1><img id="pagenorma-logo" src="./public/icons/pagenorma-s.svg" alt="pagenorma S"></h1>
     <div class="lbl">Literary translation management simplified.</div>
     <button id="btn-novi-projekt" class="btn-primary" >+ New Project</button>
   </header>
@@ -292,6 +292,46 @@
         💾 Save Settings
       </button>
     </div>
+  <div id="subscription-page" class="subscription-page" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+    <section class="subscription-card" data-subscription-auth>
+      <h2>Prijava u pagenorma</h2>
+      <p id="subscription-status" role="status">Prijavite se kako biste upravljali pretplatom.</p>
+      <button type="button" id="subscription-google" class="subscription-google">Nastavi s Google računom</button>
+      <form id="subscription-email-form">
+        <label for="subscription-email-input">E-mail</label>
+        <input id="subscription-email-input" type="email" autocomplete="email" required>
+        <label for="subscription-password-input">Lozinka</label>
+        <input id="subscription-password-input" type="password" autocomplete="current-password" minlength="6" required>
+        <button id="subscription-email-submit" type="submit">Prijavi se</button>
+        <button id="subscription-signup-toggle" type="button" class="btn-secondary">Novi račun</button>
+      </form>
+    </section>
+    <section class="subscription-card sakriveno" data-subscription-account>
+      <p>Prijavljeni ste kao <strong data-subscription-email></strong>.</p>
+      <p>Trenutni plan: <strong data-subscription-plan></strong></p>
+      <button type="button" id="subscription-signout" class="btn-secondary">Odjavi se</button>
+    </section>
+    <section class="subscription-card sakriveno" data-subscription-offer>
+      <h2>pagenorma QS — Quiet Studio</h2>
+      <ul>
+        <li>Nativna Desktop (Tauri) i PWA aplikacija</li>
+        <li>Rad bez reklama i sponzoriranih obavijesti</li>
+        <li>Neograničen broj aktivnih projekata</li>
+        <li>Neograničene AI analize i rad u glosaru</li>
+      </ul>
+      <label for="subscription-promo">Promo kod</label>
+      <input id="subscription-promo" type="text" autocomplete="off" placeholder="Unesite promo kod">
+      <div class="subscription-choice">
+        <label><input type="radio" name="subscriptionType" value="annual" checked> Godišnja pretplata (+ 1 mjesec uz promo kod)</label>
+        <label><input type="radio" name="subscriptionType" value="trial"> Besplatna proba (1 mjesec)</label>
+      </div>
+      <button type="button" id="subscription-checkout">Kupi pretplatu</button>
+    </section>
+    <section class="subscription-card sakriveno" data-subscription-active>
+      <h2>pagenorma QS je aktivan</h2>
+      <p>Vaš pristup upravlja se iz provjerenog statusa u Firestoreu.</p>
+    </section>
+  </div>
   </div>
   </section>
 
@@ -305,7 +345,6 @@
         ℹ️ <strong>Note:</strong> Displayed analytics are informational and intended for internal planning of work pace and earnings.
       </p>
     </div>
-
     <div style="background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
       <label for="odabir-godine" style="font-weight: bold; color: #333;">Select year:</label>
       <select id="odabir-godine" style="padding: 8px 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer;">
@@ -337,6 +376,16 @@
   </div>
   </section>
 
+</div>
+
+<div id="mock-checkout" class="modal-overlay sakriveno" role="dialog" aria-modal="true" aria-labelledby="mock-checkout-title">
+  <div class="modal-card">
+    <button type="button" id="mock-checkout-close" class="btn-secondary" style="float: right;">×</button>
+    <h2 id="mock-checkout-title">Mocked Checkout</h2>
+    <p>Odabrani plan: <strong>pagenorma QS</strong></p>
+    <p>Promo kod: <strong id="checkout-promo">Nema promo koda</strong></p>
+    <button type="button" id="mock-payment">Simuliraj uspješnu uplatu</button>
+  </div>
 </div>
 
 

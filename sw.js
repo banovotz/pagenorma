@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mojih1500-v9';
+const CACHE_NAME = 'mojih1500-v10';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const  ASSETS_TO_CACHE = [
   './src/core/router.js',
   './src/core/state.js',
   './src/features/settings/settings.ui.js',
+  './src/features/subscription/subscription.js',
   './src/features/projects/projects.ui.js',
   './src/features/projects/projects.js',
   './src/features/epub-parser/epub.parser.js',
