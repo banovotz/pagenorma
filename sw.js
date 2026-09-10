@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mojih1500-v10';
+const CACHE_NAME = 'mojih1500-v17';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',

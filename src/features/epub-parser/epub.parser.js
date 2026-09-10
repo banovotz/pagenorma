@@ -1,6 +1,70 @@
 /**
  * Parsira ePub datoteku: izvlači naslov, sliku naslovnice i broji znakove s razmacima.
  */
+function normalizirajPutanju(path) {
+  const dijelovi = [];
+
+  for (const dio of path.split('/')) {
+    if (!dio || dio === '.') continue;
+    if (dio === '..') {
+      dijelovi.pop();
+    } else {
+      dijelovi.push(dio);
+    }
+  }
+
+  return dijelovi.join('/');
+}
+
+function razrijesiRelativnuPutanju(basePath, href) {
+  const baseDir = basePath.includes('/')
+    ? basePath.slice(0, basePath.lastIndexOf('/') + 1)
+    : '';
+  return normalizirajPutanju(`${baseDir}${href.split('#')[0]}`);
+}
+
+/**
+ * Vraća dokumente u čitalačkom redoslijedu koji definira OPF-ov spine.
+ * Redoslijed zapisa u ZIP arhivi nije dio ePub formata i ne smije se koristiti.
+ */
+export async function dohvatiDokumenteSpinea(zip, parser) {
+  const containerFile = zip.file('META-INF/container.xml');
+  if (!containerFile) throw new Error('ePub nema META-INF/container.xml.');
+
+  const containerXml = await containerFile.async('string');
+  const containerDoc = parser.parseFromString(containerXml, 'text/xml');
+  const rootfile = containerDoc.querySelector('rootfile');
+  const opfPath = rootfile?.getAttribute('full-path');
+  if (!opfPath) throw new Error('ePub nema putanju do OPF datoteke.');
+
+  const opfFile = zip.file(opfPath);
+  if (!opfFile) throw new Error(`ePub nema OPF datoteku: ${opfPath}`);
+
+  const opfXml = await opfFile.async('string');
+  const opfDoc = parser.parseFromString(opfXml, 'text/xml');
+  const manifest = new Map(
+    Array.from(opfDoc.querySelectorAll('manifest > item'))
+      .map(item => [item.getAttribute('id'), item.getAttribute('href')])
+      .filter(([, href]) => href)
+  );
+
+  const spine = Array.from(opfDoc.querySelectorAll('spine > itemref'))
+    .filter(itemref => itemref.getAttribute('linear') !== 'no')
+    .map(itemref => manifest.get(itemref.getAttribute('idref')))
+    .filter(Boolean)
+    .map(href => razrijesiRelativnuPutanju(opfPath, href))
+    .filter(path => /\.(xhtml|html|htm)$/i.test(path));
+
+  if (spine.length > 0) {
+    return spine.filter(path => zip.file(path));
+  }
+
+  // Neispravan/neuobičajen ePub bez spine-a: barem čitaj deterministički.
+  return Object.keys(zip.files)
+    .filter(path => /\.(xhtml|html|htm)$/i.test(path))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+}
+
 export async function parseEpubFile(file) {
   const zip = await JSZip.loadAsync(file);
   const parser = new DOMParser();
@@ -61,14 +125,13 @@ export async function parseEpubFile(file) {
     }
   }
 
-  // 3. Prolazak kroz sva HTML/XHTML poglavlja i brojanje znakova
-  for (const filename of Object.keys(zip.files)) {
-    if (/\.(xhtml|html|htm)$/i.test(filename)) {
-      const htmlText = await zip.files[filename].async("string");
-      const doc = parser.parseFromString(htmlText, "text/html");
-      const cleanText = doc.body ? doc.body.textContent : "";
-      totalCharsWithSpaces += cleanText.length;
-    }
+  // 3. Prolazak kroz HTML/XHTML dokumente redoslijedom iz OPF spine-a
+  const spineDocuments = await dohvatiDokumenteSpinea(zip, parser);
+  for (const filename of spineDocuments) {
+    const htmlText = await zip.file(filename).async("string");
+    const doc = parser.parseFromString(htmlText, "text/html");
+    const cleanText = doc.body ? doc.body.textContent : "";
+    totalCharsWithSpaces += cleanText.length;
   }
 
   return {

@@ -118,10 +118,8 @@ export async function otvoriModalGlosar(targetParam) {
       return;
     }
 
-    const sourceParagraphs = analiza?.sourceParagraphs || analiza?.odlomciIzvor ||
-      (analiza?.segmenti || []).map(segment => segment.izvor || '');
-    const targetParagraphs = analiza?.targetParagraphs || analiza?.odlomciPrijevod ||
-      (analiza?.segmenti || []).map(segment => segment.prijevod || '');
+    const sourceParagraphs = (analiza?.segmenti || []).map(segment => segment.izvor || '');
+    const targetParagraphs = (analiza?.segmenti || []).map(segment => segment.prijevod || '');
     const contextCache = new Map();
     const collator = new Intl.Collator('hr', { sensitivity: 'base', numeric: true });
     const entries = podaciZaPrikaz.map((stavka, index) => {

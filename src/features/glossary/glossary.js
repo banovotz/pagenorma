@@ -82,7 +82,17 @@ ${prevedeniTekst}
               properties: {
                 source_term: { type: "STRING" },
                 primary_translation: { type: "STRING" },
-                alternatives: { type: "ARRAY" },
+                alternatives: {
+                  type: "ARRAY",
+                  items: {
+                    type: "OBJECT",
+                    properties: {
+                      translation: { type: "STRING" },
+                      context: { type: "STRING" }
+                    },
+                    required: ["translation", "context"]
+                  }
+                },
                 has_inconsistency: { type: "BOOLEAN" }
               },
               required: ["source_term", "primary_translation", "alternatives", "has_inconsistency"]
@@ -101,7 +111,11 @@ ${prevedeniTekst}
   });
 
   if (!response.ok) {
-    throw new Error(`Greška pri izradi glosara: ${response.statusText}`);
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+      `Greška pri izradi glosara: HTTP ${response.status} ${response.statusText}`
+    );
   }
 
   const data = await response.json();

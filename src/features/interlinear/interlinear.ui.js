@@ -62,8 +62,16 @@ export async function prikaziInterlinearniTekst(projektId) {
     return;
   }
 
-  const sourceParagraphs = rezultat.sourceParagraphs || rezultat.odlomciIzvor || segmenti.map(seg => seg.izvor || '');
-  const targetParagraphs = rezultat.targetParagraphs || rezultat.odlomciPrijevod || segmenti.map(seg => seg.prijevod || '');
+  // Prefer aligned segments over legacy raw paragraph arrays. Raw arrays do
+  // not preserve 1:2/2:1 paragraph joins and can show a valid translation
+  // under the wrong source paragraph.
+  const sourceParagraphs = segmenti.map(seg => seg.izvor || '');
+  const targetParagraphs = segmenti.map(seg => seg.prijevod || '');
+  console.log('[Interlinear prikaz] koristi poravnane segmente:', {
+    brojSegmenata: segmenti.length,
+    prviNeparniSegment: segmenti.findIndex(seg => Boolean(seg.izvor) !== Boolean(seg.prijevod)),
+    primjer: segmenti.find(seg => /Yes, ma’am|Yes, ma'am|Jesam, gospođo/i.test(seg.izvor || ''))
+  });
   const paragraphCount = Math.max(sourceParagraphs.length, targetParagraphs.length);
   interlinearState = {
     segmenti,
