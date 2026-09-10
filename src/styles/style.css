@@ -13,7 +13,7 @@
   --body-font: 'Lato', sans-serif;
 
   --success: #2e7d32;
-  --danger: #c62828;
+  --danger: #bc41413d;
   --stat-bg: #f2eee9;
 }
 
@@ -172,19 +172,28 @@ button.btn.primary {
   4px; cursor: pointer;
 }
 button.btn-secondary {
-  background: #757575;
+  background: #a29c9c;
+  padding: 6px 12px; 
+  font-size: 0.85em; 
+  background: #f0f7f7; 
+  color: #008080; 
+  border: 1px solid #008080;
 }
 
 button.btn-secondary:hover {
-  background: #616161;
+  background: #c1bbbb;
 }
 
 button.btn-danger {
   background: var(--danger);
+  color: #008080;
+  padding: 6px 12px; 
+  font-size: 0.85em;
+  border: 1px solid #008080;
 }
 
 button.btn-danger:hover {
-  background: #b71c1c;
+  background: #c8aaaa;
 }
 
 .btn svg {

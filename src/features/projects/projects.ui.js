@@ -138,22 +138,48 @@ export async function ucitajDashboard() {
             </div>
 
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button id="btn-unos-${p.id}" class="btn-primary">
-              <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
-                <!-- Stranica/Polje za unos -->
-                <rect x="3" y="4" width="18" height="16" rx="2" stroke="#D97706" stroke-width="1.75"/>
-                <!-- Znakovi / Kursor -->
-                  <path d="M7 9H13" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
-                  <path d="M7 13H17" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
-                  <path d="M7 17H11" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
-                  <!-- Kursor za unos -->
-                  <path d="M15 8V10" stroke="#D97706" stroke-width="1.75" stroke-linecap="round"/>
+              <button id="btn-edit-${p.id}" class="btn-secondary">
+                <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" 
+                stroke="#008080" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                <!--  Akcent na vrhu olovke -->
+                <path d="M13.5 6.5l3.5 3.5" stroke="#D97706" stroke-width="1.75"/>
                 </svg>
-              Unos znakova</button>
-              <button id="btn-edit-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">✏️ Edit</button>
-              <button id="btn-refresh-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; background: #f0f7f7; color: #008080; border: 1px solid #008080;">🔄 Refresh translation</button>
-              <button id="btn-del-${p.id}" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; color: #c62828;">🗑️ Delete</button>
-              <button id="btn-analiza-${p.id}" type="button" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em; background: #f0f7f7; color: #008080; border: 1px solid #008080;">🧠 Tekstualna analiza</button>
+              Edit </button>
+              <button id="btn-refresh-${p.id}" class="btn-secondary"> 
+                <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
+                <path d="M4 12a8 8 0 0113.856-5.5M20 12a8 8 0 01-13.856 5.5" stroke="#008080" stroke-width="1.75" stroke-linecap="round"/>
+                <!-- Strelica gore -->
+                <path d="M18 3v4h-4" stroke="#008080" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Strelica dolje -->
+                <path d="M6 21v-4h4" stroke="#008080" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Središnji akcent (prijevod) -->
+                <circle cx="12" cy="12" r="2" fill="#D97706"/>
+                </svg>
+              Refresh Translation</button>
+              <button id="btn-analiza-${p.id}" type="button" class="btn-secondary">
+              <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <!-- Otvorene stranice teksta -->
+                <path d="M4 6C4 4.89543 4.89543 4 6 4H12V20H6C4.89543 20 4 19.1046 4 18V6Z" stroke="#008080" stroke-width="2" fill="#E0F2F1"/>
+                <path d="M12 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H12V4Z" stroke="#008080" stroke-width="2" fill="#FFFFFF"/>
+                <!-- Linije teksta (ritam) -->
+                <path d="M7 8H10" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M7 11H9" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M7 14H10" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M14 8H17" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M14 11H16" stroke="#4DD0E1" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M14 14H17" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Povećalo/QA analiza (Analitika) -->
+                <circle cx="17" cy="17" r="4" stroke="#D97706" stroke-width="2" fill="#FFFFFF"/>
+                <path d="M20.5 20.5L19 19" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+                </svg>                          
+              Analyze Text</button>
+              <button id="btn-del-${p.id}" class="btn-danger">
+                <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
+                stroke="#DC2626" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              Delete</button>
             </div>
           </div>
         </div>
