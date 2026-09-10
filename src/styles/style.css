@@ -163,14 +163,18 @@ button {
 button:hover {
   background: var(--accent-color-hover);
 }
-button.btn.primary {
+button.btn-primary {
   padding: 6px 12px; 
   font-size: 0.85em; 
   background: #008080; 
   color: #fff; 
-  border: none; border-radius: 
-  4px; cursor: pointer;
+  border: 1px solid #008080;
+  cursor: pointer;
 }
+button.btn-primary:hover {
+  background: #21b367;
+}
+
 button.btn-secondary {
   background: #a29c9c;
   padding: 6px 12px; 
@@ -180,7 +184,7 @@ button.btn-secondary {
   border: 1px solid #008080;
 }
 
-button.btn-secondary:hover {
+button.btn-secondary:hover  {
   background: #c1bbbb;
 }
 
@@ -1281,4 +1285,7 @@ ul.unosi-list li {
 .nav-icon {
   display: block;
   height: auto; /* Zadržava omjer ako je width postavljen u HTML-u */
+}
+.info-icon {
+  flex-shrink: 0;
 }

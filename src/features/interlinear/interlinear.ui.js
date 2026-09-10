@@ -335,8 +335,20 @@ export async function ucitajListuAnaliza() {
       card.innerHTML = `
         <h4 style="margin:0 0 8px 0; color:#008080;">${naslovProjekta}</h4>
         <p style="font-size:0.85em; color:#666; margin-bottom:12px;">Datum analize: ${new Date(analiza.datumAnalize).toLocaleString('hr-HR')}</p>
-        <button id="btn-otvori-analizu-${analiza.projektId}" class="btn-primary" style="padding:6px 12px; font-size:0.85em;">Otvorite analizu</button>
-        <button id="btn-obrisi-analizu-${analiza.projektId}" class="btn-danger" style="padding:6px 12px; font-size:0.85em; background-color: #d81717a6; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Obriši</button>
+        <button id="btn-otvori-analizu-${analiza.projektId}" class="btn-primary">
+          <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+          <circle cx="18" cy="6" r="3"/>
+          </svg>
+        Otvorite analizu</button>
+        <button id="btn-obrisi-analizu-${analiza.projektId}" class="btn-danger">
+          <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
+          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
+          stroke="#DC2626" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>   
+        Obriši</button>
       `;
 
       container.appendChild(card);

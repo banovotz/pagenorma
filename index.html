@@ -55,7 +55,14 @@
   <header>
     <h1><img id="pagenorma-logo" src="./public/icons/pagenorma-s.svg" alt="pagenorma S"></h1>
     <div class="lbl">Literary translation management simplified.</div>
-    <button id="btn-novi-projekt" class="btn-primary" >+ New Project</button>
+    <button id="btn-novi-projekt" class="btn-primary"> 
+      <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <line x1="9" y1="15" x2="15" y2="15"/>
+      </svg>
+      New Project</button>
   </header>
 
   <!-- Project Form -->
@@ -259,11 +266,25 @@
         Your access token is kept only for this browser session.
       </p>
       <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
-        <button type="button" id="btn-google-authenticate" class="btn-primary" style="padding: 10px 16px; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
-          🔐 Authenticate Google Drive
+        <button type="button" id="btn-google-authenticate" class="btn-primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
+          <!-- Tijelo lokota -->
+          <rect x="5" y="11" width="14" height="10" rx="2" stroke="#fff" stroke-width="1.75"/>
+          <!-- Luk lokota -->
+          <path d="M8 11V7a4 4 0 018 0v4" stroke="#fff" stroke-width="1.75" stroke-linecap="round"/>
+          <!-- Keyhole / Zlatni akcent -->
+          <circle cx="12" cy="15" r="1.25" fill="#D97706"/>
+          <path d="M12 16.25V18" stroke="#D97706" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Authenticate Google Drive
         </button>
-        <button type="button" id="btn-google-signout" class="btn-secondary" style="padding: 10px 16px;">
-          Sign out
+        <button type="button" id="btn-google-signout" class="btn-secondary">
+         <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+         <polyline points="16 17 21 12 16 7"/>
+         <line x1="21" y1="12" x2="9" y2="12"/>
+         </svg>
+         Sign out
         </button>
       </div>
       <p id="google-auth-status" role="status" style="margin: 10px 0 0; font-size: 0.9em;"></p>
@@ -276,20 +297,41 @@
       </p>
 
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button  class="btn-primary" style="padding: 10px 16px; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
-          📥 Export Database (JSON)
+        <button class="btn-primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
+          <!-- Baza podataka / Cilindri -->
+          <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="#fff" stroke-width="1.75"/>
+          <path d="M4 6v5c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="#fff" stroke-width="1.75"/>
+          <path d="M4 11v5c0 1.38 2.69 2.5 6 2.5" stroke="#fff" stroke-width="1.75"/>
+          <!-- Strelica za Export (Zlatna) -->
+          <path d="M18 14v7m0 0l-3-3m3 3l3-3" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Export Database (JSON)
         </button>
 
-        <button onclick="document.getElementById('import-file-input').click()" class="btn-secondary" style="padding: 10px 16px; background: #f0f7f7; color: #008080; border: 1px solid #008080; border-radius: 4px; cursor: pointer;">
-          📤 Import Database
+        <button onclick="document.getElementById('import-file-input').click()" class="btn-secondary">
+          <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
+          <!-- Baza podataka / Cilindri -->
+          <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="#008080" stroke-width="1.75"/>
+          <path d="M4 6v5c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="#008080" stroke-width="1.75"/>
+          <path d="M4 11v5c0 1.38 2.69 2.5 6 2.5" stroke="#008080" stroke-width="1.75"/>          
+          <!-- Strelica za Import (Zlatna - usmjerena prema gore/unutra) -->
+          <path d="M18 21v-7m0 0l-3 3m3-3l3 3" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Import Database
         </button>
       </div>
     </section>
 
     <!-- Save Settings Button -->
     <div style="text-align: right; margin-top: 20px;">
-      <button  style="padding: 12px 24px; background: #008080; color: #fff; font-size: 1em; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">
-        💾 Save Settings
+      <button  class="btn-primary">
+        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+        <polyline points="17 21 17 13 7 13 7 21"/>
+        <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Save Settings
       </button>
     </div>
   <div id="subscription-page" class="subscription-page" style="max-width: 800px; margin: 0 auto; padding: 20px;">
@@ -341,9 +383,15 @@
     
     <div style="margin-bottom: 24px;">
       <h2 style="color: #008080; margin-bottom: 6px;">Monthly Project Analytics</h2>
+      <div class="info-box">
       <p style="color: #666; font-size: 0.9em; margin: 0; background: #e6f2f2; padding: 10px 14px; border-radius: 6px; border-left: 4px solid #008080;">
-        ℹ️ <strong>Note:</strong> Displayed analytics are informational and intended for internal planning of work pace and earnings.
-      </p>
+        <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="16" x2="12" y2="12"/>
+        <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg> 
+        <strong>Note:</strong> Displayed analytics are informational and intended for internal planning of work pace and earnings.
+      </p></div>
     </div>
     <div style="background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
       <label for="odabir-godine" style="font-weight: bold; color: #333;">Select year:</label>
@@ -428,12 +476,16 @@
 
     <!-- STUPAC 3: LLM KOMENTARI -->
     <div style="flex: 1; display: flex; flex-direction: column;">
-      <h3 style="color: #8e24aa; margin-bottom: 8px;">LLM Komentari  <button 
-  type="button" 
-  class="btn-sync-small">
-  📖 Pogledaj glosar
-</button>
-</h3>
+      <h3 style="color: #8e24aa; margin-bottom: 8px;">LLM Komentari  
+      <button type="button"  class="btn-sync-small">
+        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        <path d="M10 2v8l2.5-1.5L15 10V2"/>
+        </svg>  
+        Pogledaj glosar
+      </button>
+     </h3>
      
       <div id="col-komentari" style="flex: 1; overflow-y: auto; border: 1px solid #ddd; background: #fff; padding: 8px; border-radius: 6px;"></div>
     </div>
