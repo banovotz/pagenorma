@@ -7,12 +7,17 @@ import {
   getInterlinearSearchSuggestions,
   normalizeInterlinearSearchText
 } from '../../utils/interlinearSearch.js';
+import { isSubscribed } from '../subscription/subscription.js';
 
 const INTERLINEAR_PAGE_SIZE = 20;
 const INTERLINEAR_MIN_SEARCH_LENGTH = 3;
 let interlinearState = null;
 let searchDebounceTimer = null;
 let interlinearOutsideClickBound = false;
+
+window.addEventListener('pagenorma-subscription-state-changed', () => {
+  if (interlinearState) renderInterlinearPage();
+});
 
 export async function prikaziInterlinearniTekst(projektId) {
  
@@ -59,14 +64,17 @@ export async function prikaziInterlinearniTekst(projektId) {
 
   const sourceParagraphs = rezultat.sourceParagraphs || rezultat.odlomciIzvor || segmenti.map(seg => seg.izvor || '');
   const targetParagraphs = rezultat.targetParagraphs || rezultat.odlomciPrijevod || segmenti.map(seg => seg.prijevod || '');
+  const paragraphCount = Math.max(sourceParagraphs.length, targetParagraphs.length);
   interlinearState = {
     segmenti,
     sourceParagraphs,
     targetParagraphs,
+    paragraphCount,
     komentari: rezultat.komentari || [],
-    filteredIndices: Array.from({ length: Math.max(sourceParagraphs.length, targetParagraphs.length) }, (_, index) => index),
+    filteredIndices: Array.from({ length: paragraphCount }, (_, index) => index),
     currentPage: 1,
-    query: ''
+    query: '',
+    promoIndex: paragraphCount >= 40 ? Math.floor(Math.random() * paragraphCount) : -1
   };
 
   const searchInput = document.getElementById('interlinear-search');
@@ -187,6 +195,9 @@ function renderInterlinearPage() {
   interlinearState.currentPage = Math.min(interlinearState.currentPage, totalPages);
   const start = (interlinearState.currentPage - 1) * INTERLINEAR_PAGE_SIZE;
   const pageIndices = interlinearState.filteredIndices.slice(start, start + INTERLINEAR_PAGE_SIZE);
+  const promoIndex = !isSubscribed() && interlinearState.paragraphCount >= 40
+    ? interlinearState.promoIndex
+    : -1;
   colIzvor.innerHTML = '';
   colPrijevod.innerHTML = '';
   colKomentari.innerHTML = '';
@@ -202,7 +213,10 @@ function renderInterlinearPage() {
     const comment = document.createElement('div');
     comment.className = 'segment-item para-box';
     comment.dataset.index = index;
-    comment.innerHTML = komentar && (komentar.sugestija || komentar.term)
+    const isSubscriptionPromo = index === promoIndex;
+    comment.innerHTML = isSubscriptionPromo
+      ? `<div class="interlinear-comment subscription-hook-comment"><strong>✨ Pagenorma QS:</strong><br>Congrats! You have translated ${interlinearState.paragraphCount} paragraphs in this project.<br><a href="#settings/subscription" data-target="settings/subscription">Why not consider subscribing to Pagenorma QS?</a></div>`
+      : komentar && (komentar.sugestija || komentar.term)
       ? `<div class="interlinear-comment"><strong>✨ Gemini Napomena #${pIndex}:</strong><br>${komentar.sugestija || komentar.term}</div>`
       : `<small class="empty-comment">#${pIndex}</small> <span class="empty-comment">—</span>`;
     colKomentari.appendChild(comment);

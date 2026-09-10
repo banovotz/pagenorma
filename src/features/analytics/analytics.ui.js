@@ -2,7 +2,15 @@
  * Modul za financijsku analitiku i postavke obračuna
  */
 
+import { isSubscribed } from '../subscription/subscription.js';
 const SETTINGS_KEY = 'mojih1500_postavke';
+let posljednjaFunkcijaProjekata = null;
+
+window.addEventListener('pagenorma-subscription-state-changed', () => {
+  if (posljednjaFunkcijaProjekata && document.getElementById('analitika-tablica-body')) {
+    generirajTablicuAnalitike(posljednjaFunkcijaProjekata);
+  }
+});
 
 // --- POMOĆNE MATEMATIČKE FUNKCIJE I IZRAČUNI ---
 
@@ -198,6 +206,7 @@ export async function promijeniGodinuAnalitike(dohvatiSveProjekteFn) {
 export async function generirajTablicuAnalitike(dohvatiSveProjekteFn) {
   const tbody = document.getElementById('analitika-tablica-body');
   if (!tbody) return;
+  posljednjaFunkcijaProjekata = dohvatiSveProjekteFn;
   tbody.innerHTML = '';
 
   const sirovoPostavke = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
@@ -216,6 +225,7 @@ export async function generirajTablicuAnalitike(dohvatiSveProjekteFn) {
   ];
 
   let godisnjiNetoUkupno = 0;
+  let subscriptionHookShown = false;
   const danas = new Date();
 
   for (let m = 0; m < 12; m++) {
@@ -278,6 +288,7 @@ export async function generirajTablicuAnalitike(dohvatiSveProjekteFn) {
     const mjesecniBrutoZavrsenih = zavrseniUOvomMjesecu.reduce((sum, item) => sum + item.bruto, 0);
 
     let mjesecniNetoObrt = 0;
+    let mjesecniNetoPostotak = 0;
     if (postavke.modelDoprinosa === 'obrt') {
       if (zavrseniUOvomMjesecu.length > 0) {
         mjesecniNetoObrt = mjesecniBrutoZavrsenih - postavke.fiksniIznos;
@@ -329,6 +340,7 @@ export async function generirajTablicuAnalitike(dohvatiSveProjekteFn) {
           if (proj.jeZavrsetakProjekta) {
             const stopaDoprinosa = (postavke.postotakIznos || 0) / 100;
             const projNeto = proj.bruto * (1 - stopaDoprinosa);
+            mjesecniNetoPostotak += projNeto;
             godisnjiNetoUkupno += projNeto;
 
             tdNeto = `<td style="padding: 10px 12px; text-align: right; font-weight: bold; color: #2e7d32;">
@@ -371,6 +383,23 @@ export async function generirajTablicuAnalitike(dohvatiSveProjekteFn) {
         tbody.appendChild(trSuma);
       }
     }
+
+    const mjesecniZaradjeniIznos = postavke.modelDoprinosa === 'obrt'
+      ? mjesecniNetoObrt
+      : mjesecniNetoPostotak;
+    if (!isSubscribed() && !subscriptionHookShown && mjesecniZaradjeniIznos >= 500) {
+      const trHook = document.createElement('tr');
+      trHook.className = 'subscription-hook-row';
+      trHook.innerHTML = `
+        <td colspan="5" class="subscription-hook-cell">
+          <strong>Congrats! This month you earned €${mjesecniZaradjeniIznos.toFixed(2)}.</strong>
+          Why not consider subscribing to Pagenorma QS so we both can keep going forward?
+          <a href="#settings/subscription" data-target="settings/subscription">Subscribe to Pagenorma QS</a>
+        </td>
+      `;
+      tbody.appendChild(trHook);
+      subscriptionHookShown = true;
+    }
   }
 
   const ukupnoEl = document.getElementById('analitika-ukupno-neto');
@@ -378,4 +407,3 @@ export async function generirajTablicuAnalitike(dohvatiSveProjekteFn) {
     ukupnoEl.textContent = `€${godisnjiNetoUkupno.toFixed(2)}`;
   }
 }
-

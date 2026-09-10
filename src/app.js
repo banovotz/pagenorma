@@ -99,6 +99,7 @@ async function pokreniAplikaciju() {
     // ruti) i poziva pripadajući onEnter - nije potrebno posebno zvati
     // ucitajDashboard() ovdje, to radi 'dashboard' ruta.
     initRouter();
+    initSubscriptionModule();
 
     const savedKey = dohvatiGeminiKluc();
     const input = document.getElementById('gemini-api-key');

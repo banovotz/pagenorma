@@ -877,6 +877,30 @@ ul.unosi-list li {
   color: #8e24aa;
 }
 
+.subscription-hook-row {
+  background: #fffaf0;
+}
+
+.subscription-hook-cell {
+  padding: 12px;
+  color: #6d4c41;
+  border-left: 3px solid #d9a441;
+  font-size: 0.9em;
+}
+
+.subscription-hook-cell a,
+.subscription-hook-comment a {
+  color: #8e5b00;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.subscription-hook-comment {
+  background: #fff8e1;
+  border-left-color: #d9a441;
+  color: #6d4c41;
+}
+
 .empty-comment {
   color: #ccc;
 }

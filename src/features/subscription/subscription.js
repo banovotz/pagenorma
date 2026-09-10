@@ -13,6 +13,7 @@ let currentUser = null;
 let currentProfile = null;
 let authMode = 'signin';
 let eventsBound = false;
+let initializationStarted = false;
 
 function firebaseConfig() {
   return { ...FIREBASE_CONFIG, ...window.PAGENORMA_FIREBASE_CONFIG = {
@@ -51,6 +52,14 @@ function profilePath(user) {
 
 function isQuietStudio() {
   return Boolean(currentProfile?.isQuietStudio);
+}
+
+export function isSubscribed() {
+  return isQuietStudio();
+}
+
+function notifySubscriptionStateChanged() {
+  window.dispatchEvent(new CustomEvent('pagenorma-subscription-state-changed'));
 }
 
 function updateBrand() {
@@ -171,6 +180,8 @@ function bindSubscriptionEvents() {
 }
 
 export async function initSubscriptionModule() {
+  if (initializationStarted) return;
+  initializationStarted = true;
   bindSubscriptionEvents();
   renderSubscription();
   if (!hasFirebaseConfig()) {
@@ -185,10 +196,12 @@ export async function initSubscriptionModule() {
       currentUser = user;
       currentProfile = null;
       renderSubscription();
+      notifySubscriptionStateChanged();
       if (!user) return;
       unsubscribeProfile = services.onSnapshot(profilePath(user), (snapshot) => {
         currentProfile = snapshot.exists() ? snapshot.data() : { isQuietStudio: false, subscriptionStatus: 'no' };
         renderSubscription();
+        notifySubscriptionStateChanged();
         if (!snapshot.exists()) {
           services.setDoc(profilePath(user), {
             email: user.email || '',
