@@ -7,6 +7,7 @@ import { dohvatiGlosarIzIndexedDB, stvoriGlosar } from '../glossary/glossary.js'
 import { navigirajNa } from '../../core/router.js';
 import { dohvatiCijeliTekstIzPdfa, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
 import { createParagraphAligner } from '../../utils/textAligner.js';
+import { parsirajLlmJson, porukaGreske } from '../../utils/llmJson.js';
 
 function skratiZaPrompt(tekst, maxZnakova = 2000) {
   if (!tekst) return "";
@@ -112,7 +113,26 @@ ${JSON.stringify(glosar, null, 2)}
   const payload = {
     systemInstruction: { parts: [{ text: systemInstructionText }] },
     contents: [{ role: "user", parts: [{ text: promptText }] }],
-    generationConfig: { responseMimeType: "application/json" }
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          analiza: {
+            type: "ARRAY",
+            items: {
+              type: "OBJECT",
+              properties: {
+                index: { type: "INTEGER" },
+                komentar: { type: "STRING" }
+              },
+              required: ["index", "komentar"]
+            }
+          }
+        },
+        required: ["analiza"]
+      }
+    }
   };
 
   try {
@@ -138,8 +158,13 @@ ${JSON.stringify(glosar, null, 2)}
     const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) return [];
     
-    const parsed = JSON.parse(rawText);
-    return parsed.analiza || [];
+    const parsed = parsirajLlmJson(rawText, "Gemini analiza");
+    if (!parsed || !Array.isArray(parsed.analiza)) {
+      throw new Error('Gemini odgovor analize nema očekivani ključ "analiza".');
+    }
+    return parsed.analiza.filter(item =>
+      item && Number.isInteger(item.index) && typeof item.komentar === 'string'
+    );
 
   } catch (err) {
     console.error("Greška unutar pozoviGeminiAPI:", err);
@@ -210,7 +235,9 @@ export async function poravnajTekstoveSGemini(izvorTekst, prijevodTekst, glosar,
       }
       await pricekaj(1500);
     } catch (err) {
-      paket.forEach(p => komentariMap.set(p.index, `[Greška u analizi paketa: ${err.message}]`));
+      const poruka = porukaGreske(err);
+      console.error(`Paket ${i + 1} nije obrađen, analiza se nastavlja:`, err);
+      paket.forEach(p => komentariMap.set(p.index, `[Greška u analizi paketa: ${poruka}]`));
     }
   }
 
@@ -304,14 +331,20 @@ export async function zapocniAnaliziranje(projekt) {
 
     if (!imaGlosar) {
       if (statusText) statusText.innerText = "⏳ Generiranje glosara...";
-      glosar = await stvoriGlosar(skratiZaPrompt(procisceniIzvor), skratiZaPrompt(procisceniPrijevod), apiKey);
-      const generiraneStavke = Array.isArray(glosar?.terms)
-        ? glosar.terms
-        : Array.isArray(glosar)
-          ? glosar
-          : [];
-      if (generiraneStavke.length === 0) {
-        throw new Error("Gemini je vratio prazan glosar.");
+      try {
+        glosar = await stvoriGlosar(skratiZaPrompt(procisceniIzvor), skratiZaPrompt(procisceniPrijevod), apiKey);
+        const generiraneStavke = Array.isArray(glosar?.terms)
+          ? glosar.terms
+          : Array.isArray(glosar)
+            ? glosar
+            : [];
+        if (generiraneStavke.length === 0) {
+          throw new Error("Gemini je vratio prazan glosar.");
+        }
+      } catch (err) {
+        console.error("Glosar nije moguće generirati, analiza se nastavlja bez glosara:", err);
+        glosar = {};
+        if (statusText) statusText.innerText = `⚠️ Glosar nije generiran; analiza se nastavlja (${porukaGreske(err)}).`;
       }
     }
 

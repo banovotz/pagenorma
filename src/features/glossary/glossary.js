@@ -1,6 +1,7 @@
 // Glosar logika i komunikacija s IndexedDB-om
 
 import { otvoriBazu, INTERLINEARNI_STORE } from '../../core/db.js';
+import { parsirajLlmJson } from '../../utils/llmJson.js';
 
 export async function dohvatiGlosarIzIndexedDB(projektId = null) {
   const trenutniId = projektId ?? window.trenutniAnalizaId ?? window.trenutniProjektId;
@@ -70,7 +71,26 @@ ${prevedeniTekst}
       }
     ],
     generationConfig: {
-      responseMimeType: "application/json"
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          terms: {
+            type: "ARRAY",
+            items: {
+              type: "OBJECT",
+              properties: {
+                source_term: { type: "STRING" },
+                primary_translation: { type: "STRING" },
+                alternatives: { type: "ARRAY" },
+                has_inconsistency: { type: "BOOLEAN" }
+              },
+              required: ["source_term", "primary_translation", "alternatives", "has_inconsistency"]
+            }
+          }
+        },
+        required: ["terms"]
+      }
     }
   };
 
@@ -90,7 +110,7 @@ ${prevedeniTekst}
     throw new Error('Gemini nije vratio sadržaj glosara.');
   }
 
-  const glosar = JSON.parse(rawText);
+  const glosar = parsirajLlmJson(rawText, "Gemini glosar");
   if (!Array.isArray(glosar?.terms) || glosar.terms.length === 0) {
     throw new Error('Gemini je vratio prazan glosar.');
   }
