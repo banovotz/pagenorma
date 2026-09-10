@@ -297,7 +297,7 @@
       </p>
 
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button class="btn-primary">
+        <button type="button" id="btn-export-backup" class="btn-primary">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
           <!-- Baza podataka / Cilindri -->
           <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="#fff" stroke-width="1.75"/>
@@ -309,7 +309,7 @@
           Export Database (JSON)
         </button>
 
-        <button onclick="document.getElementById('import-file-input').click()" class="btn-secondary">
+        <button type="button" id="btn-import-backup-trigger" class="btn-secondary">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
           <!-- Baza podataka / Cilindri -->
           <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="#008080" stroke-width="1.75"/>
@@ -320,6 +320,7 @@
           </svg>
           Import Database
         </button>
+        <input type="file" id="btn-import-backup" accept="application/json,.json" hidden>
       </div>
     </section>
 

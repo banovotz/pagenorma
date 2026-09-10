@@ -219,6 +219,9 @@ function postaviGlobalneEventListenere() {
   }
 
   document.getElementById('btn-export-backup')?.addEventListener('click', izveziSigurnosnuKopiju);
+  document.getElementById('btn-import-backup-trigger')?.addEventListener('click', () => {
+    document.getElementById('btn-import-backup')?.click();
+  });
   document.getElementById('btn-import-backup')?.addEventListener('change', uveziSigurnosnuKopiju);
 
   const btnSpremiPostavke = document.querySelector('#settings-page > div[style*="text-align: right"] > button');

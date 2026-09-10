@@ -1,6 +1,13 @@
 // Renderiranje sučelja projekata i kontrola formi
 
-import { otvoriBazu, STORE_NAME, UNOSI_STORE, spremiUStorage } from '../../core/db.js';
+import {
+  otvoriBazu,
+  DB_NAME,
+  DB_VERSION,
+  STORE_NAME,
+  UNOSI_STORE,
+  spremiUStorage
+} from '../../core/db.js';
 import { dohvatiSveProjekte, dohvatiProjektPoId, obrisiProjektIzStoragea, izracunajPreostaleDane, rucniUnosZnakova } from './projects.js';
 import { pokreniTekstualnuAnalizu } from '../interlinear/interlinear.js';
 import { parseEpubFile } from '../epub-parser/epub.parser.js';
@@ -547,35 +554,36 @@ export function azurirajePrikazImenaEpuba(input) {
 export async function izveziSigurnosnuKopiju() {
   try {
     const db = await otvoriBazu();
+    const storeNames = Array.from(db.objectStoreNames);
+    const transaction = db.transaction(storeNames, 'readonly');
+    const stores = {};
 
-    const txP = db.transaction(STORE_NAME, 'readonly');
-    const projekti = await new Promise((res, rej) => {
-      const req = txP.objectStore(STORE_NAME).getAll();
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    });
-
-    const txU = db.transaction(UNOSI_STORE, 'readonly');
-    const unosi = await new Promise((res, rej) => {
-      const req = txU.objectStore(UNOSI_STORE).getAll();
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    });
+    await Promise.all(storeNames.map(storeName => new Promise((resolve, reject) => {
+      const request = transaction.objectStore(storeName).getAll();
+      request.onsuccess = () => {
+        stores[storeName] = request.result;
+        resolve();
+      };
+      request.onerror = () => reject(request.error);
+    })));
 
     const backupData = {
-      version: 6,
+      dbName: DB_NAME,
+      version: DB_VERSION,
+      dbVersion: DB_VERSION,
       datum: new Date().toISOString(),
-      projekti: projekti,
-      unosi: unosi
+      stores
     };
 
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+    const dataUrl = URL.createObjectURL(blob);
     const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("href", dataUrl);
     downloadAnchor.setAttribute("download", `mojih1500_backup_${new Date().toISOString().slice(0, 10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
+    URL.revokeObjectURL(dataUrl);
 
   } catch (err) {
     console.error("Error exporting backup:", err);
@@ -584,33 +592,41 @@ export async function izveziSigurnosnuKopiju() {
 }
 
 export async function uveziSigurnosnuKopiju(event) {
-  const file = event.target.files[0];
+  const file = event.target.files?.[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = async (e) => {
     try {
       const data = JSON.parse(e.target.result);
+      const stores = data.stores || {
+        [STORE_NAME]: data.projekti,
+        [UNOSI_STORE]: data.unosi || []
+      };
+      const storeNames = Object.keys(stores);
 
-      if (!data.projekti || !Array.isArray(data.projekti)) {
+      const db = await otvoriBazu();
+      const availableStoreNames = Array.from(db.objectStoreNames);
+
+      if (storeNames.length === 0 || storeNames.some(storeName =>
+        !availableStoreNames.includes(storeName) || !Array.isArray(stores[storeName])
+      )) {
         throw new Error("File structure is invalid.");
       }
 
-      const db = await otvoriBazu();
-
-      const txP = db.transaction(STORE_NAME, 'readwrite');
-      const storeP = txP.objectStore(STORE_NAME);
-      for (const p of data.projekti) {
-        storeP.put(p);
-      }
-
-      if (data.unosi && Array.isArray(data.unosi)) {
-        const txU = db.transaction(UNOSI_STORE, 'readwrite');
-        const storeU = txU.objectStore(UNOSI_STORE);
-        for (const u of data.unosi) {
-          storeU.put(u);
+      const transaction = db.transaction(availableStoreNames, 'readwrite');
+      for (const storeName of availableStoreNames) {
+        const store = transaction.objectStore(storeName);
+        store.clear();
+        for (const record of stores[storeName] || []) {
+          store.put(record);
         }
       }
+      await new Promise((resolve, reject) => {
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error);
+        transaction.onabort = () => reject(transaction.error || new Error('Database restore was aborted.'));
+      });
 
       alert("Backup successfully restored!");
       await ucitajDashboard();
