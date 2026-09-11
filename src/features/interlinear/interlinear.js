@@ -470,7 +470,9 @@ Dat ti je niz odlomaka u obliku JSON liste. Svaki element sadrži 'index', 'izvo
 
 Tvoj je zadatak analizirati svaki odlomak i, ako u prijevodu postoje stilske pogreške, krivi prijevodi, nekonzistentnost s priloženim glosarom ili propusti u prijevodu idioma, napiši kratku napomenu/komentar na jeziku prijevoda.
 
-Za svaki odlomak najprije procijeni je li 'prijevod' stvarni prijevod odgovarajućeg odlomka iz 'izvor'. Ako je tekst prijevoda iz drugog poglavlja, nepovezan tekst, sažetak umjesto prijevoda ili je očito potpuno pogrešan, postavi "ispravanPrijevod": false. U tom slučaju komentar kratko objasni problem. Ako su u jednom elementu spojena dva susjedna izvorna odlomka i njihov prijevod, to NIJE pogrešan prijevod: postavi "ispravanPrijevod": true i napomeni da su odlomci spojeni u prijevodu.
+Za svaki odlomak najprije procijeni je li 'prijevod' stvarni prijevod odgovarajućeg odlomka iz 'izvor'. Ako je tekst prijevoda iz drugog poglavlja, nepovezan tekst, sažetak umjesto prijevoda ili je očito potpuno pogrešan, postavi "ispravanPrijevod": false. U tom slučaju komentar kratko objasni problem. Ako je prijevod očito ispravan, postavi "ispravanPrijevod": true. Ako si nesiguran zbog poezije, naslova, različitih granica odlomaka, složene strukture ili drugih nejasnih podudarnosti, postavi "ispravanPrijevod": null. Samo "false" povećava zaštitni brojač od pet uzastopnih pogrešaka; "true" i "null" ne smiju aktivirati taj brojač.
+
+Ako su u jednom elementu spojena dva susjedna izvorna odlomka i njihov prijevod, to NIJE pogrešan prijevod: postavi "ispravanPrijevod": true i napomeni da su odlomci spojeni u prijevodu.
 
 Ne označavaj odlomak kao neispravan samo zato što se naslov poglavlja, osobno ime ili geografska lokacija razlikuju zbog prijevoda. Primjerice, "Chapter One: Lolitabu National Park, Zarakal" i njegov prevedeni naslov predstavljaju isto poglavlje. Naslovi poglavlja sami po sebi nisu dovoljan dokaz nepodudaranja; procijeni i stvarni prozni sadržaj.
 
@@ -513,7 +515,7 @@ ${JSON.stringify(glosar, null, 2)}
               properties: {
                 index: { type: "INTEGER" },
                 komentar: { type: "STRING" },
-                ispravanPrijevod: { type: "BOOLEAN" },
+                ispravanPrijevod: { type: "BOOLEAN", nullable: true },
                 spojeniOdlomci: { type: "BOOLEAN" }
               },
               required: ["index", "komentar", "ispravanPrijevod", "spojeniOdlomci"]
@@ -594,7 +596,7 @@ ${JSON.stringify(glosar, null, 2)}
       item &&
       Number.isInteger(item.index) &&
       typeof item.komentar === 'string' &&
-      typeof item.ispravanPrijevod === 'boolean' &&
+      (item.ispravanPrijevod === null || typeof item.ispravanPrijevod === 'boolean') &&
       typeof item.spojeniOdlomci === 'boolean'
     );
 
