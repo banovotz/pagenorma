@@ -80,10 +80,19 @@ export function pripremiTekstZaPoravnanje(rawTekst) {
   for (const blok of normaliziraniRedci) {
     const prethodni = odlomci[odlomci.length - 1];
     const zadnjiRedak = prethodni?.[prethodni.length - 1] || '';
+    const duljinaPrethodnogBloka = prethodni
+      ? prethodni.join(' ').length
+      : 0;
+    const duljinaPrvogRetkaBloka = blok[0]?.length || 0;
     const nastavak = prethodni &&
       !pronadiNaslovniMarker(prethodni[0]) &&
       !/[.!?…]["'”’)\]]?\s*$/u.test(zadnjiRedak) &&
-      !pronadiNaslovniMarker(blok[0]);
+      !pronadiNaslovniMarker(blok[0]) &&
+      // A long Google Docs paragraph ending without punctuation is still a
+      // complete paragraph. Only merge short physical-wrap fragments; this
+      // avoids consuming the next paragraph in prose such as scanned novels.
+      duljinaPrethodnogBloka <= 180 &&
+      duljinaPrvogRetkaBloka <= 180;
     if (nastavak) {
       prethodni.push(...blok);
     } else {
@@ -97,6 +106,11 @@ export function pripremiTekstZaPoravnanje(rawTekst) {
   // prose before alignment so every wrapped line is not treated as a new
   // paragraph.
   return odlomci.flatMap(redci => {
+    // In plain-text ePubs poetry is often represented by consecutive physical
+    // lines without blank separators. Preserve those lines so the structural
+    // classifier can protect the poem from prose/title boundary recovery.
+    if (detektirajPjesnickeBlokove(redci).includes('stih')) return redci;
+
     const rezultat = [];
     let prozniRedci = [];
     const isprazniProzu = () => {
@@ -108,6 +122,13 @@ export function pripremiTekstZaPoravnanje(rawTekst) {
 
     for (const redak of redci) {
       if (jeNaslovPoglavlja(redak) && (redci.length === 1 || pronadiNaslovniMarker(redak))) {
+        isprazniProzu();
+        rezultat.push(redak);
+      } else if (redci.length > 1 && redak.length > 180) {
+        // Google Docs commonly exports paragraph boundaries as a single
+        // newline, whereas wrapped scan/OCR lines are substantially shorter.
+        // Keep long physical lines separate instead of flattening adjacent
+        // paragraphs into one segment.
         isprazniProzu();
         rezultat.push(redak);
       } else {
@@ -248,35 +269,69 @@ export function razdvojiNaslovOdProze(odlomak) {
   return [odlomak];
 }
 
-function jeVjerojatnoStih(odlomak, susjedniOdlomci = []) {
+function jeKandidatStiha(odlomak) {
   const tekst = odlomak.trim();
   if (!tekst || jeNaslovPoglavlja(tekst)) return false;
   const rijeci = tekst.match(/\p{L}+/gu) || [];
   const zavrsavaRecenicom = /[.!?…]["'”’)\]]?\s*$/.test(tekst);
-  const kratkiSusjedi = susjedniOdlomci.filter(susjedni =>
-    susjedni && susjedni.length <= 120
-  ).length;
   return tekst.length <= 120 && (
-    !zavrsavaRecenicom ||
-    (rijeci.length <= 14 && kratkiSusjedi >= 2)
+    !zavrsavaRecenicom && rijeci.length <= 14 ||
+    (rijeci.length <= 10 && tekst.length <= 80)
   );
 }
 
-function vrstaSadrzaja(odlomci, index) {
+/**
+ * Prepoznaje stih tek nakon što vidi susjedne retke. Jedan kratak red nije
+ * dovoljan dokaz: naslovi, lokacije i OCR fragmenti često imaju isti oblik.
+ * Naslov se provjerava prvi kako pjesma ne bi progutala granicu poglavlja.
+ */
+export function detektirajPjesnickeBlokove(odlomci) {
+  const vrste = odlomci.map(odlomak =>
+    jeNaslovPoglavlja(odlomak) ? 'naslov' : 'proza'
+  );
+  let index = 0;
+
+  while (index < odlomci.length) {
+    if (vrste[index] === 'naslov' || !jeKandidatStiha(odlomci[index])) {
+      index++;
+      continue;
+    }
+
+    const pocetak = index;
+    while (
+      index < odlomci.length &&
+      vrste[index] !== 'naslov' &&
+      jeKandidatStiha(odlomci[index])
+    ) {
+      index++;
+    }
+    const duljinaBloka = index - pocetak;
+    const redciBezZavrseneRecenice = odlomci
+      .slice(pocetak, index)
+      .filter(redak => !/[.!?…]["'”’)\]]?\s*$/u.test(redak.trim()))
+      .length;
+    if (duljinaBloka >= 2 && redciBezZavrseneRecenice >= 2) {
+      for (let i = pocetak; i < index; i++) vrste[i] = 'stih';
+    }
+  }
+
+  return vrste;
+}
+
+function vrstaSadrzaja(odlomci, index, pjesnickeVrste = null) {
   const odlomak = odlomci[index] || '';
   if (jeNaslovPoglavlja(odlomak)) return 'naslov';
-  const susjedni = [odlomci[index - 1], odlomci[index + 1]].filter(Boolean);
-  return jeVjerojatnoStih(odlomak, susjedni) ? 'stih' : 'proza';
+  return (pjesnickeVrste || detektirajPjesnickeBlokove(odlomci))[index] === 'stih'
+    ? 'stih'
+    : 'proza';
 }
 
 function smijeSpojitiSadrzaj(izvorneVrste, prijevodneVrste) {
   const sveVrste = [...izvorneVrste, ...prijevodneVrste];
-  // Never let paragraph-boundary recovery consume a chapter heading together
-  // with a poem line or regular prose. This is what caused the poem/title
-  // drift in the reported package.
-  if (sveVrste.includes('naslov') && new Set(sveVrste).size > 1) return false;
-  if (sveVrste.includes('stih') && sveVrste.includes('proza')) return false;
-  return true;
+  // A 1:2 or 2:1 transition is safe only when every participating item has
+  // the same structural type. In particular, a heading must never consume a
+  // poem line (or ordinary prose) while recovering a lost boundary.
+  return sveVrste.length > 0 && new Set(sveVrste).size === 1;
 }
 
 function trosakStruktureNaslova(izvornaStruktura, prijevodnaStruktura) {
@@ -488,7 +543,7 @@ export function spojiBlokoveNaslovaPoglavlja(odlomci) {
       naslov.length < 4 &&
       odlomci[j].length < 180 &&
       !/[.!?…]["'”’)\]]?\s*$/.test(odlomci[j]) &&
-      (jeNaslovniDio(odlomci[j]) || jeVjerojatnoStih(odlomci[j], [naslov.join(' ')]))
+      jeNaslovniDio(odlomci[j])
     ) {
       naslov.push(odlomci[j]);
       j++;
@@ -631,8 +686,14 @@ export function poravnajSpojeneOdlomke(izvor, prijevod) {
   const omjer = procijeniOmjerPrijevoda(izvor, prijevod);
   // Content types are invariant during dynamic programming. Compute them
   // once instead of rerunning Unicode regexes for every candidate transition.
-  const izvorneVrste = izvor.map((_, index) => vrstaSadrzaja(izvor, index));
-  const prijevodneVrste = prijevod.map((_, index) => vrstaSadrzaja(prijevod, index));
+  const izvornePjesnickeVrste = detektirajPjesnickeBlokove(izvor);
+  const prijevodnePjesnickeVrste = detektirajPjesnickeBlokove(prijevod);
+  const izvorneVrste = izvor.map((_, index) =>
+    vrstaSadrzaja(izvor, index, izvornePjesnickeVrste)
+  );
+  const prijevodneVrste = prijevod.map((_, index) =>
+    vrstaSadrzaja(prijevod, index, prijevodnePjesnickeVrste)
+  );
   const izvorneStrukture = izvor.map(izvuciStrukturuNaslova);
   const prijevodneStrukture = prijevod.map(izvuciStrukturuNaslova);
   if (izvor.length * prijevod.length > 1500000) {
