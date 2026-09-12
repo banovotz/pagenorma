@@ -31,7 +31,9 @@ export async function dohvatiAnalizuIzIndexedDB(projektId = null) {
 
 
 export async function stvoriGlosar(izvorniTekst, prevedeniTekst, apiKey) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 90000);
 
   const prompt = `
 Analiziraj sljedeći izvorni tekst i njegov prijevod. 
@@ -104,11 +106,17 @@ ${prevedeniTekst}
     }
   };
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+  let response;
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));

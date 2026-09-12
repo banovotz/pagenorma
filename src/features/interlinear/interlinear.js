@@ -11,6 +11,7 @@ import { parsirajLlmJson, porukaGreske } from '../../utils/llmJson.js';
 
 const GEMINI_MIN_REQUEST_INTERVAL_MS = 5000;
 const GEMINI_MAX_RATE_LIMIT_RETRIES = 5;
+const GEMINI_REQUEST_TIMEOUT_MS = 90000;
 let zadnjiGeminiPoziv = 0;
 
 function pricekaj(ms) {
@@ -38,17 +39,13 @@ function skratiZaPrompt(tekst, maxZnakova = 2000) {
 }
 
 export function ocistiISpodijeliOdlomke(tekst) {
-  if (!tekst) return [];
-  return tekst
-    .split(/\n\s*\n/)
-    .map(o => o.trim())
-    .filter(o => o.length > 0);
+  return pripremiTekstZaPoravnanje(tekst);
 }
 
 export function pripremiTekstZaPoravnanje(rawTekst) {
   if (!rawTekst) return [];
 
-  return rawTekst
+  const redci = rawTekst
     .replace(/<[^>]*>/g, '')
     .replace(/\u00A0/g, ' ')
     // Google Docs/HTML text can expose vertical-tab and form-feed paragraph
@@ -58,8 +55,68 @@ export function pripremiTekstZaPoravnanje(rawTekst) {
     .replace(/\r/g, '\n')
     .replace(/\t+/g, ' ')
     .split('\n')
-    .map(linija => linija.trim())
-    .filter(linija => linija.length > 0);
+    .map(linija => linija.trim());
+
+  const normaliziraniRedci = [];
+  let trenutniBlok = [];
+  const dodajBlok = () => {
+    if (trenutniBlok.length > 0) normaliziraniRedci.push(trenutniBlok);
+    trenutniBlok = [];
+  };
+
+  for (const redak of redci) {
+    if (redak) {
+      trenutniBlok.push(redak);
+      continue;
+    }
+    dodajBlok();
+  }
+  dodajBlok();
+
+  // Project Gutenberg plain-text sources sometimes put an empty line after
+  // every visual line. A missing sentence terminator is the reliable signal
+  // that the next block is a continuation rather than a new paragraph.
+  const odlomci = [];
+  for (const blok of normaliziraniRedci) {
+    const prethodni = odlomci[odlomci.length - 1];
+    const zadnjiRedak = prethodni?.[prethodni.length - 1] || '';
+    const nastavak = prethodni &&
+      !pronadiNaslovniMarker(prethodni[0]) &&
+      !/[.!?…]["'”’)\]]?\s*$/u.test(zadnjiRedak) &&
+      !pronadiNaslovniMarker(blok[0]);
+    if (nastavak) {
+      prethodni.push(...blok);
+    } else {
+      odlomci.push(blok);
+    }
+  }
+
+  // Plain-text exports frequently wrap one prose paragraph at the visual
+  // margin, while EPUB/Docs exports use blank lines for paragraph boundaries.
+  // Keep explicit structural headings as separate lines, but unwrap ordinary
+  // prose before alignment so every wrapped line is not treated as a new
+  // paragraph.
+  return odlomci.flatMap(redci => {
+    const rezultat = [];
+    let prozniRedci = [];
+    const isprazniProzu = () => {
+      if (prozniRedci.length > 0) {
+        rezultat.push(prozniRedci.join(' '));
+        prozniRedci = [];
+      }
+    };
+
+    for (const redak of redci) {
+      if (jeNaslovPoglavlja(redak) && (redci.length === 1 || pronadiNaslovniMarker(redak))) {
+        isprazniProzu();
+        rezultat.push(redak);
+      } else {
+        prozniRedci.push(redak);
+      }
+    }
+    isprazniProzu();
+    return rezultat;
+  });
 }
 
 function procijeniOmjerPrijevoda(izvor, prijevod) {
@@ -102,23 +159,91 @@ function pronadiPrviNarativniOdlomak(odlomci) {
   );
 }
 
-function jeNaslovPoglavlja(odlomak) {
-  return /^(?:#{1,6}\s*)?(?:chapter|first chapter|prologue|part|poglavlje|prvo poglavlje|proslov|dio)\b/i.test(
-    odlomak.trim()
+function normalizirajOdlomak(odlomak) {
+  return (odlomak || '').replace(/\s+/g, ' ').trim();
+}
+
+const NASLOVNI_MARKERI = [
+  'chapter', 'chapitre', 'capitulo', 'capítulo', 'capitolo', 'kapitel', 'teil', 'part', 'section',
+  'poglavlje', 'glava', 'kapitola', 'dio', 'prologue', 'prolog', 'prólogo', 'sekcija', 'rozdział',
+  'hoofdstuk', 'deel', 'luku', 'osa', 'fejezet', 'rész', 'capitol', 'parte', 'partea', 'część',
+  'časť', 'část', 'capítol'
+];
+
+function jeVelikoSlovo(znak) {
+  return /^\p{Lu}$/u.test(znak);
+}
+
+function pronadiNaslovniMarker(tekst) {
+  const prviDio = tekst.toLocaleLowerCase().split(/[\s:;–—-]+/u).slice(0, 3);
+  return NASLOVNI_MARKERI.find(marker =>
+    prviDio.some(token => token === marker)
   );
 }
 
-function razdvojiNaslovOdProze(odlomak) {
+function pretvoriRimskiBroj(token) {
+  const cisti = token.toLocaleLowerCase().replace(/[^ivxlcdm]/g, '');
+  const bezInterpunkcije = token.toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+  if (!cisti || cisti !== bezInterpunkcije || !/^[ivxlcdm]+$/u.test(cisti)) return null;
+  const vrijednosti = { i: 1, v: 5, x: 10, l: 50, c: 100, d: 500, m: 1000 };
+  let rezultat = 0;
+  for (let i = 0; i < cisti.length; i++) {
+    const vrijednost = vrijednosti[cisti[i]];
+    rezultat += vrijednost < (vrijednosti[cisti[i + 1]] || 0) ? -vrijednost : vrijednost;
+  }
+  return rezultat;
+}
+
+function izvuciStrukturuNaslova(odlomak) {
+  const tekst = normalizirajOdlomak(odlomak);
+  if (!tekst || tekst.length > 220) return { tekst, bodovi: 0, marker: null, brojevi: [], godine: [], naslovniOblik: false };
+  const rijeci = tekst.match(/\p{L}+/gu) || [];
+  const tokeni = tekst.split(/[\s:;–—-]+/u).filter(Boolean);
+  const brojevi = [...tekst.matchAll(/\b\d{1,4}\b/gu)].map(podudaranje => Number(podudaranje[0]));
+  const rimski = tokeni.map(pretvoriRimskiBroj).filter(Boolean);
+  const godine = brojevi.filter(broj => broj >= 1000 && broj <= 2999);
+  const marker = pronadiNaslovniMarker(tekst);
+  const zavrsavaRecenicom = /[.!?…]["'”’)\]]?\s*$/u.test(tekst);
+  const velikaPocetna = jeVelikoSlovo([...tekst][0] || '');
+  const naslovniOblik = rijeci.length > 0 &&
+    rijeci.filter(rijec => jeVelikoSlovo([...rijec][0] || '')).length >= Math.max(1, Math.ceil(rijeci.length / 2));
+  let bodovi = 0;
+  if (marker) bodovi += 5;
+  if (brojevi.length > 0 || rimski.length > 0) bodovi += 2;
+  if (godine.length > 0 || /,\s*\p{Lu}/u.test(tekst)) bodovi += 1;
+  if (velikaPocetna) bodovi += 1;
+  if (naslovniOblik) bodovi += 1;
+  if (rijeci.length > 0 && rijeci.length <= 12) bodovi += 1;
+  if (!zavrsavaRecenicom) bodovi += 1;
+  if (zavrsavaRecenicom) bodovi -= 2;
+  return { tekst, bodovi, marker, brojevi: [...brojevi, ...rimski], godine, naslovniOblik };
+}
+
+export function jeNaslovPoglavlja(odlomak) {
+  const struktura = izvuciStrukturuNaslova(odlomak);
+  return Boolean(struktura.marker || struktura.bodovi >= 5 ||
+    (struktura.bodovi >= 4 && struktura.naslovniOblik));
+}
+
+function jeNaslovniDio(odlomak) {
+  return izvuciStrukturuNaslova(odlomak).bodovi >= 4;
+}
+
+export function razdvojiNaslovOdProze(odlomak) {
   if (!jeNaslovPoglavlja(odlomak)) return [odlomak];
 
-  // EPUB/Google Docs can place a chapter heading and its first prose sentence
-  // in the same paragraph. A quote after the heading is a reliable boundary
-  // for the common literary format without splitting ordinary quoted prose.
-  const granicaCitata = odlomak.search(/\s+[“"'„«]/);
-  if (granicaCitata > 0) {
-    const naslov = odlomak.slice(0, granicaCitata).trim();
-    const proza = odlomak.slice(granicaCitata).trim();
-    if (naslov.length >= 8 && proza.length >= 20) return [naslov, proza];
+  const granice = [
+    odlomak.search(/\s+[“"„«]/),
+    odlomak.search(/\s+[–—-]\s+(?=\p{Lu}|[“"„«])/u),
+    odlomak.search(/:\s+(?=\p{Lu}|[“"„«])/u),
+    odlomak.search(/\s+\(\s*(?=\p{Lu}|[“"„«])/u)
+  ].filter(index => index > 0);
+
+  const granica = granice.length > 0 ? Math.min(...granice) : -1;
+  if (granica > 0) {
+    const naslov = odlomak.slice(0, granica).trim();
+    const proza = odlomak.slice(granica).trim();
+    if (naslov.length >= 8 && proza.length >= 10) return [naslov, proza];
   }
   return [odlomak];
 }
@@ -154,26 +279,216 @@ function smijeSpojitiSadrzaj(izvorneVrste, prijevodneVrste) {
   return true;
 }
 
-function spojiBlokoveNaslovaPoglavlja(odlomci) {
+function trosakStruktureNaslova(izvornaStruktura, prijevodnaStruktura) {
+  const izvorniNaslov = izvornaStruktura.bodovi >= 4;
+  const prijevodniNaslov = prijevodnaStruktura.bodovi >= 4;
+
+  if (!izvorniNaslov && !prijevodniNaslov) return 0;
+  if (izvorniNaslov !== prijevodniNaslov) return 3;
+
+  let trosak = 0;
+  if (izvornaStruktura.marker !== prijevodnaStruktura.marker) trosak += 0.15;
+  if (izvornaStruktura.godine.length > 0 && prijevodnaStruktura.godine.length > 0) {
+    trosak += izvornaStruktura.godine.some(godina => prijevodnaStruktura.godine.includes(godina)) ? 0 : 2;
+  }
+  if (izvornaStruktura.brojevi.length > 0 && prijevodnaStruktura.brojevi.length > 0) {
+    trosak += izvornaStruktura.brojevi.some(broj => prijevodnaStruktura.brojevi.includes(broj)) ? 0 : 2;
+  }
+  return trosak;
+}
+
+function poravnajVelikeSkupove(izvor, prijevod, omjer, izvorneVrste, prijevodneVrste, izvorneStrukture, prijevodneStrukture) {
+  const rezultat = [];
+  let i = 0;
+  let j = 0;
+
+  while (i < izvor.length || j < prijevod.length) {
+    if (i >= izvor.length) {
+      rezultat.push({ izvor: '', prijevod: prijevod[j++], spojeniOdlomci: false });
+      continue;
+    }
+    if (j >= prijevod.length) {
+      rezultat.push({ izvor: izvor[i++], prijevod: '', spojeniOdlomci: false });
+      continue;
+    }
+
+    const normalni = trosakDuljine(izvor[i], prijevod[j], omjer) +
+      trosakStruktureNaslova(izvorneStrukture[i], prijevodneStrukture[j]);
+    const kandidati = [{
+      trosak: normalni,
+      duljinaIzvora: 1,
+      duljinaPrijevoda: 1
+    }];
+
+    if (i + 1 < izvor.length && smijeSpojitiSadrzaj(
+      [izvorneVrste[i], izvorneVrste[i + 1]],
+      [prijevodneVrste[j]]
+    )) {
+      kandidati.push({
+        trosak: 0.35 + trosakDuljine(`${izvor[i]} ${izvor[i + 1]}`, prijevod[j], omjer),
+        duljinaIzvora: 2,
+        duljinaPrijevoda: 1
+      });
+    }
+    if (j + 1 < prijevod.length && smijeSpojitiSadrzaj(
+      [izvorneVrste[i]],
+      [prijevodneVrste[j], prijevodneVrste[j + 1]]
+    )) {
+      kandidati.push({
+        trosak: 0.35 + trosakDuljine(izvor[i], `${prijevod[j]} ${prijevod[j + 1]}`, omjer),
+        duljinaIzvora: 1,
+        duljinaPrijevoda: 2
+      });
+    }
+
+    const najbolji = kandidati.reduce((prethodni, trenutni) =>
+      trenutni.trosak < prethodni.trosak ? trenutni : prethodni
+    );
+    rezultat.push({
+      izvor: izvor.slice(i, i + najbolji.duljinaIzvora).join(' '),
+      prijevod: prijevod.slice(j, j + najbolji.duljinaPrijevoda).join(' '),
+      spojeniOdlomci: najbolji.duljinaIzvora !== 1 || najbolji.duljinaPrijevoda !== 1
+    });
+    i += najbolji.duljinaIzvora;
+    j += najbolji.duljinaPrijevoda;
+  }
+
+  return rezultat;
+}
+
+function poravnajBandedDP(izvor, prijevod, omjer, izvorneVrste, prijevodneVrste, izvorneStrukture, prijevodneStrukture) {
+  const sirinaPojasa = Math.max(80, Math.abs(izvor.length - prijevod.length) + 40);
+  const troskovi = new Map();
+  const potezi = new Map();
+  const kljuc = (i, j) => `${i}:${j}`;
+  const spremi = (i, j, trosak, potez) => {
+    const k = kljuc(i, j);
+    if ((troskovi.get(k) ?? Number.POSITIVE_INFINITY) > trosak) {
+      troskovi.set(k, trosak);
+      potezi.set(k, potez);
+    }
+  };
+  const unutarPojasa = (i, j) => {
+    const ocekivaniJ = izvor.length === 0 ? 0 : (i * prijevod.length) / izvor.length;
+    return Math.abs(j - ocekivaniJ) <= sirinaPojasa;
+  };
+
+  spremi(0, 0, 0, null);
+  for (let i = 0; i <= izvor.length; i++) {
+    const ocekivaniJ = izvor.length === 0 ? 0 : (i * prijevod.length) / izvor.length;
+    const pocetakJ = Math.max(0, Math.floor(ocekivaniJ - sirinaPojasa));
+    const krajJ = Math.min(prijevod.length, Math.ceil(ocekivaniJ + sirinaPojasa));
+    for (let j = pocetakJ; j <= krajJ; j++) {
+      const trenutniTrosak = troskovi.get(kljuc(i, j));
+      if (!Number.isFinite(trenutniTrosak)) continue;
+
+      if (j < 8 && i < izvor.length && i < 30 && jeVjerojatnoUvodniOdlomak(izvor[i]) && unutarPojasa(i + 1, j)) {
+        spremi(i + 1, j, trenutniTrosak + 0.1, {
+          prethodni: [i, j],
+          preskocenUvod: true
+        });
+      }
+      if (i < izvor.length && j < prijevod.length && unutarPojasa(i + 1, j + 1)) {
+        spremi(
+          i + 1,
+          j + 1,
+          trenutniTrosak +
+            trosakDuljine(izvor[i], prijevod[j], omjer) +
+            trosakStruktureNaslova(izvorneStrukture[i], prijevodneStrukture[j]),
+          { prethodni: [i, j], spojeni: false }
+        );
+      }
+      if (i + 1 < izvor.length && j < prijevod.length && unutarPojasa(i + 2, j + 1) &&
+        smijeSpojitiSadrzaj([izvorneVrste[i], izvorneVrste[i + 1]], [prijevodneVrste[j]])) {
+        spremi(
+          i + 2,
+          j + 1,
+          trenutniTrosak + 0.35 +
+            trosakDuljine(`${izvor[i]} ${izvor[i + 1]}`, prijevod[j], omjer),
+          { prethodni: [i, j], spojeni: true }
+        );
+      }
+      if (i < izvor.length && j + 1 < prijevod.length && unutarPojasa(i + 1, j + 2) &&
+        smijeSpojitiSadrzaj([izvorneVrste[i]], [prijevodneVrste[j], prijevodneVrste[j + 1]])) {
+        spremi(
+          i + 1,
+          j + 2,
+          trenutniTrosak + 0.35 +
+            trosakDuljine(izvor[i], `${prijevod[j]} ${prijevod[j + 1]}`, omjer),
+          { prethodni: [i, j], razdvojeni: true }
+        );
+      }
+    }
+  }
+
+  if (!troskovi.has(kljuc(izvor.length, prijevod.length))) return null;
+
+  const stavke = [];
+  let i = izvor.length;
+  let j = prijevod.length;
+  const preskoceniUvod = [];
+  while (i > 0 || j > 0) {
+    const potez = potezi.get(kljuc(i, j));
+    if (!potez) return null;
+    const [prethodniI, prethodniJ] = potez.prethodni;
+    if (potez.preskocenUvod) {
+      preskoceniUvod.unshift(izvor[i - 1]);
+    } else {
+      stavke.unshift({
+        izvor: izvor.slice(prethodniI, i).join(' '),
+        prijevod: prijevod.slice(prethodniJ, j).join(' '),
+        spojeniOdlomci: Boolean(potez.spojeni || potez.razdvojeni)
+      });
+    }
+    i = prethodniI;
+    j = prethodniJ;
+  }
+  if (preskoceniUvod.length > 0) {
+    stavke.unshift(...preskoceniUvod.map(odlomak => ({
+      izvor: odlomak,
+      prijevod: '',
+      spojeniOdlomci: false,
+      preskocenUvod: true
+    })));
+  }
+  return stavke;
+}
+
+export function spojiBlokoveNaslovaPoglavlja(odlomci) {
   const rezultat = [];
   for (let i = 0; i < odlomci.length; i++) {
-    const razdvojeni = razdvojiNaslovOdProze(odlomci[i]);
+    const trenutni = odlomci[i];
+
+    if (i > 0 && jeNaslovPoglavlja(odlomci[i - 1]) && jeNaslovniDio(trenutni)) {
+      rezultat[rezultat.length - 1] = `${rezultat[rezultat.length - 1]} ${trenutni}`;
+      continue;
+    }
+
+    if (i + 1 < odlomci.length && jeNaslovniDio(trenutni) && jeNaslovPoglavlja(odlomci[i + 1])) {
+      rezultat.push(`${trenutni} ${odlomci[i + 1]}`);
+      i += 1;
+      continue;
+    }
+
+    const razdvojeni = razdvojiNaslovOdProze(trenutni);
     if (razdvojeni.length > 1) {
       rezultat.push(razdvojeni[0], razdvojeni[1]);
       continue;
     }
-    if (!jeNaslovPoglavlja(odlomci[i])) {
-      rezultat.push(odlomci[i]);
+
+    if (!jeNaslovPoglavlja(trenutni) && !jeNaslovniDio(trenutni)) {
+      rezultat.push(trenutni);
       continue;
     }
 
-    const naslov = [odlomci[i]];
+    const naslov = [trenutni];
     let j = i + 1;
     while (
       j < odlomci.length &&
       naslov.length < 4 &&
-      odlomci[j].length < 140 &&
-      !/[.!?…]["'”’)\]]?\s*$/.test(odlomci[j])
+      odlomci[j].length < 180 &&
+      !/[.!?…]["'”’)\]]?\s*$/.test(odlomci[j]) &&
+      (jeNaslovniDio(odlomci[j]) || jeVjerojatnoStih(odlomci[j], [naslov.join(' ')]))
     ) {
       naslov.push(odlomci[j]);
       j++;
@@ -318,6 +633,31 @@ export function poravnajSpojeneOdlomke(izvor, prijevod) {
   // once instead of rerunning Unicode regexes for every candidate transition.
   const izvorneVrste = izvor.map((_, index) => vrstaSadrzaja(izvor, index));
   const prijevodneVrste = prijevod.map((_, index) => vrstaSadrzaja(prijevod, index));
+  const izvorneStrukture = izvor.map(izvuciStrukturuNaslova);
+  const prijevodneStrukture = prijevod.map(izvuciStrukturuNaslova);
+  if (izvor.length * prijevod.length > 1500000) {
+    console.warn(`Velik broj odlomaka (${izvor.length} x ${prijevod.length}); koristi se banded DP poravnanje.`);
+    const bandedRezultat = poravnajBandedDP(
+      izvor,
+      prijevod,
+      omjer,
+      izvorneVrste,
+      prijevodneVrste,
+      izvorneStrukture,
+      prijevodneStrukture
+    );
+    if (bandedRezultat) return bandedRezultat;
+    console.warn('Banded DP nije pronašao put unutar pojasa; koristi se linearni fallback.');
+    return poravnajVelikeSkupove(
+      izvor,
+      prijevod,
+      omjer,
+      izvorneVrste,
+      prijevodneVrste,
+      izvorneStrukture,
+      prijevodneStrukture
+    );
+  }
   const troskovi = Array.from({ length: izvor.length + 1 }, () =>
     Array(prijevod.length + 1).fill(Number.POSITIVE_INFINITY)
   );
@@ -340,7 +680,9 @@ export function poravnajSpojeneOdlomke(izvor, prijevod) {
         }
       }
       if (i < izvor.length && j < prijevod.length) {
-        const normalniTrosak = troskovi[i][j] + trosakDuljine(izvor[i], prijevod[j], omjer);
+        const normalniTrosak = troskovi[i][j] +
+          trosakDuljine(izvor[i], prijevod[j], omjer) +
+          trosakStruktureNaslova(izvorneStrukture[i], prijevodneStrukture[j]);
         if (normalniTrosak < troskovi[i + 1][j + 1]) {
           troskovi[i + 1][j + 1] = normalniTrosak;
           potezi[i + 1][j + 1] = { prethodni: [i, j], spojeni: false };
@@ -462,7 +804,7 @@ export async function dohvatiCijeliTekstIzEpuba(file) {
 }
 
 export async function pozoviGeminiAPI(paketOdlomaka, glosar, apiKey, pokusaj = 1) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
 
   const systemInstructionText = `
 Ti si stručnjak za književno prevođenje.
@@ -531,11 +873,19 @@ ${JSON.stringify(glosar, null, 2)}
 
   try {
     await pricekajGeminiInterval();
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), GEMINI_REQUEST_TIMEOUT_MS);
+    let response;
+    try {
+      response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
 
     if (response.status === 429) {
       if (pokusaj > GEMINI_MAX_RATE_LIMIT_RETRIES) {
@@ -730,12 +1080,12 @@ export async function poravnajTekstoveSGemini(
           uzastopnoNeispravnih = 0;
         }
         if (uzastopnoNeispravnih >= 5) {
-          const error = new Error(
-            "Analiza je zaustavljena jer je Gemini označio pet uzastopnih odlomaka kao neispravan ili nepovezan prijevod. " +
-            "Provjerite jesu li izvor i prijevod iz istog poglavlja i pokušajte ponovno."
-          );
-          error.code = 'CONSECUTIVE_TRANSLATION_MISMATCH';
-          throw error;
+          const upozorenje = "Gemini je označio najmanje pet uzastopnih odlomaka kao moguće nepovezane prijevode. " +
+            "Analiza se nastavlja jer takva procjena može biti nepouzdana kod strojnih prijevoda, različitih jezika i pomaknutih granica odlomaka.";
+          const postojećaNapomena = komentariMap.get(stavka.index);
+          komentariMap.set(stavka.index, [postojećaNapomena, upozorenje].filter(Boolean).join(" "));
+          console.warn(`[Gemini paket ${i + 1}] ${upozorenje}`);
+          uzastopnoNeispravnih = 0;
         }
       }
       const prosjecnoTrajanjePaketa = (performance.now() - vrijemePocetka) / (i + 1);
@@ -782,6 +1132,26 @@ function formatirajTrajanje(ms) {
     : `oko ${minute} min`;
 }
 
+function postaviStatusPoruku(statusText, poruka) {
+  if (!statusText) return;
+  const statusMessage = document.getElementById('llm-status-message');
+  if (statusMessage && statusText.contains(statusMessage)) {
+    statusMessage.innerText = poruka;
+  } else {
+    statusText.innerText = poruka;
+  }
+}
+
+function postaviProcjenu(statusText, ukupnoMs, preostaloMs) {
+  if (!statusText) return;
+  const ukupno = document.getElementById('llm-estimated-total');
+  const preostalo = document.getElementById('llm-estimated-remaining');
+  if (ukupno && preostalo && statusText.contains(ukupno) && statusText.contains(preostalo)) {
+    ukupno.innerText = formatirajTrajanje(ukupnoMs);
+    preostalo.innerText = formatirajTrajanje(preostaloMs);
+  }
+}
+
 export async function zapocniAnaliziranje(projekt) {
   const progressBar = document.getElementById('llm-progress-bar');
   const statusText = document.getElementById('llm-status-text');
@@ -795,7 +1165,7 @@ export async function zapocniAnaliziranje(projekt) {
   }
 
   if (progressBar) progressBar.style.width = '5%';
-  if (statusText) statusText.innerText = "⏳ Dohvaćanje tekstova izvora i prijevoda...";
+  postaviStatusPoruku(statusText, "⏳ Dohvaćanje tekstova izvora i prijevoda...");
 
   try {
     let izvorTekst = "";
@@ -812,9 +1182,9 @@ export async function zapocniAnaliziranje(projekt) {
       const epubDatoteka = (epubInput && epubInput.files && epubInput.files[0]) ? epubInput.files[0] : null;
 
       if (epubDatoteka) {
-        if (statusText) statusText.innerText = jePdfDatoteka(epubDatoteka)
+        postaviStatusPoruku(statusText, jePdfDatoteka(epubDatoteka)
           ? "⏳ Čitanje izvornog PDF-a i OCR obrada..."
-          : "⏳ Čitanje izvornog ePub-a...";
+          : "⏳ Čitanje izvornog ePub-a...");
         izvorTekst = jePdfDatoteka(epubDatoteka)
           ? await dohvatiCijeliTekstIzPdfa(epubDatoteka)
           : await dohvatiCijeliTekstIzEpuba(epubDatoteka);
@@ -834,7 +1204,7 @@ export async function zapocniAnaliziranje(projekt) {
     if (projekt.tekstPrijevoda && projekt.tekstPrijevoda.trim().length > 0) {
       prijevodTekst = projekt.tekstPrijevoda;
     } else if (gdocUrl) {
-      if (statusText) statusText.innerText = "⏳ Dohvaćanje prijevoda s Google Docsa...";
+      postaviStatusPoruku(statusText, "⏳ Dohvaćanje prijevoda s Google Docsa...");
       prijevodTekst = await dohvatiCijeliTekstIzGDoca(gdocUrl);
       projekt.tekstPrijevoda = prijevodTekst;
       projekt.gdocUrl = gdocUrl;
@@ -845,7 +1215,7 @@ export async function zapocniAnaliziranje(projekt) {
       throw new Error("Nije pronađen tekst prijevoda.");
     }
 
-    if (statusText) statusText.innerText = "⏳ Normalizacija i strukturiranje tekstova...";
+    postaviStatusPoruku(statusText, "⏳ Normalizacija i strukturiranje tekstova...");
     if (progressBar) progressBar.style.width = '10%';
     const normaliziraniSegmenti = stvoriNormaliziraneSegmente(izvorTekst, prijevodTekst);
 
@@ -868,7 +1238,7 @@ export async function zapocniAnaliziranje(projekt) {
         : Boolean(glosar && typeof glosar === 'object' && Object.keys(glosar).length > 0);
 
     if (!imaGlosar) {
-      if (statusText) statusText.innerText = "⏳ Generiranje glosara...";
+      postaviStatusPoruku(statusText, "⏳ Generiranje glosara...");
       try {
         glosar = await stvoriGlosar(skratiZaPrompt(procisceniIzvor), skratiZaPrompt(procisceniPrijevod), apiKey);
         const generiraneStavke = Array.isArray(glosar?.terms)
@@ -894,11 +1264,11 @@ export async function zapocniAnaliziranje(projekt) {
       } catch (err) {
         console.error("Glosar nije moguće generirati, analiza se nastavlja bez glosara:", err);
         glosar = {};
-        if (statusText) statusText.innerText = `⚠️ Glosar nije generiran; analiza se nastavlja (${porukaGreske(err)}).`;
+        postaviStatusPoruku(statusText, `⚠️ Glosar nije generiran; analiza se nastavlja (${porukaGreske(err)}).`);
       }
     }
 
-    if (statusText) statusText.innerText = "⏳ Pokretanje analize odlomaka uz glosar...";
+    postaviStatusPoruku(statusText, "⏳ Pokretanje analize odlomaka uz glosar...");
     if (progressBar) progressBar.style.width = '30%';
 
     const poravnaniRezultat = await poravnajTekstoveSGemini(
@@ -907,11 +1277,9 @@ export async function zapocniAnaliziranje(projekt) {
       glosar,
       apiKey,
       (napredak) => {
-        const procjena = napredak.procijenjenoUkupno === null
-          ? "Procijenjeno trajanje: računanje procjene..."
-          : `Procijenjeno trajanje: ${formatirajTrajanje(napredak.procijenjenoUkupno)}; preostalo: ${formatirajTrajanje(napredak.procijenjenoPreostalo)}`;
-        if (statusText) {
-          statusText.innerText = `${napredak.poruka}\n${procjena}`;
+        postaviStatusPoruku(statusText, napredak.poruka);
+        if (napredak.procijenjenoUkupno !== null) {
+          postaviProcjenu(statusText, napredak.procijenjenoUkupno, napredak.procijenjenoPreostalo);
         }
         const prilagodjeniPostotak = 30 + Math.round((napredak.postotak / 100) * 60);
         if (progressBar) progressBar.style.width = `${prilagodjeniPostotak}%`;
@@ -992,7 +1360,10 @@ export async function pokreniTekstualnuAnalizu(projektId, event) {
 
   if (postojeciRezultat) {
     const potvrdi = confirm("Za ovaj projekt već postoji analiza. Nova analiza će resetirati postojeće podatke. Želite li nastaviti?");
-    if (!potvrdi) return;
+    if (!potvrdi) {
+      if (modal) modal.style.display = 'none';
+      return;
+    }
   }
 
   const projekt = await new Promise((resolve) => {

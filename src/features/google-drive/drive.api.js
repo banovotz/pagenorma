@@ -22,16 +22,17 @@ function extractText(content = []) {
     if (element.paragraph) {
       return element.paragraph.elements
         .map(item => item.textRun?.content || '')
-        .join('');
+        .join('')
+        .replace(/\s+$/u, '');
     }
     if (element.table) {
       return element.table.tableRows
         .flatMap(row => row.tableCells.flatMap(cell => extractText(cell.content)))
-        .join('');
+        .join('\n');
     }
     if (element.tableOfContents) return extractText(element.tableOfContents.content);
     return '';
-  }).join('');
+  }).filter(Boolean).join('\n\n');
 }
 
 export async function dohvatiCijeliTekstIzGDoca(gdocUrl) {
