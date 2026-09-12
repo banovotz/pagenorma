@@ -1,6 +1,6 @@
 const FIREBASE_VERSION = '10.12.2';
 const FIREBASE_CONFIG = {
-  apiKey: '',
+  apiKey: "__FIREBASE_API_KEY__",
   authDomain: 'pagenorma-7d199.firebaseapp.com',
   projectId: 'pagenorma-7d199',
   appId: ''
@@ -17,8 +17,7 @@ let initializationStarted = false;
 
 function firebaseConfig() {
   return { ...FIREBASE_CONFIG, ...window.PAGENORMA_FIREBASE_CONFIG = {
-  apiKey: 'AIzaSyCfSWaXm5Fnl3iUqRl4CJvBQb142BW1RBc',
-  appId: 'pagenorma-7d199'
+  
         } 
     }
 }
