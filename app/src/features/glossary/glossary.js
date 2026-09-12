@@ -3,6 +3,21 @@
 import { otvoriBazu, INTERLINEARNI_STORE } from '../../core/db.js';
 import { parsirajLlmJson } from '../../utils/llmJson.js';
 
+const GLOSAR_MIN_REQUEST_INTERVAL_MS = 5000;
+const GLOSAR_MAX_SEGMENTS_PER_REQUEST = 20;
+const GLOSAR_MAX_CHARS_PER_REQUEST = 24000;
+let zadnjiGlosarPoziv = 0;
+
+function pricekaj(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function pricekajGlosarInterval() {
+  const preostalo = GLOSAR_MIN_REQUEST_INTERVAL_MS - (Date.now() - zadnjiGlosarPoziv);
+  if (preostalo > 0) await pricekaj(preostalo);
+  zadnjiGlosarPoziv = Date.now();
+}
+
 export async function dohvatiGlosarIzIndexedDB(projektId = null) {
   const trenutniId = projektId ?? window.trenutniAnalizaId ?? window.trenutniProjektId;
   if (trenutniId == null) return {};
@@ -40,6 +55,9 @@ Analiziraj sljedeći izvorni tekst i njegov prijevod.
 Tvoj je zadatak izraditi detaljan rječnik/glosar ključnih pojmova, imena, fraza i specifične terminologije.
 
 Za svaki pojam u izvorniku pronađi sve načine na koje je preveden u tekstu (uključujući sve alternativne prijevode ili varijacije za istu riječ).
+Ne ograničavaj rezultat na nekoliko najčešćih pojmova: uključi i vlastita imena,
+geografske nazive, kulturne reference, fraze, idiome i specifične termine koji
+se pojavljuju u ovom dijelu knjige.
 
 Vrati isključivo validan JSON u sljedećem formatu bez dodatnog Markdown teksta ili objašnjenja:
 {
@@ -138,4 +156,116 @@ ${prevedeniTekst}
   }
 
   return glosar;
+}
+
+function napraviPaketeZaGlosar(segmenti) {
+  const paketi = [];
+  let paket = [];
+  let brojZnakova = 0;
+
+  for (const segment of segmenti) {
+    const izvor = String(segment?.izvor || '').trim();
+    const prijevod = String(segment?.prijevod || '').trim();
+    if (!izvor || !prijevod) continue;
+
+    const duljina = izvor.length + prijevod.length;
+    if (
+      paket.length > 0 &&
+      (paket.length >= GLOSAR_MAX_SEGMENTS_PER_REQUEST ||
+        brojZnakova + duljina > GLOSAR_MAX_CHARS_PER_REQUEST)
+    ) {
+      paketi.push(paket);
+      paket = [];
+      brojZnakova = 0;
+    }
+
+    paket.push({ izvor, prijevod });
+    brojZnakova += duljina;
+  }
+
+  if (paket.length > 0) paketi.push(paket);
+  return paketi;
+}
+
+function objediniGlosare(glosari) {
+  const objedinjeni = new Map();
+
+  for (const glosar of glosari) {
+    for (const stavka of glosar?.terms || []) {
+      const izvorniPojam = String(stavka?.source_term || '').trim();
+      const glavniPrijevod = String(stavka?.primary_translation || '').trim();
+      if (!izvorniPojam || !glavniPrijevod) continue;
+
+      const kljuc = izvorniPojam.toLocaleLowerCase('hr');
+      const postojeci = objedinjeni.get(kljuc);
+      if (!postojeci) {
+        objedinjeni.set(kljuc, {
+          source_term: izvorniPojam,
+          primary_translation: glavniPrijevod,
+          alternatives: [],
+          has_inconsistency: Boolean(stavka.has_inconsistency)
+        });
+        objedinjeni.get(kljuc).alternatives.push(...(stavka.alternatives || []));
+        continue;
+      }
+
+      postojeci.has_inconsistency ||= Boolean(stavka.has_inconsistency);
+      const prijevodi = new Set([
+        postojeci.primary_translation.toLocaleLowerCase('hr'),
+        ...postojeci.alternatives.map(alternativa =>
+          String(alternativa?.translation || '').toLocaleLowerCase('hr')
+        )
+      ]);
+      if (!prijevodi.has(glavniPrijevod.toLocaleLowerCase('hr'))) {
+        postojeci.alternatives.push({
+          translation: glavniPrijevod,
+          context: 'Alternativni prijevod pronađen u drugom dijelu knjige.'
+        });
+      }
+      for (const alternativa of stavka.alternatives || []) {
+        const prijevod = String(alternativa?.translation || '').trim();
+        if (!prijevod || prijevodi.has(prijevod.toLocaleLowerCase('hr'))) continue;
+        postojeci.alternatives.push(alternativa);
+        prijevodi.add(prijevod.toLocaleLowerCase('hr'));
+      }
+    }
+  }
+
+  return { terms: [...objedinjeni.values()] };
+}
+
+/**
+ * Izrađuje glosar iz svih uparenih odlomaka knjige.
+ * Obrada u paketima izbjegava ograničenje konteksta modela, a objedinjavanje
+ * zadržava pojmove i alternativne prijevode pronađene u različitim paketima.
+ */
+export async function stvoriGlosarIzSegmenata(segmenti, apiKey, onProgress = null) {
+  const paketi = napraviPaketeZaGlosar(segmenti);
+  if (paketi.length === 0) {
+    throw new Error('Nema uparenih odlomaka za izradu glosara.');
+  }
+
+  const glosari = [];
+  const vrijemePocetka = performance.now();
+  for (let index = 0; index < paketi.length; index += 1) {
+    await pricekajGlosarInterval();
+    const paket = paketi[index];
+    const glosar = await stvoriGlosar(
+      paket.map(stavka => stavka.izvor).join('\n\n'),
+      paket.map(stavka => stavka.prijevod).join('\n\n'),
+      apiKey
+    );
+    glosari.push(glosar);
+    if (typeof onProgress === 'function') {
+      const prosjecnoTrajanjePaketa = (performance.now() - vrijemePocetka) / (index + 1);
+      onProgress({
+        trenutniPaket: index + 1,
+        ukupnoPaketa: paketi.length,
+        procijenjenoUkupno: prosjecnoTrajanjePaketa * paketi.length,
+        procijenjenoPreostalo: prosjecnoTrajanjePaketa * (paketi.length - index - 1)
+      });
+    }
+  }
+
+  return objediniGlosare(glosari);
 }
