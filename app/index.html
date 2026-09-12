@@ -503,6 +503,29 @@
     
     <div id="llm-info-box"></div>
 
+    <div id="llm-analysis-options" style="display: none; margin: 15px 0; padding: 12px; border: 1px solid #d7e7e7; border-radius: 6px; background: #f7fbfb;">
+      <div style="font-weight: 600; margin-bottom: 8px;">Što želite ponovno izraditi?</div>
+      <label style="display: block; margin: 6px 0;">
+        <input type="checkbox" id="llm-recreate-glossary">
+        Glosar
+      </label>
+      <label style="display: block; margin: 6px 0;">
+        <input type="checkbox" id="llm-recreate-analysis">
+        Analizu komentara
+      </label>
+      <div id="llm-options-error" style="display: none; color: #b42318; font-size: 0.85em; margin-top: 8px;">
+        Odaberite barem jednu opciju.
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px;">
+        <button type="button" id="llm-options-cancel" class="btn-secondary">
+          Odustani
+        </button>
+        <button type="button" id="llm-options-start" class="btn-primary" style="padding: 7px 14px;">
+          Pokreni odabrano
+        </button>
+      </div>
+    </div>
+
     <div id="llm-progress-container" style="display: none; margin: 15px 0;">
       <div style="background: #eee; height: 12px; border-radius: 6px; overflow: hidden;">
         <div id="llm-progress-bar" style="background: #008080; width: 0%; height: 100%; transition: width 0.2s;"></div>

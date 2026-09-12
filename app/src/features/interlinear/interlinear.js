@@ -3,7 +3,7 @@
 import { otvoriBazu, STORE_NAME, INTERLINEARNI_STORE, spremiUStorage } from '../../core/db.js';
 import { dohvatiGeminiKluc } from '../../core/state.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
-import { dohvatiGlosarIzIndexedDB, stvoriGlosar } from '../glossary/glossary.js';
+import { dohvatiGlosarIzIndexedDB, stvoriGlosarIzSegmenata } from '../glossary/glossary.js';
 import { navigirajNa } from '../../core/router.js';
 import { dohvatiCijeliTekstIzPdfa, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
 import { dohvatiDokumenteSpinea } from '../epub-parser/epub.parser.js';
@@ -872,6 +872,12 @@ Ti si stručnjak za književno prevođenje.
 Dat ti je niz odlomaka u obliku JSON liste. Svaki element sadrži 'index', 'izvor' (izvorni tekst) i 'prijevod' (prevedeni tekst).
 
 Tvoj je zadatak analizirati svaki odlomak i, ako u prijevodu postoje stilske pogreške, krivi prijevodi, nekonzistentnost s priloženim glosarom ili propusti u prijevodu idioma, napiši kratku napomenu/komentar na jeziku prijevoda.
+Jezik prijevoda odredi iz sadržaja polja 'prijevod' (ne iz jezika ove instrukcije,
+jezika izvornika ili jezika sučelja). Svi tekstualni izlazi koje generiraš,
+uključujući vrijednost polja 'komentar' i opis eventualne greške u polju 'greska',
+moraju biti napisani na tom jeziku. Ako je prijevod na engleskom, komentari moraju
+biti na engleskom; ako je na njemačkom, na njemačkom; ako je na nekom drugom
+jeziku, koristi taj jezik. Ne koristi hrvatski kao zadani jezik.
 
 Za svaki odlomak najprije procijeni je li 'prijevod' stvarni prijevod odgovarajućeg odlomka iz 'izvor'. Ako je tekst prijevoda iz drugog poglavlja, nepovezan tekst, sažetak umjesto prijevoda ili je očito potpuno pogrešan, postavi "ispravanPrijevod": false. U tom slučaju komentar kratko objasni problem. Ako je prijevod očito ispravan, postavi "ispravanPrijevod": true. Ako si nesiguran zbog poezije, naslova, različitih granica odlomaka, složene strukture ili drugih nejasnih podudarnosti, postavi "ispravanPrijevod": null. Samo "false" povećava zaštitni brojač od pet uzastopnih pogrešaka; "true" i "null" ne smiju aktivirati taj brojač.
 
@@ -1107,7 +1113,7 @@ export async function poravnajTekstoveSGemini(
         trenutni: obradjeniOdlomci,
         ukupno: ukupnoOdlomaka,
         postotak: postotak,
-        poruka: `✨ Gemini analizira paket ${i + 1} od ${paketi.length} (${postotak}%)...`,
+        poruka: `✨ Faza 2 od 2: Gemini analizira komentare, paket ${i + 1} od ${paketi.length} (${postotak}%)...`,
         procijenjenoUkupno: null,
         procijenjenoPreostalo: null
       });
@@ -1157,7 +1163,7 @@ export async function poravnajTekstoveSGemini(
           trenutni: obradjeniOdlomci,
           ukupno: ukupnoOdlomaka,
           postotak: postotak,
-          poruka: `✨ Gemini analizira paket ${i + 1} od ${paketi.length} (${postotak}%)...`,
+          poruka: `✨ Faza 2 od 2: Gemini analizira komentare, paket ${i + 1} od ${paketi.length} (${postotak}%)...`,
           procijenjenoUkupno: ukupnoMs,
           procijenjenoPreostalo: preostaloMs
         });
@@ -1213,7 +1219,56 @@ function postaviProcjenu(statusText, ukupnoMs, preostaloMs) {
   }
 }
 
-export async function zapocniAnaliziranje(projekt) {
+function odaberiFazeAnalize(imaPostojecuAnalizu) {
+  const modal = document.getElementById('llm-status-modal');
+  const opcije = document.getElementById('llm-analysis-options');
+  const progressContainer = document.getElementById('llm-progress-container');
+  const statusText = document.getElementById('llm-status-text');
+  const startButton = document.getElementById('llm-options-start');
+  const cancelButton = document.getElementById('llm-options-cancel');
+  const recreateGlossary = document.getElementById('llm-recreate-glossary');
+  const recreateAnalysis = document.getElementById('llm-recreate-analysis');
+  const error = document.getElementById('llm-options-error');
+
+  if (!modal || !opcije || !startButton || !cancelButton || !recreateGlossary || !recreateAnalysis) {
+    return Promise.resolve({ recreateGlossary: true, recreateAnalysis: true });
+  }
+
+  modal.style.display = 'flex';
+  opcije.style.display = 'block';
+  if (progressContainer) progressContainer.style.display = 'none';
+  if (statusText) statusText.style.display = 'none';
+  recreateGlossary.checked = !imaPostojecuAnalizu;
+  recreateAnalysis.checked = true;
+  if (error) error.style.display = 'none';
+
+  return new Promise(resolve => {
+    const zavrsi = izbor => {
+      opcije.style.display = 'none';
+      if (izbor && progressContainer) progressContainer.style.display = 'block';
+      if (statusText) statusText.style.display = 'block';
+      startButton.removeEventListener('click', potvrdi);
+      cancelButton.removeEventListener('click', odustani);
+      if (!izbor) modal.style.display = 'none';
+      resolve(izbor);
+    };
+    const potvrdi = () => {
+      if (!recreateGlossary.checked && !recreateAnalysis.checked) {
+        if (error) error.style.display = 'block';
+        return;
+      }
+      zavrsi({
+        recreateGlossary: recreateGlossary.checked,
+        recreateAnalysis: recreateAnalysis.checked
+      });
+    };
+    const odustani = () => zavrsi(null);
+    startButton.addEventListener('click', potvrdi);
+    cancelButton.addEventListener('click', odustani);
+  });
+}
+
+export async function zapocniAnaliziranje(projekt, odabraneFaze = { recreateGlossary: false, recreateAnalysis: true }) {
   const progressBar = document.getElementById('llm-progress-bar');
   const statusText = document.getElementById('llm-status-text');
   const modal = document.getElementById('llm-status-modal');
@@ -1280,14 +1335,6 @@ export async function zapocniAnaliziranje(projekt) {
     if (progressBar) progressBar.style.width = '10%';
     const normaliziraniSegmenti = stvoriNormaliziraneSegmente(izvorTekst, prijevodTekst);
 
-    const procisceniIzvor = normaliziraniSegmenti
-      .filter(s => s.izvor && s.prijevod)
-      .map(s => s.izvor)
-      .join("\n\n");
-    const procisceniPrijevod = normaliziraniSegmenti
-      .filter(s => s.izvor && s.prijevod)
-      .map(s => s.prijevod)
-      .join("\n\n");
     let glosar = await dohvatiGlosarIzIndexedDB(projekt.id);
     const glosarStavke = glosar && typeof glosar === 'object'
       ? (glosar.terms || glosar.items || glosar.entries)
@@ -1298,10 +1345,26 @@ export async function zapocniAnaliziranje(projekt) {
         ? glosarStavke.length > 0
         : Boolean(glosar && typeof glosar === 'object' && Object.keys(glosar).length > 0);
 
-    if (!imaGlosar) {
-      postaviStatusPoruku(statusText, "⏳ Generiranje glosara...");
+    const trebaIzraditiGlosar = odabraneFaze.recreateGlossary || !imaGlosar;
+    if (trebaIzraditiGlosar) {
+      postaviStatusPoruku(statusText, "⏳ Faza 1 od 2: generiranje glosara...");
       try {
-        glosar = await stvoriGlosar(skratiZaPrompt(procisceniIzvor), skratiZaPrompt(procisceniPrijevod), apiKey);
+        glosar = await stvoriGlosarIzSegmenata(
+          normaliziraniSegmenti,
+          apiKey,
+          ({ trenutniPaket, ukupnoPaketa, procijenjenoUkupno, procijenjenoPreostalo }) => {
+            postaviStatusPoruku(
+              statusText,
+              `⏳ Faza 1 od 2: generiranje glosara, paket ${trenutniPaket} od ${ukupnoPaketa}...`
+            );
+            if (procijenjenoUkupno !== undefined) {
+              postaviProcjenu(statusText, procijenjenoUkupno, procijenjenoPreostalo);
+            }
+            if (progressBar) {
+              progressBar.style.width = `${10 + Math.round((trenutniPaket / ukupnoPaketa) * 20)}%`;
+            }
+          }
+        );
         const generiraneStavke = Array.isArray(glosar?.terms)
           ? glosar.terms
           : Array.isArray(glosar)
@@ -1329,7 +1392,13 @@ export async function zapocniAnaliziranje(projekt) {
       }
     }
 
-    postaviStatusPoruku(statusText, "⏳ Pokretanje analize odlomaka uz glosar...");
+    if (!odabraneFaze.recreateAnalysis) {
+      if (modal) modal.style.display = 'none';
+      navigirajNa('translation-analytics/interlinear', { projektId: projekt.id });
+      return;
+    }
+
+    postaviStatusPoruku(statusText, "⏳ Faza 2 od 2: pokretanje analize komentara uz glosar...");
     if (progressBar) progressBar.style.width = '30%';
 
     const poravnaniRezultat = await poravnajTekstoveSGemini(
@@ -1402,10 +1471,6 @@ export async function pokreniTekstualnuAnalizu(projektId, event) {
     return;
   }
 
-  const modal = document.getElementById('llm-status-modal');
-  // Show immediate feedback before IndexedDB reads or normalization begin.
-  // Those operations can take long enough to make a click appear stuck.
-  if (modal) modal.style.display = 'flex';
   const db = await otvoriBazu();
 
   const postojeciRezultat = await new Promise((resolve) => {
@@ -1419,13 +1484,8 @@ export async function pokreniTekstualnuAnalizu(projektId, event) {
     }
   });
 
-  if (postojeciRezultat) {
-    const potvrdi = confirm("Za ovaj projekt već postoji analiza. Nova analiza će resetirati postojeće podatke. Želite li nastaviti?");
-    if (!potvrdi) {
-      if (modal) modal.style.display = 'none';
-      return;
-    }
-  }
+  const odabraneFaze = await odaberiFazeAnalize(Boolean(postojeciRezultat));
+  if (!odabraneFaze) return;
 
   const projekt = await new Promise((resolve) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
@@ -1436,8 +1496,9 @@ export async function pokreniTekstualnuAnalizu(projektId, event) {
 
   if (!projekt) {
     alert("Projekt nije pronađen.");
+    document.getElementById('llm-status-modal')?.style.setProperty('display', 'none');
     return;
   }
 
-  await zapocniAnaliziranje(projekt);
+  await zapocniAnaliziranje(projekt, odabraneFaze);
 }
