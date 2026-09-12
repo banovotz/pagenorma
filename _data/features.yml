@@ -32,3 +32,9 @@ features_list:
     description: "Your intellectual property stays yours. Built as a PWA with local storage (IndexedDB), your manuscripts, drafts, and source files stay in your browser and on your machine."
     badge: "Security"
     image: "/assets/images/mockup6.jpeg"
+
+  - id: "multilanguage"
+    title: "Multi-Language Support"
+    description: "Work seamlessly across multiple languages. The app supports all latin scripts and provides intuitive tools for managing translations in different linguistic contexts."
+    badge: "Multi-language"
+    image: "/assets/images/mockup5.jpeg"
