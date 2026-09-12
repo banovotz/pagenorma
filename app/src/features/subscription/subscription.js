@@ -1,9 +1,10 @@
 const FIREBASE_VERSION = '10.12.2';
+const FIREBASE_API_KEY_PLACEHOLDER = '__FIREBASE_' + 'API_KEY__';
 const FIREBASE_CONFIG = {
-  apiKey: "__FIREBASE_API_KEY__",
+  apiKey: '__FIREBASE_API_KEY__',
   authDomain: 'pagenorma-7d199.firebaseapp.com',
   projectId: 'pagenorma-7d199',
-  appId: ''
+  appId: 'pagenorma-7d199'
 };
 
 let firebaseServices;
@@ -14,16 +15,32 @@ let currentProfile = null;
 let authMode = 'signin';
 let eventsBound = false;
 let initializationStarted = false;
+let localConfigLoaded = false;
 
 function firebaseConfig() {
-  return { ...FIREBASE_CONFIG, ...window.PAGENORMA_FIREBASE_CONFIG = {
-  
-        } 
-    }
+  return {
+    ...FIREBASE_CONFIG,
+    ...(window.PAGENORMA_FIREBASE_CONFIG || {})
+  };
+}
+
+async function loadLocalFirebaseConfig() {
+  if (localConfigLoaded) return;
+  localConfigLoaded = true;
+
+  try {
+    await import('../../../config/firebase.local.js');
+  } catch (error) {
+    const isMissingLocalConfig = error instanceof TypeError &&
+      /failed to fetch dynamically imported module|importing a module script failed/i.test(error.message);
+    if (!isMissingLocalConfig) throw error;
+  }
+
 }
 
 async function loadFirebase() {
   if (!firebaseServices) {
+    await loadLocalFirebaseConfig();
     const [app, auth, firestore] = await Promise.all([
       import(`https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-app.js`),
       import(`https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-auth.js`),
@@ -42,7 +59,11 @@ async function loadFirebase() {
 
 function hasFirebaseConfig() {
   const config = firebaseConfig();
-  return Boolean(config.apiKey && config.appId);
+  return Boolean(
+    config.apiKey &&
+    config.apiKey !== FIREBASE_API_KEY_PLACEHOLDER &&
+    config.appId
+  );
 }
 
 function profilePath(user) {
@@ -183,6 +204,7 @@ export async function initSubscriptionModule() {
   initializationStarted = true;
   bindSubscriptionEvents();
   renderSubscription();
+  await loadLocalFirebaseConfig();
   if (!hasFirebaseConfig()) {
     setStatus('Firebase konfiguracija nije postavljena. Postavite window.PAGENORMA_FIREBASE_CONFIG (apiKey i appId).', true);
     return;
