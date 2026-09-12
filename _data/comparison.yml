@@ -2,7 +2,7 @@ section_id: "comparison"
 heading: "Why Literary & Academic Translators Switch"
 subheading: "See how specialized manuscript tools compare to traditional translation software."
 
-app_name: "mojih1500"
+app_name: "pagenorma"
 
 columns:
   - key: "feature"
@@ -12,7 +12,7 @@ columns:
   - key: "spreadsheets"
     label: "Spreadsheets"
   - key: "our_app"
-    label: "mojih1500"
+    label: "pagenorma"
 
 rows:
   - feature: "Pacing & Deadline Calculations"
