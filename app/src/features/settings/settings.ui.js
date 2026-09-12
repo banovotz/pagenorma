@@ -47,7 +47,7 @@ export function dohvatiGeminiKluc() {
 
 //spremanje postavki
 
-const SETTINGS_KEY = 'mojih1500_postavke';
+const SETTINGS_KEY = 'pagenorma_postavke';
 
 export function ucitajPostavke() {
   const postojacePostavke = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {

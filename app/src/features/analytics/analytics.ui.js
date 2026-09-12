@@ -3,7 +3,7 @@
  */
 
 import { isSubscribed } from '../subscription/subscription.js';
-const SETTINGS_KEY = 'mojih1500_postavke';
+const SETTINGS_KEY = 'pagenorma_postavke';
 let posljednjaFunkcijaProjekata = null;
 
 window.addEventListener('pagenorma-subscription-state-changed', () => {

@@ -1,6 +1,6 @@
 // Lokalno stanje, postavke i Gemini API ključ
 
-const SETTINGS_KEY = 'mojih1500_postavke';
+const SETTINGS_KEY = 'pagenorma_postavke';
 
 export function spremiGeminiKluc() {
   const input = document.getElementById('gemini-api-key');
