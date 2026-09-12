@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <!-- Vanjski okvir zupčanika -->
+  <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="#008080" stroke-width="2"/>
+  
+  <!-- Vodilice zupčanika (pomaknute izvan središta) -->
+  <path d="M12 3V5" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M12 19V21" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M3 12H5" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M19 12H21" stroke="#008080" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Čista središnja podloga za Studio izdanje -->
+  <circle cx="12" cy="12" r="4.5" fill="#E0F2F1" stroke="#008080" stroke-width="1.5"/>
+  
+  <!-- Jasno definirano slovo "S" (bez presijecanja linijama) -->
+  <path d="M13.5 10.2C13.5 9.5 12.8 9 12 9C11.2 9 10.5 9.5 10.5 10.2C10.5 11 11 11.4 12 11.8C13 12.2 13.5 12.6 13.5 13.5C13.5 14.3 12.8 15 12 15C11.2 15 10.5 14.3 10.5 13.6" 
+        stroke="#008080" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Zlatni akcent statusa -->
+  <circle cx="18.5" cy="5.5" r="1.5" fill="#D97706"/>
+</svg>

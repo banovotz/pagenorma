@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none">
+  <!-- Tijelo lokota -->
+  <rect x="5" y="11" width="14" height="10" rx="2" stroke="#008080" stroke-width="1.75"/>
+  <!-- Luk lokota -->
+  <path d="M8 11V7a4 4 0 018 0v4" stroke="#008080" stroke-width="1.75" stroke-linecap="round"/>
+  <!-- Keyhole / Zlatni akcent -->
+  <circle cx="12" cy="15" r="1.25" fill="#D97706"/>
+  <path d="M12 16.25V18" stroke="#D97706" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
