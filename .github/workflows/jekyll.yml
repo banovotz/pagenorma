@@ -36,7 +36,7 @@ jobs:
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
         run: |
-          sed -i "s/__FIREBASE_API_KEY__/$FIREBASE_API_KEY/g" app/features/subscription/subscription.js
+          sed -i "s/__FIREBASE_API_KEY__/$FIREBASE_API_KEY/g" app/src/features/subscription/subscription.js
 
       - name: Build with Jekyll
         run: bundle exec jekyll build --destination ./_site
