@@ -2,21 +2,10 @@
 
 import { otvoriBazu, INTERLINEARNI_STORE } from '../../core/db.js';
 import { parsirajLlmJson } from '../../utils/llmJson.js';
+import { pricekajGeminiInterval } from '../../utils/geminiRateLimiter.js';
 
-const GLOSAR_MIN_REQUEST_INTERVAL_MS = 5000;
 const GLOSAR_MAX_SEGMENTS_PER_REQUEST = 20;
 const GLOSAR_MAX_CHARS_PER_REQUEST = 24000;
-let zadnjiGlosarPoziv = 0;
-
-function pricekaj(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function pricekajGlosarInterval() {
-  const preostalo = GLOSAR_MIN_REQUEST_INTERVAL_MS - (Date.now() - zadnjiGlosarPoziv);
-  if (preostalo > 0) await pricekaj(preostalo);
-  zadnjiGlosarPoziv = Date.now();
-}
 
 export async function dohvatiGlosarIzIndexedDB(projektId = null) {
   const trenutniId = projektId ?? window.trenutniAnalizaId ?? window.trenutniProjektId;
@@ -46,7 +35,7 @@ export async function dohvatiAnalizuIzIndexedDB(projektId = null) {
 
 
 export async function stvoriGlosar(izvorniTekst, prevedeniTekst, apiKey) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 90000);
 
@@ -126,6 +115,7 @@ ${prevedeniTekst}
 
   let response;
   try {
+    await pricekajGeminiInterval();
     response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -248,7 +238,7 @@ export async function stvoriGlosarIzSegmenata(segmenti, apiKey, onProgress = nul
   const glosari = [];
   const vrijemePocetka = performance.now();
   for (let index = 0; index < paketi.length; index += 1) {
-    await pricekajGlosarInterval();
+    await pricekajGeminiInterval();
     const paket = paketi[index];
     const glosar = await stvoriGlosar(
       paket.map(stavka => stavka.izvor).join('\n\n'),
