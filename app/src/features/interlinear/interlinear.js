@@ -8,21 +8,10 @@ import { navigirajNa } from '../../core/router.js';
 import { dohvatiCijeliTekstIzPdfa, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
 import { dohvatiDokumenteSpinea } from '../epub-parser/epub.parser.js';
 import { parsirajLlmJson, porukaGreske } from '../../utils/llmJson.js';
+import { pricekajGeminiInterval } from '../../utils/geminiRateLimiter.js';
 
-const GEMINI_MIN_REQUEST_INTERVAL_MS = 5000;
 const GEMINI_MAX_RATE_LIMIT_RETRIES = 5;
 const GEMINI_REQUEST_TIMEOUT_MS = 90000;
-let zadnjiGeminiPoziv = 0;
-
-function pricekaj(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function pricekajGeminiInterval() {
-  const preostalo = GEMINI_MIN_REQUEST_INTERVAL_MS - (Date.now() - zadnjiGeminiPoziv);
-  if (preostalo > 0) await pricekaj(preostalo);
-  zadnjiGeminiPoziv = Date.now();
-}
 
 function dohvatiRetryAfterMs(response) {
   const vrijednost = response.headers.get('Retry-After');
@@ -865,7 +854,7 @@ export async function dohvatiCijeliTekstIzEpuba(file) {
 }
 
 export async function pozoviGeminiAPI(paketOdlomaka, glosar, apiKey, pokusaj = 1) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
 
   const systemInstructionText = `
 Ti si stručnjak za književno prevođenje.
