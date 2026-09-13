@@ -1,6 +1,6 @@
 // Upravljanje statusnim modalom za Gemini analizu i generičke dijaloge
 
-export function prikaziStatusModal(statusPoruka = 'Učitavanje...') {
+export function prikaziStatusModal(statusPoruka = 'Loading...') {
   const modal = document.getElementById('llm-status-modal');
   const infoBox = document.getElementById('llm-info-box');
   const progressContainer = document.getElementById('llm-progress-container');

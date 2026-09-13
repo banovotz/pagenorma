@@ -160,6 +160,9 @@
       const demoJson = await dohvatiDemoPodatke();
       await uveziDemoPodatke(db, demoJson, { obrisiPostojece: false });
 
+      localStorage.setItem('pagenorma_start_demo_tour', 'true');
+      sessionStorage.setItem('pagenorma_start_demo_tour', 'true');
+
       prikaziStanje(overlay, {
         icon: '<div class="demo-icon-success">✓</div>',
         title: 'Demo project ready!',
@@ -233,6 +236,8 @@
             try {
               const demoJson = await dohvatiDemoPodatke();
               await uveziDemoPodatke(db, demoJson, { obrisiPostojece: true });
+              localStorage.setItem('pagenorma_start_demo_tour', 'true');
+              sessionStorage.setItem('pagenorma_start_demo_tour', 'true');
               prikaziStanje(overlay, {
                 icon: '<div class="demo-icon-success">✓</div>',
                 title: 'Demo project ready!',

@@ -80,7 +80,7 @@
         <div class="form-group">
           <label for="p-epub-file">Select source ePub or PDF</label>
           <input type="file" id="p-epub-file" accept=".epub,.pdf,application/epub+zip,application/pdf">
-          <div id="p-epub-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">Nije odabrana datoteka  </div>
+          <div id="p-epub-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">No file selected</div>
         </div>
 
         <div class="form-group">
@@ -96,8 +96,8 @@
             <label for="p-translation-file">Document file (docx/rtf/odt/txt)</label>
             <input type="file" id="p-translation-file" accept=".docx,.rtf,.odt,.txt,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,text/plain">
             <button type="button" id="btn-choose-translation-file" class="btn-secondary" style="margin-top: 8px;">Choose file with change tracking</button>
-            <div id="p-translation-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">Nije odabrana datoteka</div>
-            <small>Za praćenje promjena na originalnoj putanji koristite gumb za odabir datoteke.</small>
+            <div id="p-translation-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">No file selected</div>
+            <small>Use the file picker button to track changes at the original path.</small>
           </div>
           <input type="hidden" id="p-translation-source-mode" value="gdoc">
         </div>
@@ -248,14 +248,14 @@
       <h3 style="margin-top: 0; color: #333;">Gemini integration</h3>
     
       <div class="mb-3">
-  <label for="gemini-api-key" class="form-label">Gemini API Ključ</label>
+  <label for="gemini-api-key" class="form-label">Gemini API Key</label>
   <input type="password" class="form-control" id="gemini-api-key" placeholder="AIzaSy..." />
    <p style="color: #666; font-size: 0.9em; margin-bottom: 16px;">
-    Ključ možete besplatno izraditi na <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
-    Sprema se isključivo lokalno u vašem pregledniku.
+    You can generate a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
+    It is stored exclusively locally in your browser.
    </p>
 </div>
-<button class="btn btn-primary" >Spremi postavke</button>
+<button class="btn btn-primary" >Save Settings</button>
 
 </section>
     <!-- SECTION 4: Google Docs -->
@@ -337,42 +337,42 @@
     </div>
   <div id="subscription-page" class="subscription-page" style="max-width: 800px; margin: 0 auto; padding: 20px;">
     <section class="subscription-card" data-subscription-auth>
-      <h2>Prijava u pagenorma</h2>
-      <p id="subscription-status" role="status">Prijavite se kako biste upravljali pretplatom.</p>
-      <button type="button" id="subscription-google" class="subscription-google">Nastavi s Google računom</button>
+      <h2>Sign in to pagenorma</h2>
+      <p id="subscription-status" role="status">Sign in to manage your subscription.</p>
+      <button type="button" id="subscription-google" class="subscription-google">Continue with Google</button>
       <form id="subscription-email-form">
-        <label for="subscription-email-input">E-mail</label>
+        <label for="subscription-email-input">Email</label>
         <input id="subscription-email-input" type="email" autocomplete="email" required>
-        <label for="subscription-password-input">Lozinka</label>
+        <label for="subscription-password-input">Password</label>
         <input id="subscription-password-input" type="password" autocomplete="current-password" minlength="6" required>
-        <button id="subscription-email-submit" type="submit">Prijavi se</button>
-        <button id="subscription-signup-toggle" type="button" class="btn-secondary">Novi račun</button>
+        <button id="subscription-email-submit" type="submit">Sign in</button>
+        <button id="subscription-signup-toggle" type="button" class="btn-secondary">New account</button>
       </form>
     </section>
     <section class="subscription-card sakriveno" data-subscription-account>
-      <p>Prijavljeni ste kao <strong data-subscription-email></strong>.</p>
-      <p>Trenutni plan: <strong data-subscription-plan></strong></p>
-      <button type="button" id="subscription-signout" class="btn-secondary">Odjavi se</button>
+      <p>Signed in as <strong data-subscription-email></strong>.</p>
+      <p>Current plan: <strong data-subscription-plan></strong></p>
+      <button type="button" id="subscription-signout" class="btn-secondary">Sign out</button>
     </section>
     <section class="subscription-card sakriveno" data-subscription-offer>
       <h2>pagenorma QS — Quiet Studio</h2>
       <ul>
-        <li>Nativna Desktop (Tauri) i PWA aplikacija</li>
-        <li>Rad bez reklama i sponzoriranih obavijesti</li>
-        <li>Neograničen broj aktivnih projekata</li>
-        <li>Neograničene AI analize i rad u glosaru</li>
+        <li>Native Desktop (Tauri) and PWA application</li>
+        <li>Ad-free experience without promotional notices</li>
+        <li>Unlimited active projects</li>
+        <li>Unlimited AI analyses and glossary tools</li>
       </ul>
-      <label for="subscription-promo">Promo kod</label>
-      <input id="subscription-promo" type="text" autocomplete="off" placeholder="Unesite promo kod">
+      <label for="subscription-promo">Promo code</label>
+      <input id="subscription-promo" type="text" autocomplete="off" placeholder="Enter promo code">
       <div class="subscription-choice">
-        <label><input type="radio" name="subscriptionType" value="annual" checked> Godišnja pretplata (+ 1 mjesec uz promo kod)</label>
-        <label><input type="radio" name="subscriptionType" value="trial"> Besplatna proba (1 mjesec)</label>
+        <label><input type="radio" name="subscriptionType" value="annual" checked> Annual subscription (+ 1 bonus month with promo code)</label>
+        <label><input type="radio" name="subscriptionType" value="trial"> Free trial (1 month)</label>
       </div>
-      <button type="button" id="subscription-checkout">Kupi pretplatu</button>
+      <button type="button" id="subscription-checkout">Subscribe now</button>
     </section>
     <section class="subscription-card sakriveno" data-subscription-active>
-      <h2>pagenorma QS je aktivan</h2>
-      <p>Vaš pristup upravlja se iz provjerenog statusa u Firestoreu.</p>
+      <h2>pagenorma QS is active</h2>
+      <p>Your access is managed through verified status in Firestore.</p>
     </section>
   </div>
   </div>
@@ -431,9 +431,9 @@
   <div class="modal-card">
     <button type="button" id="mock-checkout-close" class="btn-secondary" style="float: right;">×</button>
     <h2 id="mock-checkout-title">Mocked Checkout</h2>
-    <p>Odabrani plan: <strong>pagenorma QS</strong></p>
-    <p>Promo kod: <strong id="checkout-promo">Nema promo koda</strong></p>
-    <button type="button" id="mock-payment">Simuliraj uspješnu uplatu</button>
+    <p>Selected plan: <strong>pagenorma QS</strong></p>
+    <p>Promo code: <strong id="checkout-promo">No promo code</strong></p>
+    <button type="button" id="mock-payment">Simulate Successful Payment</button>
   </div>
 </div>
 
@@ -443,20 +443,20 @@
 
 <!-- OČIŠĆENA SEKCIJA U index.html -->
 <div id="analize-page" class="page-content" style="display: none; padding: 20px; max-width: 800px; margin: 0 auto; padding: 20px;" >
-  <h2 style="color: #008080; margin-bottom: 6px;">Pregled spremljenih tekstualnih analiza</h2>
-  <p class="text-muted">Popis svih projekata za koje je dosad generirana analiza i poravnanje.</p>
+  <h2 style="color: #008080; margin-bottom: 6px;">Saved Translation Analyses</h2>
+  <p class="text-muted">List of all projects with generated translation alignment and analysis.</p>
   
   <div id="lista-analiza-container" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
-    <!-- Ovdje se dinamički učitavaju kartice analiza -->
+    <!-- Cards dynamically loaded -->
   </div>
 </div>
 
 <div id="interlinear-page" class="page-content" style="padding: 20px;">
-  <h2>LLM Analiza prijevoda</h2>
+  <h2>LLM Translation Analysis</h2>
   <div class="interlinear-toolbar">
     <div class="interlinear-search-wrap">
-      <label for="interlinear-search">Pretraži izvor ili prijevod</label>
-      <input id="interlinear-search" type="search" placeholder="Upišite najmanje 3 znaka..." autocomplete="off">
+      <label for="interlinear-search">Search source or translation</label>
+      <input id="interlinear-search" type="search" placeholder="Type at least 3 characters..." autocomplete="off">
       <div id="interlinear-suggestions" class="interlinear-suggestions" hidden></div>
     </div>
     <span id="interlinear-results-count" class="interlinear-results-count"></span>
@@ -465,26 +465,26 @@
   <div class="interlinear-grid" style="display: flex; gap: 12px; height: 75vh;">
     <!-- STUPAC 1: IZVORNIK -->
     <div style="flex: 1; display: flex; flex-direction: column;">
-      <h3 style="color: #008080; margin-bottom: 8px;">Izvornik</h3>
+      <h3 style="color: #008080; margin-bottom: 8px;">Source</h3>
       <div id="col-izvor" style="flex: 1; overflow-y: auto; border: 1px solid #ddd; background: #fff; padding: 8px; border-radius: 6px;"></div>
     </div>
 
     <!-- STUPAC 2: PRIJEVOD -->
     <div style="flex: 1; display: flex; flex-direction: column;">
-      <h3 style="color: #2e7d32; margin-bottom: 8px;">Prijevod</h3>
+      <h3 style="color: #2e7d32; margin-bottom: 8px;">Translation</h3>
       <div id="col-prijevod" style="flex: 1; overflow-y: auto; border: 1px solid #ddd; background: #fff; padding: 8px; border-radius: 6px;"></div>
     </div>
 
     <!-- STUPAC 3: LLM KOMENTARI -->
     <div style="flex: 1; display: flex; flex-direction: column;">
-      <h3 style="color: #8e24aa; margin-bottom: 8px;">LLM Komentari  
+      <h3 style="color: #8e24aa; margin-bottom: 8px;">LLM Commentary  
       <button type="button"  class="btn-sync-small">
         <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
         <path d="M10 2v8l2.5-1.5L15 10V2"/>
         </svg>  
-        Pogledaj glosar
+        View Glossary
       </button>
      </h3>
      
@@ -492,36 +492,36 @@
     </div>
     
   </div>
-  <nav id="interlinear-pagination" class="interlinear-pagination" aria-label="Stranice interlinearnog teksta"></nav>
+  <nav id="interlinear-pagination" class="interlinear-pagination" aria-label="Interlinear text pages"></nav>
 </div>
  </section>
 
 <!-- MODAL ZA WEBLLM PREUZIMANJE I ANALIZU -->
 <div id="llm-status-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
   <div style="background: #fff; padding: 24px; border-radius: 10px; max-width: 500px; width: 90%; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-    <h3 style="margin-top: 0; color: #008080;">🧠 Tekstualna AI Analiza</h3>
+    <h3 style="margin-top: 0; color: #008080;">🧠 AI Translation Analysis</h3>
     
     <div id="llm-info-box"></div>
 
     <div id="llm-analysis-options" style="display: none; margin: 15px 0; padding: 12px; border: 1px solid #d7e7e7; border-radius: 6px; background: #f7fbfb;">
-      <div style="font-weight: 600; margin-bottom: 8px;">Što želite ponovno izraditi?</div>
+      <div style="font-weight: 600; margin-bottom: 8px;">What would you like to recreate?</div>
       <label style="display: block; margin: 6px 0;">
         <input type="checkbox" id="llm-recreate-glossary">
-        Glosar
+        Glossary
       </label>
       <label style="display: block; margin: 6px 0;">
         <input type="checkbox" id="llm-recreate-analysis">
-        Analizu komentara
+        Commentary analysis
       </label>
       <div id="llm-options-error" style="display: none; color: #b42318; font-size: 0.85em; margin-top: 8px;">
-        Odaberite barem jednu opciju.
+        Please select at least one option.
       </div>
       <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px;">
         <button type="button" id="llm-options-cancel" class="btn-secondary">
-          Odustani
+          Cancel
         </button>
         <button type="button" id="llm-options-start" class="btn-primary" style="padding: 7px 14px;">
-          Pokreni odabrano
+          Start Selected
         </button>
       </div>
     </div>
@@ -535,8 +535,8 @@
     <div id="llm-status-text" style="font-size: 0.9em; color: #555; text-align: center; margin-bottom: 15px;">
       <div id="llm-status-message"></div>
       <div id="llm-status-estimate" style="min-height: 1.2em;">
-        <span>Procijenjeno: </span><span id="llm-estimated-total">-</span>
-        <span>; preostalo: </span><span id="llm-estimated-remaining">-</span>
+        <span>Estimated: </span><span id="llm-estimated-total">-</span>
+        <span>; remaining: </span><span id="llm-estimated-remaining">-</span>
       </div>
     </div>
     <div style="font-size: 0.85em; color: #8a4b08; text-align: center; margin-bottom: 15px;">
@@ -545,7 +545,7 @@
 
     <div style="text-align: right;">
       <button id="btn-zapocni-download" class="btn-primary" style="display: none; padding: 8px 16px; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
-        Preuzmi model i započni
+        Download model & start
       </button>
     </div>
   </div>
@@ -556,22 +556,22 @@
     <div class="modal-content">
       <div class="modal-header">
         <div>
-          <p class="glossary-modal-kicker">Alati za prijevod</p>
-          <h2 class="modal-title">Glosar projekta</h2>
+          <p class="glossary-modal-kicker">Translation Tools</p>
+          <h2 class="modal-title">Project Glossary</h2>
         </div>
-        <button type="button" class="glossary-modal-close" aria-label="Zatvori glosar">×</button>
+        <button type="button" class="glossary-modal-close" aria-label="Close glossary">×</button>
       </div>
       <div class="modal-body">
         <div class="glossary-toolbar">
           <label class="glossary-search-wrap" for="glossary-search">
-            <span class="sr-only">Pretraži glosar</span>
-            <input id="glossary-search" type="search" placeholder="Pretraži izvorni ili prevedeni termin..." autocomplete="off">
-            <button type="button" id="glossary-search-reset" class="glossary-search-reset" aria-label="Očisti pretragu" title="Očisti pretragu">×</button>
+            <span class="sr-only">Search glossary</span>
+            <input id="glossary-search" type="search" placeholder="Search source or target term..." autocomplete="off">
+            <button type="button" id="glossary-search-reset" class="glossary-search-reset" aria-label="Clear search" title="Clear search">×</button>
           </label>
           <p id="glossary-result-count" class="glossary-result-count" aria-live="polite"></p>
         </div>
         <div id="prazan-glosar-poruka" class="text-center text-muted my-3" style="display: none;">
-          Glosar je prazan ili nije učitan za trenutnu analizu.
+          Glossary is empty or not loaded for the current analysis.
         </div>
         <div class="table-responsive">
           <table class="table table-striped table-hover glossary-table" id="tablica-glosara">
@@ -582,9 +582,9 @@
             </colgroup>
             <thead>
               <tr>
-                <th scope="col"><button type="button" class="glossary-sort-button" data-sort="source">Izvorni termin <span aria-hidden="true">↕</span></button></th>
-                <th scope="col"><button type="button" class="glossary-sort-button" data-sort="target">Prevedeni termin <span aria-hidden="true">↕</span></button></th>
-                <th scope="col" class="glossary-action-heading"><button type="button" class="glossary-sort-button" data-sort="contexts">Kontekst <span aria-hidden="true">↕</span></button></th>
+                <th scope="col"><button type="button" class="glossary-sort-button" data-sort="source">Source term <span aria-hidden="true">↕</span></button></th>
+                <th scope="col"><button type="button" class="glossary-sort-button" data-sort="target">Target term <span aria-hidden="true">↕</span></button></th>
+                <th scope="col" class="glossary-action-heading"><button type="button" class="glossary-sort-button" data-sort="contexts">Context <span aria-hidden="true">↕</span></button></th>
               </tr>
             </thead>
             <tbody id="glosar-modal-body">
@@ -592,7 +592,7 @@
             </tbody>
           </table>
         </div>
-        <nav id="glossary-pagination" class="glossary-pagination" aria-label="Stranice glosara"></nav>
+        <nav id="glossary-pagination" class="glossary-pagination" aria-label="Glossary pages"></nav>
       </div>
       <div class="modal-footer">
       </div>

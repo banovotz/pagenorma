@@ -24,13 +24,19 @@
 
 const routes = new Map();
 let defaultRouteKey = 'dashboard';
+let aktivnaRutaKljuc = null;
 
 /**
  * Registrira rute. Svaki unos u routeMap je oblika:
  *   'kljucRute': {
  *     section: 'id-sekcije',   // <section class="page-section"> koji treba prikazati
  *     view: 'id-sadrzaja',     // .page-content UNUTAR te sekcije koji treba prikazati
- *     onEnter(params) { ... }  // (opcionalno) poziva se pri svakom ulasku u rutu
+ *     onEnter(params) { ... }, // (opcionalno) poziva se pri svakom ulasku u rutu
+ *     onLeave() { ... }        // (opcionalno) poziva se kad korisnik NAPUŠTA ovu
+ *                              // rutu prema drugoj ruti drugačije section-a
+ *                              // (npr. da se zatvori inline forma koja je
+ *                              // ostala otvorena, kako ne bi ostala "zaglavljena"
+ *                              // skrivena unutar section-a nakon povratka)
  *   }
  *
  * Ključ rute smije sadržavati '/' za pod-rute istog "zaslova" - npr.
@@ -121,7 +127,16 @@ function primijeniPrikaz(routeKey) {
     btn.classList.toggle('active', btn.getAttribute('data-target') === glavniDioRute);
   });
 
+  // Dvostruko osiguranje da novi ekran uvijek "skoči" u view bez obzira na
+  // to koliko je korisnik bio skrolan na prethodnom ekranu (npr. duboko
+  // otvorena forma za uređivanje projekta na Dashboardu). window.scrollTo
+  // resetira scroll cijele stranice, a scrollIntoView dodatno jamči da je
+  // upravo prikazana sekcija ta koja se nalazi na vrhu vidljivog prostora,
+  // neovisno o eventualnim preglednikovim scroll-restoration kvirkovima.
   window.scrollTo(0, 0);
+  if (sekcija) {
+    sekcija.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }
 }
 
 /**
@@ -137,7 +152,21 @@ export function navigirajNa(routeKey, params = {}, { pushState = true } = {}) {
     return;
   }
 
+  // Ako stvarno napuštamo prethodnu rutu (drugačiji section), damo joj
+  // priliku da se "pospremi" (npr. zatvori otvorenu inline formu) prije nego
+  // što se sakrije - tako se ne može dogoditi da forma ostane logički
+  // otvorena "u pozadini" i zbuni korisnika kad se kasnije vrati na nju.
+  if (aktivnaRutaKljuc && aktivnaRutaKljuc !== routeKey) {
+    const prethodnaRuta = routes.get(aktivnaRutaKljuc);
+    const novaRuta = routes.get(routeKey);
+    const napustaSection = !prethodnaRuta || !novaRuta || prethodnaRuta.section !== novaRuta.section;
+    if (napustaSection && typeof prethodnaRuta?.onLeave === 'function') {
+      prethodnaRuta.onLeave();
+    }
+  }
+
   primijeniPrikaz(routeKey);
+  aktivnaRutaKljuc = routeKey;
 
   if (pushState) {
     const noviHash = izgradiHash(routeKey, params);
@@ -182,6 +211,7 @@ export function initRouter() {
   // koji korisnik vidi stvori dodatni "prazan" korak u povijesti.
   history.replaceState({ routeKey, params }, '', izgradiHash(routeKey, params));
   primijeniPrikaz(routeKey);
+  aktivnaRutaKljuc = routeKey;
 
   const route = routes.get(routeKey);
   if (route && typeof route.onEnter === 'function') {

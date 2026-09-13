@@ -34,11 +34,11 @@ export function dohvatiVrijednostiIzForme() {
 export function spremiGeminiKluc() {
   const input = document.getElementById('gemini-api-key');
   if (!input || !input.value.trim()) {
-    alert("Molimo unesite valjan Gemini API ključ.");
+    alert("Please enter a valid Gemini API key.");
     return;
   }
   localStorage.setItem('gemini_api_key', input.value.trim());
-  alert("Gemini API ključ je uspješno spremljen!");
+  alert("Gemini API key saved successfully!");
 }
 
 export function dohvatiGeminiKluc() {

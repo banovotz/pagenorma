@@ -13,16 +13,16 @@ export async function prikaziGlosarZaProjekt(projektId, containerId) {
     : glosar?.terms || glosar?.items || glosar?.entries || [];
 
   if (stavke.length === 0) {
-    container.innerHTML = '<p class="text-muted">Glosar još nije generiran za ovaj projekt.</p>';
+    container.innerHTML = '<p class="text-muted">Glossary has not been generated for this project yet.</p>';
     return;
   }
 
   let html = `<table class="glosar-tablica" style="width: 100%; border-collapse: collapse;">
     <thead>
       <tr style="border-bottom: 2px solid #008080; text-align: left;">
-        <th style="padding: 8px;">Izvorni termin</th>
-        <th style="padding: 8px;">Prijevod</th>
-        <th style="padding: 8px;">Napomena</th>
+        <th style="padding: 8px;">Source Term</th>
+        <th style="padding: 8px;">Translation</th>
+        <th style="padding: 8px;">Note</th>
       </tr>
     </thead>
     <tbody>`;
@@ -73,7 +73,7 @@ export async function otvoriModalGlosar(targetParam) {
     document.body.appendChild(modal);
   }
 
-  tbody.innerHTML = '<tr><td colspan="3" class="text-center py-3">Učitavanje glosara...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="3" class="text-center py-3">Loading glossary...</td></tr>';
   if (searchInput) searchInput.value = '';
   if (resultCount) resultCount.textContent = '';
   if (pagination) pagination.innerHTML = '';
@@ -171,7 +171,7 @@ export async function otvoriModalGlosar(targetParam) {
         button.type = 'button';
         button.className = 'glossary-page-button';
         button.textContent = String(page);
-        button.setAttribute('aria-label', `Stranica ${page}`);
+        button.setAttribute('aria-label', `Page ${page}`);
         if (page === currentPage) {
           button.classList.add('active');
           button.setAttribute('aria-current', 'page');
@@ -185,11 +185,11 @@ export async function otvoriModalGlosar(targetParam) {
     };
 
     const render = () => {
-      const query = (searchInput?.value || '').trim().toLocaleLowerCase('hr');
+      const query = (searchInput?.value || '').trim().toLocaleLowerCase('en');
       const filtered = query.length >= 3
         ? entries.filter(entry =>
-          entry.izvorTekst.toLocaleLowerCase('hr').includes(query) ||
-          entry.prijevodTekst.toLocaleLowerCase('hr').includes(query)
+          entry.izvorTekst.toLocaleLowerCase('en').includes(query) ||
+          entry.prijevodTekst.toLocaleLowerCase('en').includes(query)
         )
         : entries;
 
@@ -224,7 +224,7 @@ export async function otvoriModalGlosar(targetParam) {
         toggle.type = 'button';
         toggle.className = 'glossary-context-toggle';
         toggle.setAttribute('aria-expanded', 'false');
-        toggle.textContent = `🔍 ${entry.contexts.length} ${entry.contexts.length === 1 ? 'kontekst' : 'konteksta'}`;
+        toggle.textContent = `🔍 ${entry.contexts.length} ${entry.contexts.length === 1 ? 'context' : 'contexts'}`;
         toggle.addEventListener('click', () => {
           const existing = tr.nextElementSibling?.dataset.contextFor === entry.termId
             ? tr.nextElementSibling
@@ -245,10 +245,10 @@ export async function otvoriModalGlosar(targetParam) {
             ? `<div class="glossary-context-list">${items.map(item => `
                 <article class="glossary-context-item">
                   <span class="glossary-context-index">#${item.paragraphIndex + 1}</span>
-                  <div><strong>Izvor</strong><p>${item.sourceSnippet}</p></div>
-                  <div><strong>Prijevod</strong><p>${item.targetSnippet}</p></div>
+                  <div><strong>Source</strong><p>${item.sourceSnippet}</p></div>
+                  <div><strong>Translation</strong><p>${item.targetSnippet}</p></div>
                 </article>`).join('')}</div>`
-            : '<p class="text-muted glossary-context-empty">Nema lokalnih podudaranja u poravnatim odlomcima.</p>';
+            : '<p class="text-muted glossary-context-empty">No local matches in aligned paragraphs.</p>';
           contextRow.appendChild(contextCell);
           tr.insertAdjacentElement('afterend', contextRow);
           toggle.setAttribute('aria-expanded', 'true');
@@ -262,8 +262,8 @@ export async function otvoriModalGlosar(targetParam) {
       });
       if (resultCount) {
         resultCount.textContent = query.length >= 3
-          ? `${filtered.length} pronađenih pojmova`
-          : `${entries.length} pojmova`;
+          ? `${filtered.length} terms found`
+          : `${entries.length} terms`;
       }
       renderPagination(pageCount);
     };
@@ -295,9 +295,9 @@ export async function otvoriModalGlosar(targetParam) {
     render();
 
   } catch (err) {
-    console.error("Greška pri dohvatu/prikazu glosara:", err);
+    console.error("Error fetching/rendering glossary:", err);
     tbody.innerHTML = '';
-    porukaPrazno.textContent = "Greška pri učitavanju glosara.";
+    porukaPrazno.textContent = "Error loading glossary.";
     porukaPrazno.style.display = 'block';
     tablica.style.display = 'none';
   }

@@ -58,7 +58,7 @@ export async function prikaziInterlinearniTekst(projektId) {
 
   const segmenti = Array.isArray(rezultat?.segmenti) ? rezultat.segmenti : [];
   if (segmenti.length === 0) {
-    colIzvor.innerHTML = '<p class="text-muted">Nema podataka za prikaz.</p>';
+    colIzvor.innerHTML = '<p class="text-muted">No data to display.</p>';
     return;
   }
 
@@ -178,7 +178,7 @@ function renderInterlinearSuggestions() {
 }
 
 function istakniPojam(value, query) {
-  const text = String(value || '(Prazno)');
+  const text = String(value || '(Empty)');
   const normalizedQuery = normalizeInterlinearSearchText(query);
   const words = text.split(/(\s+)/);
   return words.map(word => normalizeInterlinearSearchText(word).includes(normalizedQuery)
@@ -225,7 +225,7 @@ function renderInterlinearPage() {
     comment.innerHTML = isSubscriptionPromo
       ? `<div class="interlinear-comment subscription-hook-comment"><strong>✨ Pagenorma QS:</strong><br>Congrats! You have translated ${interlinearState.paragraphCount} paragraphs in this project.<br><a href="#settings/subscription" data-target="settings/subscription">Why not consider subscribing to Pagenorma QS?</a></div>`
       : komentar && (komentar.sugestija || komentar.term)
-      ? `<div class="interlinear-comment"><strong>✨ Gemini Napomena #${pIndex}:</strong><br>${komentar.sugestija || komentar.term}</div>`
+      ? `<div class="interlinear-comment"><strong>✨ Gemini Note #${pIndex}:</strong><br>${komentar.sugestija || komentar.term}</div>`
       : `<small class="empty-comment">#${pIndex}</small> <span class="empty-comment">—</span>`;
     colKomentari.appendChild(comment);
   });
@@ -239,7 +239,7 @@ function stvoriOdlomak(index, pIndex, text, color) {
   const element = document.createElement('div');
   element.className = 'segment-item para-box';
   element.dataset.index = index;
-  element.innerHTML = `<small style="color:${color}; font-weight:bold;">#${pIndex}</small><br>${siguranTekst(text || '(Prazno)')}`;
+  element.innerHTML = `<small style="color:${color}; font-weight:bold;">#${pIndex}</small><br>${siguranTekst(text || '(Empty)')}`;
   return element;
 }
 
@@ -255,7 +255,7 @@ function renderInterlinearPagination(totalPages) {
   const pagination = document.getElementById('interlinear-pagination');
   const status = document.getElementById('interlinear-results-count');
   if (!pagination || !status) return;
-  status.textContent = `${interlinearState.filteredIndices.length} odlomaka · stranica ${interlinearState.currentPage} od ${totalPages}`;
+  status.textContent = `${interlinearState.filteredIndices.length} paragraphs · page ${interlinearState.currentPage} of ${totalPages}`;
   pagination.innerHTML = '';
   const addButton = (label, page, disabled = false) => {
     const button = document.createElement('button');
@@ -270,9 +270,9 @@ function renderInterlinearPagination(totalPages) {
     });
     pagination.appendChild(button);
   };
-  addButton('Prethodna', interlinearState.currentPage - 1, interlinearState.currentPage === 1);
+  addButton('Previous', interlinearState.currentPage - 1, interlinearState.currentPage === 1);
   for (let page = 1; page <= totalPages; page++) addButton(String(page), page);
-  addButton('Sljedeća', interlinearState.currentPage + 1, interlinearState.currentPage === totalPages);
+  addButton('Next', interlinearState.currentPage + 1, interlinearState.currentPage === totalPages);
 }
 
 export function sinkronizirajTrostrukiSkrol(...elements) {
@@ -319,7 +319,7 @@ export async function ucitajListuAnaliza() {
   const container = document.getElementById('lista-analiza-container');
   if (!container) return;
 
-  container.innerHTML = '<p class="text-muted">Učitavanje analiza...</p>';
+  container.innerHTML = '<p class="text-muted">Loading analyses...</p>';
 
   try {
     const db = await otvoriBazu();
@@ -332,7 +332,7 @@ export async function ucitajListuAnaliza() {
     });
 
     if (sveAnalize.length === 0) {
-      container.innerHTML = '<p class="text-muted">Trenutno nema spremljenih analiza.</p>';
+      container.innerHTML = '<p class="text-muted">No saved analyses found.</p>';
       return;
     }
 
@@ -348,7 +348,7 @@ export async function ucitajListuAnaliza() {
 
     sveAnalize.forEach(analiza => {
       const projekt = projektiMapa.get(analiza.projektId);
-      const naslovProjekta = projekt ? projekt.naslov : `Projekt ID: ${analiza.projektId}`;
+      const naslovProjekta = projekt ? projekt.naslov : `Project ID: ${analiza.projektId}`;
 
       const card = document.createElement('div');
       card.className = 'card-analiza';
@@ -356,7 +356,7 @@ export async function ucitajListuAnaliza() {
       card.style.cssText = 'background: rgb(255, 255, 255); border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; border: 1px solid rgb(238, 242, 242)';
       card.innerHTML = `
         <h4 style="margin:0 0 8px 0; color:#008080;">${naslovProjekta}</h4>
-        <p style="font-size:0.85em; color:#666; margin-bottom:12px;">Datum analize: ${new Date(analiza.datumAnalize).toLocaleString('hr-HR')}</p>
+        <p style="font-size:0.85em; color:#666; margin-bottom:12px;">Analysis date: ${new Date(analiza.datumAnalize).toLocaleString('en-US')}</p>
         <button id="btn-otvori-analizu-${analiza.projektId}" class="btn-primary">
           <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="20" x2="18" y2="10"/>
@@ -364,13 +364,13 @@ export async function ucitajListuAnaliza() {
           <line x1="6" y1="20" x2="6" y2="14"/>
           <circle cx="18" cy="6" r="3"/>
           </svg>
-        Otvorite analizu</button>
+        Open Analysis</button>
         <button id="btn-obrisi-analizu-${analiza.projektId}" class="btn-danger">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
           <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
           stroke="#DC2626" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>   
-        Obriši</button>
+        Delete</button>
       `;
 
       container.appendChild(card);
@@ -386,12 +386,12 @@ export async function ucitajListuAnaliza() {
     });
 
   } catch (e) {
-    console.error("Greška pri učitavanju analiza:", e);
+    console.error("Error loading analyses:", e);
   }
 }
 
 export async function obrisiAnalizirano(projektId) {
-  if (!confirm("Jeste li sigurni da želite obrisati spremljenu analizu?")) return;
+  if (!confirm("Are you sure you want to delete this saved analysis?")) return;
 
   try {
     const db = await otvoriBazu();
@@ -405,7 +405,7 @@ export async function obrisiAnalizirano(projektId) {
       ucitajListuAnaliza();
     };
   } catch (err) {
-    console.error("Greška pri brisanju analize:", err);
+    console.error("Error deleting analysis:", err);
   }
 }
 

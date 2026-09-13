@@ -21,7 +21,7 @@ function loadIdentityServices() {
       document.head.appendChild(script);
     }
     script.onload = resolve;
-    script.onerror = () => reject(new Error('Google prijava nije dostupna. Provjerite internetsku vezu.'));
+    script.onerror = () => reject(new Error('Google Sign-In is unavailable. Check your internet connection.'));
   });
 
   return scriptPromise;
@@ -57,12 +57,12 @@ function requestToken(prompt) {
           scope: GOOGLE_SCOPE,
           callback: (response) => {
             if (response.error) {
-              reject(new Error(`Google prijava nije uspjela: ${response.error}`));
+              reject(new Error(`Google Sign-In failed: ${response.error}`));
               return;
             }
             resolve(storeToken(response));
           },
-          error_callback: (error) => reject(new Error(`Google prijava nije uspjela: ${error.type || 'nepoznata greška'}`))
+          error_callback: (error) => reject(new Error(`Google Sign-In failed: ${error.type || 'unknown error'}`))
         });
         tokenClient.requestAccessToken({ prompt });
       });

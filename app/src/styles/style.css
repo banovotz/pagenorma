@@ -1313,3 +1313,299 @@ ul.unosi-list li {
 .info-icon {
   flex-shrink: 0;
 }
+
+/* ============================================================================
+   ONBOARDING TOUR & DEMO BANNER STYLES
+   ============================================================================ */
+
+.onboarding-overlay {
+  display: none;
+}
+
+.onboarding-target-highlight {
+  position: relative !important;
+  z-index: 2060 !important;
+  box-shadow: 0 0 0 4px #00a3a3, 0 8px 24px rgba(0, 163, 163, 0.45) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  animation: onboarding-pulse 2s infinite ease-in-out;
+}
+
+@keyframes onboarding-pulse {
+  0% {
+    box-shadow: 0 0 0 3px #00a3a3, 0 4px 16px rgba(0, 163, 163, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 6px #00a3a3, 0 8px 28px rgba(0, 163, 163, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 3px #00a3a3, 0 4px 16px rgba(0, 163, 163, 0.35);
+  }
+}
+
+.onboarding-card {
+  width: min(440px, calc(100vw - 32px));
+  background: rgba(22, 33, 46, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #e2e8f0;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 200, 200, 0.35);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 128, 128, 0.2);
+  padding: 22px 24px;
+  z-index: 2070;
+  box-sizing: border-box;
+  animation: onboarding-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--body-font, 'Lato', sans-serif);
+}
+
+@keyframes onboarding-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.onboarding-arrow {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: rgba(22, 33, 46, 0.94);
+  border: 1px solid rgba(0, 200, 200, 0.35);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.onboarding-arrow.arrow-bottom {
+  bottom: -8px;
+  border-top: none;
+  border-left: none;
+}
+
+.onboarding-arrow.arrow-top {
+  top: -8px;
+  border-bottom: none;
+  border-right: none;
+}
+
+.onboarding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.onboarding-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 128, 128, 0.35);
+  color: #38d9d9;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(56, 217, 217, 0.3);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.onboarding-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38d9d9;
+  box-shadow: 0 0 6px #38d9d9;
+  display: inline-block;
+}
+
+.onboarding-btn-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.onboarding-btn-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.onboarding-title {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #5ce1e6;
+  font-family: var(--heading-font, 'Playfair Display', serif);
+  line-height: 1.35;
+}
+
+.onboarding-body {
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+}
+
+.onboarding-body strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.onboarding-body em {
+  font-style: italic;
+  color: #e2e8f0;
+}
+
+.onboarding-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 16px;
+  gap: 12px;
+}
+
+.onboarding-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.onboarding-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.onboarding-dot.active {
+  width: 20px;
+  border-radius: 4px;
+  background: #38d9d9;
+  box-shadow: 0 0 8px rgba(56, 217, 217, 0.5);
+}
+
+.onboarding-dot.completed {
+  background: rgba(56, 217, 217, 0.5);
+}
+
+.onboarding-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.onboarding-btn-next {
+  font-size: 0.88rem !important;
+  padding: 8px 16px !important;
+  font-weight: 600;
+  background: #008080 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 6px !important;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 128, 128, 0.4);
+  transition: background 0.15s, transform 0.1s;
+}
+
+.onboarding-btn-next:hover {
+  background: #009999 !important;
+  transform: translateY(-1px);
+}
+
+.onboarding-btn-prev {
+  font-size: 0.88rem !important;
+  padding: 8px 14px !important;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+}
+
+.onboarding-btn-prev:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+}
+
+.onboarding-btn-skip {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 8px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.onboarding-btn-skip:hover {
+  color: #f1f5f9;
+}
+
+/* Demo banner na dashboardu */
+.demo-tour-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: linear-gradient(135deg, #e6f7f7 0%, #f4fbfb 100%);
+  border: 1px solid #b3dede;
+  border-left: 5px solid #008080;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-bottom: 22px;
+  box-shadow: 0 2px 8px rgba(0, 128, 128, 0.08);
+}
+
+.demo-tour-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.demo-tour-badge {
+  background: #008080;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.demo-tour-banner-text {
+  font-size: 0.92rem;
+  color: #2d3748;
+}
+
+.demo-tour-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.88rem !important;
+  padding: 6px 14px !important;
+  background: #ffffff !important;
+  color: #008080 !important;
+  border: 1px solid #008080 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  cursor: pointer;
+}
+
+.demo-tour-launch-btn:hover {
+  background: #e6f4f4 !important;
+}

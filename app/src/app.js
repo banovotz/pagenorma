@@ -44,7 +44,17 @@ registerRoutes({
   'dashboard': {
     section: 'page-dashboard',
     view: 'dashboard-page',
-    onEnter: () => ucitajDashboard()
+    onEnter: () => ucitajDashboard(),
+    // Ako korisnik ode na drugi ekran dok je inline forma za uređivanje
+    // projekta ("Edit") još otvorena, zatvorimo je ovdje - tako ne ostaje
+    // "zaglavljena" otvorena skrivena unutar Dashboard section-a i ne
+    // zbunjuje korisnika kad se kasnije vrati na Dashboard.
+    onLeave: () => {
+      const container = document.getElementById('forma-projekt-container');
+      if (container && container.style.display === 'block') {
+        toggleFormaProjekta(true);
+      }
+    }
   },
   'analytics': {
     section: 'page-analytics',
@@ -171,7 +181,7 @@ function postaviGlobalneEventListenere() {
     prebaciIzvorPrijevoda('file');
     const label = document.getElementById('p-translation-file-name');
     if (label) {
-      label.textContent = `📄 Odabrana datoteka: ${file.name}`;
+      label.textContent = `📄 Selected file: ${file.name}`;
       label.style.color = '#1976d2';
     }
   }
@@ -202,8 +212,8 @@ function postaviGlobalneEventListenere() {
       window.dispatchEvent(new CustomEvent('translation-file-selected', { detail: { file, handle } }));
     } catch (error) {
       if (error.name !== 'AbortError') {
-        console.error('Odabir dokumenta nije uspio:', error);
-        alert(`Odabir dokumenta nije uspio: ${error.message}`);
+        console.error('File selection failed:', error);
+        alert(`File selection failed: ${error.message}`);
       }
     }
   }

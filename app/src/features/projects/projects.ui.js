@@ -15,6 +15,7 @@ import { dohvatiCijeliTekstIzEpuba } from '../interlinear/interlinear.js';
 import { parsePdfFile, jePdfDatoteka } from '../pdf-parser/pdf.parser.js';
 import { dohvatiCijeliTekstIzGDoca } from '../google-drive/drive.api.js';
 import { parseDocumentFile, jePodrzanaDokumentDatoteka } from '../document-parser/document.parser.js';
+import { prikaziDemoVodicBanner, provjeriIInicijalizirajOnboarding } from '../onboarding/onboarding.js';
 
 let pendingTranslationFileHandle = null;
 if (typeof window !== 'undefined') {
@@ -30,7 +31,7 @@ async function dohvatiDatotekuPrijevoda(projekt, selectedFile) {
     try {
       return await projekt.translationFileHandle.getFile();
     } catch (error) {
-      throw new Error('Dokument više nije na izvornoj putanji. Ponovno uploadajte dokument prije nastavka.');
+      throw new Error('Document is no longer at the original path. Please re-upload the document before continuing.');
     }
   }
   return projekt?.translationFile || null;
@@ -197,6 +198,12 @@ export async function ucitajDashboard() {
 
     dashboardDiv.appendChild(fragment);
 
+    const imaDemoProjekt = projekti.some(p => p.id === 'proj_1789242662713' || p.naslov === 'Ved Vejen');
+    if (imaDemoProjekt) {
+      prikaziDemoVodicBanner(dashboardDiv);
+      provjeriIInicijalizirajOnboarding();
+    }
+
     projekti.forEach(p => {
       document.getElementById(`btn-unos-${p.id}`)?.addEventListener('click', () => rucniUnosZnakova(p.id, ucitajDashboard));
       document.getElementById(`btn-edit-${p.id}`)?.addEventListener('click', () => urediProjekt(p.id));
@@ -214,7 +221,7 @@ export async function osvjeziPrijevodProjekta(id) {
   const projekt = await dohvatiProjektPoId(id);
   const sourceMode = projekt?.translationSource || (projekt?.gdocUrl ? 'gdoc' : 'file');
   if (!projekt || (sourceMode === 'gdoc' && !projekt.gdocUrl)) {
-    alert('Ovaj projekt nema postavljen izvor prijevoda.');
+    alert('This project does not have a translation source configured.');
     return;
   }
 
@@ -234,8 +241,8 @@ export async function osvjeziPrijevodProjekta(id) {
     await spremiUStorage(projekt);
     await ucitajDashboard();
   } catch (error) {
-    console.error('Greška pri osvježavanju prijevoda:', error);
-    alert(`Osvježavanje prijevoda nije uspjelo: ${error.message}`);
+    console.error('Error refreshing translation:', error);
+    alert(`Failed to refresh translation: ${error.message}`);
   }
 }
 
@@ -307,23 +314,23 @@ export async function spremiProjektForma(event) {
           if (translationSource === 'file') {
             const file = await dohvatiDatotekuPrijevoda(postojeciProjekt, selectedTranslationFile);
             if (!jePodrzanaDokumentDatoteka(file)) {
-              throw new Error('Podržani formati su DOCX, RTF, ODT i TXT.');
+              throw new Error('Supported formats are DOCX, RTF, ODT and TXT.');
             }
             translationFile = file;
             translationFileHandle = selectedTranslationFile ? pendingTranslationFileHandle : translationFileHandle;
             const translationText = await parseDocumentFile(file);
-            if (!translationText.trim()) throw new Error('Odabrani dokument ne sadrži tekst.');
+            if (!translationText.trim()) throw new Error('Selected document contains no text.');
             if (form) form.dataset.tempGdocText = translationText;
           }
         } else {
           tekstIzvora = await dohvatiCijeliTekstIzEpuba(selectedFile);
         }
         if (!tekstIzvora || tekstIzvora.trim().length === 0) {
-          console.warn("ePub je parsiran, ali iz njega nije izvučen tekst (prazan sadržaj).");
+          console.warn("ePub parsed, but no text extracted (empty content).");
         }
       } catch (e) {
-        console.error("Nije moguće ekstrahirati tekst iz ePub-a pri spremanju:", e);
-        alert("Odabrana ePub datoteka nije mogla biti obrađena. Projekt će biti spremljen bez izvornog teksta.");
+        console.error("Failed to extract text from ePub during save:", e);
+        alert("The selected ePub file could not be processed. The project will be saved without source text.");
       }
     }
 
@@ -337,7 +344,7 @@ export async function spremiProjektForma(event) {
     const noviProjekt = {
       ...(postojeciProjekt || {}),
       id: id,
-      naslov: document.getElementById('p-naslov')?.value.trim() || "Bez naslova",
+      naslov: document.getElementById('p-naslov')?.value.trim() || "Untitled",
       klijent: document.getElementById('p-klijent')?.value.trim() || '',
       slovaOriginal: slovaOriginal,
       slovaPrijevod: slovaPrijevod,
@@ -377,11 +384,11 @@ export async function spremiProjektForma(event) {
 
     // 4. Zatvaranje forme i osvježavanje prikaza
     toggleFormaProjekta(true);
-    await ucitajDashboard(); // <-- Pozivanje ucitajDashboard() osvježava ekran
+    await ucitajDashboard();
 
   } catch (err) {
-    console.error("Greška pri spremanju projekta u bazu:", err);
-    alert("Greška pri spremanju: " + err.message);
+    console.error("Error saving project to database:", err);
+    alert("Error saving project: " + err.message);
   }
 }
 
@@ -417,11 +424,11 @@ export async function urediProjekt(id) {
   const epubNameLabel = document.getElementById('p-epub-file-name');
   if (epubNameLabel) {
     if (p.tekstIzvora) {
-      const fileName = p.epubNazivDatoteke || p.izvorNazivDatoteke || "Učitani izvor spremljen u bazi";
-      epubNameLabel.innerHTML = `📄 Učitana datoteka: <strong>${fileName}</strong> (tekst spremljen ✓)`;
+      const fileName = p.epubNazivDatoteke || p.izvorNazivDatoteke || "Saved source from database";
+      epubNameLabel.innerHTML = `📄 Loaded file: <strong>${fileName}</strong> (text saved ✓)`;
       epubNameLabel.style.color = '#2e7d32';
     } else {
-      epubNameLabel.innerText = "Nije priložena EPUB datoteka.";
+      epubNameLabel.innerText = "No EPUB/PDF file attached.";
       epubNameLabel.style.color = '#777';
     }
   }
@@ -435,8 +442,8 @@ export async function urediProjekt(id) {
   const translationFileLabel = document.getElementById('p-translation-file-name');
   if (translationFileLabel) {
     translationFileLabel.textContent = p.translationFileName
-      ? `📄 Spremljena datoteka: ${p.translationFileName}`
-      : 'Nije odabrana datoteka';
+      ? `📄 Saved file: ${p.translationFileName}`
+      : 'No file selected';
     translationFileLabel.style.color = p.translationFileName ? '#2e7d32' : '#555';
   }
   pendingTranslationFileHandle = p.translationFileHandle || null;
@@ -516,13 +523,13 @@ export function ocistiFormuProjekta() {
 
   const epubNameLabel = document.getElementById('p-epub-file-name');
   if (epubNameLabel) {
-    epubNameLabel.innerText = 'Nije odabrana datoteka';
+    epubNameLabel.innerText = 'No file selected';
     epubNameLabel.style.color = '#555';
   }
 
   const translationFileLabel = document.getElementById('p-translation-file-name');
   if (translationFileLabel) {
-    translationFileLabel.innerText = 'Nije odabrana datoteka';
+    translationFileLabel.innerText = 'No file selected';
     translationFileLabel.style.color = '#555';
   }
   const translationFileInput = document.getElementById('p-translation-file');
@@ -546,7 +553,7 @@ export function azurirajePrikazImenaEpuba(input) {
 
   if (input.files && input.files[0]) {
     const file = input.files[0];
-    epubNameLabel.innerHTML = `📄 Odabrana nova datoteka: <strong>${file.name}</strong>`;
+    epubNameLabel.innerHTML = `📄 Selected file: <strong>${file.name}</strong>`;
     epubNameLabel.style.color = '#1976d2';
   }
 }
@@ -660,12 +667,12 @@ export async function povuciPodatkeIzIzvora(e) {
   const selectedTranslationFile = translationFileInput?.files?.[0] || null;
 
   if (!file && !gdocUrl && !(sourceMode === 'file' && selectedTranslationFile)) {
-    alert("Molimo odaberite ePub/PDF datoteku i izvor prijevoda.");
+    alert("Please select an ePub/PDF file and a translation source.");
     return false;
   }
 
   if (statusMsg) {
-    statusMsg.innerText = "Dohvaćanje i obrada u tijeku...";
+    statusMsg.innerText = "Fetching and processing data...";
     statusMsg.style.display = 'block';
   }
 
@@ -679,11 +686,11 @@ export async function povuciPodatkeIzIzvora(e) {
       const sourceData = jePdfDatoteka(file)
         ? await parsePdfFile(file, progress => {
           if (statusMsg && progress.pages) {
-            statusMsg.innerText = `OCR obrada stranice ${progress.page}/${progress.pages}...`;
+            statusMsg.innerText = `OCR processing page ${progress.page}/${progress.pages}...`;
           }
         })
         : await parseEpubFile(file);
-      console.log("Parsirani izvor:", sourceData);
+      console.log("Parsed source:", sourceData);
 
       if (sourceData && sourceData.origCharCount) {
         charCountOrig = sourceData.origCharCount;
@@ -712,7 +719,7 @@ export async function povuciPodatkeIzIzvora(e) {
       const existingProject = projectId ? await dohvatiProjektPoId(projectId) : null;
       const translationFile = await dohvatiDatotekuPrijevoda(existingProject, selectedTranslationFile);
       if (!jePodrzanaDokumentDatoteka(translationFile)) {
-        throw new Error('Podržani formati su DOCX, RTF, ODT i TXT.');
+        throw new Error('Supported formats are DOCX, RTF, ODT and TXT.');
       }
       dohvaceniTekstGDoca = await parseDocumentFile(translationFile);
       const formElement = document.getElementById('projekt-forma');
@@ -754,7 +761,7 @@ export async function povuciPodatkeIzIzvora(e) {
     }
 
     if (statusMsg) {
-    statusMsg.innerText = "Podaci uspješno dohvaćeni! Pregledajte polja i kliknite 'Spremi'.";
+    statusMsg.innerText = "Data fetched successfully! Review fields and click 'Save Project'.";
     statusMsg.style.color = "#2e7d32";
     }
 
@@ -766,9 +773,9 @@ export async function povuciPodatkeIzIzvora(e) {
    
     
   } catch (err) {
-    console.error("Greška pri dohvaćanju ili spremanju:", err);
-    alert("Došlo je do greške: " + err.message);
-    if (statusMsg) statusMsg.innerText = "Greška pri obradi.";
+    console.error("Error fetching or saving:", err);
+    alert("An error occurred: " + err.message);
+    if (statusMsg) statusMsg.innerText = "Error during processing.";
   }
 
   return false;
