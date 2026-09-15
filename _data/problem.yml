@@ -5,15 +5,15 @@ subheading: "...built arround questions every translators has when a translation
 pain_points:
   - id: "how-long"
     title: "How long it will take?"
-    description: "See how much of the text you have translated so far, see how much pages you need to translate per day to meet the deadline. Balance multiple projects overivew in one easy dashboard."
+    description: "pagenorma <strong>tracks</strong> your translated page volume, <strong>forecasts</strong> the exact daily pace needed to hit your deadlines, and keeps all your active translation projects <strong>organized</strong> in one simple dashboard."
     icon: "grid_off"
 
   - id: "how-much"
     title: "How much will I make?"
-    description: "Financial analytics calculates all your projet earnings based on character counts (with spaces) or standardized pages while deducting taxes and pension and health insurance contributions."
+    description: "pagenorma <strong>calculates</strong> your gross earnings with built-in deduction tracking for taxes, pension, and health insurancece giving you a <strong>realistic view</strong> of your true net income."
     icon: "pin"
 
   - id: "any-mistake"
     title: "Am I making any mistake?"
-    description: "Long-form prose requires patient and repeated re-readings. Our intelligent AI assistant makes that process easier with glossary checks, idiom suggestions and spot on inline commentary."
+    description: "Our automated AI assisted tool builds a <strong>linked glossary</strong> directly from your project. View your translation and the original text <strong>side-by-side</strong> with AI assisted spot-on <strong>inline commentary</strong>."
     icon: "schedule"
