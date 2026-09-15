@@ -5,7 +5,7 @@ subheading: "...built arround questions every translators has when a translation
 pain_points:
   - id: "how-long"
     title: "How long it will take?"
-    description: "pagenorma <strong>tracks</strong> your translated page volume, <strong>forecasts</strong> the exact daily pace needed to hit your deadlines, and keeps all your active translation projects <strong>organized</strong> in one simple dashboard."
+    description: "pagenorma <strong>monitors</strong> the percentage of translated text, <strong>forecasts</strong> the exact daily pace you need to hit your deadlines, and <strong>provides an overview of the</strong> status of all your active translation projects."
     icon: "grid_off"
 
   - id: "how-much"

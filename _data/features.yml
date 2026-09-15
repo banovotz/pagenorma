@@ -11,7 +11,7 @@ features_list:
 
   - id: "integrations"
     title: "Native ePub & Google Docs Integration"
-    description: "Fetch progress instantly. Parse your original .epub source file to determine absolute volume, and connect directly to your working Google Doc to sync your translation progress in real time."
+    description: "Fetch progress instantly. Pagenorma parses your original source file (ePub, PDF) to determine absolute volume, and connect directly to your working Google Doc or Word translation doc to sync your translation progress in real time."
     badge: "Automation"
     image: "/assets/images/mockup7.jpeg"
 
@@ -23,13 +23,13 @@ features_list:
 
   - id: "metrics"
     title: "Character-Accurate Progress Tracking"
-    description: "Ditch manual spreadsheet formulas. Automatically calculate progress using precise character counts (with spaces) and standard translation page metrics, giving you and your publishers crystal-clear status updates."
+    description: "Ditch manual spreadsheet formulas. Automatically calculate progress using precise character or standard translation page count, giving you crystal-clear status updates."
     badge: "Metrics"
     image: "/assets/images/mockup4.jpeg"
 
   - id: "privacy"
     title: "Local-First & Privacy-Focused"
-    description: "Your intellectual property stays yours. Built as a PWA with local storage (IndexedDB), your manuscripts, drafts, and source files stay in your browser and on your machine."
+    description: "Your intellectual property stays yours. Built as a PWA with local storage (IndexedDB), your manuscripts, drafts, and original source files stay in your browser and on your computer."
     badge: "Security"
     image: "/assets/images/mockup6.jpeg"
 
