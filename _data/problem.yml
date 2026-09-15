@@ -15,5 +15,5 @@ pain_points:
 
   - id: "any-mistake"
     title: "Am I making any mistake?"
-    description: "Our automated AI assisted tool builds a <strong>linked glossary</strong> directly from your project. View your translation and the original text <strong>side-by-side</strong> with AI assisted spot-on <strong>inline commentary</strong>."
+    description: "Our automated AI assisted tool builds a <strong>linked glossary</strong> directly from your project. View your translation and the original text <strong>side-by-side</strong> with AI's spot-on <strong>inline commentary</strong>."
     icon: "schedule"

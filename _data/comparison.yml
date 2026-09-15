@@ -20,7 +20,7 @@ rows:
     spreadsheets: "Manual formulas required"
     our_app: "Automatic & adaptive"
 
-  - feature: "ePub & Google Docs Sync"
+  - feature: "ePub, PDF, Word & Google Docs Sync"
     cat_tools: "Complex / Plugin-heavy"
     spreadsheets: "No"
     our_app: "Native 1-click fetch"
@@ -28,7 +28,7 @@ rows:
   - feature: "Concordance Analysis"
     cat_tools: "Rigid TM segments"
     spreadsheets: "None"
-    our_app: "Full-text contextual search"
+    our_app: "Full-text contextual search with glossary"
 
   - feature: "Character & Standard Page Metrics"
     cat_tools: "Secondary focus"
@@ -38,4 +38,4 @@ rows:
   - feature: "Offline Privacy"
     cat_tools: "Cloud / Subscription heavy"
     spreadsheets: "Local"
-    our_app: "100% Local-first PWA"
+    our_app: "Local-first app"
