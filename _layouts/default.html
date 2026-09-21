@@ -9,10 +9,10 @@
           <img alt="pagenorma logo" loading="lazy" src="{{ '/assets/icons/pagenorma-logo2.svg' | relative_url }}" height="52">
         </a>
         <nav class="nav-links">
-          <a href="#problem">Why pagenorma</a>
-          <a href="#features">Features</a>
-          <a href="#comparison">Comparison</a>
-          <a href="/app" class="btn-nav">Launch App</a>
+          <a href="{{ '/#problem' | relative_url }}">Why pagenorma</a>
+          <a href="{{ '/#features' | relative_url }}">Features</a>
+          <a href="{{ '/#comparison' | relative_url }}">Comparison</a>
+          <a href="{{ '/app' | relative_url }}" class="btn-nav">Launch App</a>
         </nav>
       </div>
     </header>
@@ -27,6 +27,7 @@
       <div class="container footer-content">
         <p>&copy; {{ 'now' | date: "%Y" }} pagenorma. Designed for literary and academic translators.</p>
         <p class="footer-subtext">Local-first. Privacy-focused. Independent.</p>
+        <p><a href="{{ '/tos/' | relative_url }}">Terms of Service</a></p>
       </div>
     </footer>
   </body>
