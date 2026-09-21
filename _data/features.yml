@@ -4,7 +4,7 @@ subheading: "Features designed to support your specific manuscript workflow with
 
 features_list:
   - id: "integrations"
-    title: "Native ePub & Google Docs Integration"
+    title: "ePub, PDF, Word & Google Docs Integration"
     description: "Pagenorma <strong>parses your source file (ePub, PDF)</strong> to determine absolute volume, and <strong>connects directly to your working Google Doc or Word translation doc</strong> to sync your translation progress in <strong>real time</strong>."
     badge: "Automation"
     image: "/assets/images/mockup7.jpeg"
@@ -16,14 +16,14 @@ features_list:
     image: "/assets/images/mockup1.jpeg"
 
   - id: "multilanguage"
-    title: "Multi-Language Support"
-    description: "<strong>Translate in multiple languages.</strong> The app supports <strong>all latin scripts</strong> and provides <strong>intuitive tools</strong> for managing translations in different linguistic contexts."
+    title: "Support Translation in Multiple Languages"
+    description: "<strong>Translate in multiple languages.</strong> The app supports <strong>all latin scripts</strong> and provides <strong>intuitive tools</strong> such as side-by-side view, searchable glossary of all terms with concordance, and smart AI commmentary for managing translations regardles of source and translation language."
     badge: "Multi-language"
     image: "/assets/images/mockup5.jpeg"
 
   - id: "analysis"
     title: "Deep Textual & Concordance Analysis"
-    description: "<strong>Maintain terminology consistency</strong> across a 100,000-word manuscript. Extract key phrases, analyze phrase/term occurrences, and run <strong>concordance checks</strong> between source text and your translation without losing context."
+    description: "<strong>Maintain terminology consistency</strong> across a 100,000-word manuscript. Generate glossary with all the terms used in your text, analyze phrase/term occurrences, and run <strong>concordance checks</strong> between source text and your translation without losing context."
     badge: "Concordance"
     image: "/assets/images/mockup5.jpeg"
 
