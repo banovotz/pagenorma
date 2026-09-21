@@ -107,4 +107,4 @@ We reserve the right, at our sole discretion, to modify or replace these Terms a
 
 If you have any questions about these Terms of Service, please contact us:
 * **Website:** [pagenorma.eu](https://pagenorma.eu)
-* **Email:** support@pagenorma.eu
+* **Email:** pagenorma@pagenorma.eu
