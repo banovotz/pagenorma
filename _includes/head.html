@@ -1,18 +1,17 @@
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YS4729VL89"></script>
-<script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title | default: "pagenorma" }}</title>
+  <meta name="description" content="{{ page.description | default: site.description | default: 'Workspace and pacing dashboard for literary and academic translators.' }}">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YS4729VL89"></script>
+  <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-YS4729VL89');
-</script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title | default: "pagenorma" }}</title>
-  <meta name="description" content="{{ page.description | default: site.description | default: 'Workspace and pacing dashboard for literary and academic translators.' }}">
-
+  </script>
   <!-- Google Fonts: Lora (serif) & Inter (sans-serif) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
