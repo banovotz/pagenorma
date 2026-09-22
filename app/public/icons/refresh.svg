@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none">
+  <path d="M4 12a8 8 0 0113.856-5.5M20 12a8 8 0 01-13.856 5.5" stroke="#008080" stroke-width="1.75" stroke-linecap="round"/>
+  <!-- Strelica gore -->
+  <path d="M18 3v4h-4" stroke="#008080" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Strelica dolje -->
+  <path d="M6 21v-4h4" stroke="#008080" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Središnji akcent (prijevod) -->
+  <circle cx="12" cy="12" r="2" fill="#D97706"/>
+</svg>
