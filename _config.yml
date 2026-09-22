@@ -36,3 +36,11 @@ exclude:
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
+
+keep_files: [app]
+include: [app]
+defaults:
+  - scope:
+      path: "app"
+    values:
+      layout: null
