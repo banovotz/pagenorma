@@ -4,3 +4,8 @@ _site
 .jekyll-metadata
 vendor
 app/config/firebase.local.js
+
+# Ignoriraj sav sadržaj unutar app mape
+/app/*
+# Ali nemoj ignorirati samu mapu (zadrži strukturu pomoću .gitkeep)
+!/app/.gitkeep
