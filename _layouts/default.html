@@ -6,7 +6,10 @@
     <header class="site-header">
       <div class="container nav-container">
         <a href="{{ '/' | relative_url }}" class="brand-logo">
-          <img alt="pagenorma logo" loading="lazy" src="{{ '/assets/icons/pagenorma-logo2.svg' | relative_url }}" height="52">
+          <picture>
+            <source media="(max-width: 768px)" srcset="{{ '/assets/icons/pagenorma-logo-small.svg' | relative_url }}">
+            <img alt="pagenorma logo" loading="lazy" src="{{ '/assets/icons/pagenorma-logo2.svg' | relative_url }}" height="52">
+          </picture>
         </a>
         <nav class="nav-links">
           <a href="{{ '/#problem' | relative_url }}">Why pagenorma</a>

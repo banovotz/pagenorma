@@ -218,10 +218,37 @@ body {
    Responsive Adjustments
    ========================================================================== */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none; /* Može se proširiti s burger izbornikom */
+  .container {
+    padding-inline: 1rem;
   }
-  
+
+  .nav-container {
+    height: auto;
+    min-height: 70px;
+    gap: 0.5rem;
+  }
+
+  .brand-logo img {
+    display: block;
+    height: 40px;
+    width: 40px;
+  }
+
+  .nav-links {
+    flex: 1;
+    justify-content: flex-end;
+    gap: 0.4rem;
+  }
+
+  .nav-links a {
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .btn-nav {
+    padding: 0.4rem 0.55rem;
+  }
+
   .footer-content {
     flex-direction: column;
     text-align: center;
@@ -845,4 +872,39 @@ body {
 
 .demo-btn-cancel:hover {
   background: rgba(0, 0, 0, 0.04);
+}
+
+@media (max-width: 768px) {
+  .section-problem,
+  .section-features,
+  .section-comparison,
+  .section-story,
+  .section-cta {
+    padding-inline: 0;
+  }
+
+  .grid-three-col {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .pain-card,
+  .feature-card {
+    width: min(100%, 34rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-block: 0.5rem;
+  }
+
+  .nav-links {
+    flex-basis: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
