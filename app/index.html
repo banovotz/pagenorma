@@ -41,17 +41,17 @@
 <body>
 
 <!-- Navigation Bar -->
-<nav class="navbar" style="display: flex; justify-content: center; align-items: center; background: #fff; padding: 12px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000;">
-  <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
-    <!-- Main Links (Desktop) -->
-    <ul class="nav-links" style="display: flex; list-style: none; gap: 16px; margin: 0; padding: 0;">
-  <li><a href data-target="dashboard" class="nav-item active"><img class="nav-icon" src="public/icons/dashboard.svg"> Dashboard</a></li>
-  <li><a href data-target="analytics" class="nav-item"><img class="nav-icon" src="public/icons/financial-analytics.svg"> Financial Analytics</a></li>
-  <li><a href data-target="translation-analytics" class="nav-item"><img class="nav-icon" src="public/icons/translation-analitycs.svg"> Translation Analytics</a></li>
-  <li><a href data-target="settings" class="nav-item"><img class="nav-icon" src="public/icons/settings.svg"> Settings</a></li>
+<nav id="main-nav" class="navbar" aria-label="Main navigation">
+  <a href data-target="dashboard" class="nav-item nav-dashboard active"><img class="nav-icon" src="public/icons/dashboard.svg" alt=""> Dashboard</a>
+  <button id="main-menu-toggle" class="main-menu-toggle" type="button" aria-controls="main-menu" aria-expanded="false">
+    <span class="sr-only">Open main menu</span>
+    <span class="main-menu-toggle-icon" aria-hidden="true"></span>
+  </button>
+  <ul id="main-menu" class="nav-links">
+    <li><a href data-target="analytics" class="nav-item"><img class="nav-icon" src="public/icons/financial-analytics.svg" alt=""> Financial Analytics</a></li>
+    <li><a href data-target="translation-analytics" class="nav-item"><img class="nav-icon" src="public/icons/translation-analitycs.svg" alt=""> Translation Analyses</a></li>
+    <li><a href data-target="settings" class="nav-item"><img class="nav-icon" src="public/icons/settings.svg" alt=""> Settings</a></li>
   </ul>
-</div>
-  
 </nav>
 
 
@@ -508,7 +508,7 @@
 <!-- MODAL ZA WEBLLM PREUZIMANJE I ANALIZU -->
 <div id="llm-status-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
   <div style="background: #fff; padding: 24px; border-radius: 10px; max-width: 500px; width: 90%; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-    <h3 style="margin-top: 0; color: #008080;">🧠 AI Translation Analysis</h3>
+    <h3 style="margin-top: 0; color: #008080;">AI Translation Analysis</h3>
     
     <div id="llm-info-box"></div>
 

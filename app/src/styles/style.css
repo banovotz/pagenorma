@@ -26,6 +26,59 @@ body {
   line-height: 1.6;
 }
 
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 24px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-menu-toggle {
+  display: none;
+}
+
+.main-menu-toggle-icon,
+.main-menu-toggle-icon::before,
+.main-menu-toggle-icon::after {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  content: "";
+}
+
+.main-menu-toggle-icon {
+  position: relative;
+}
+
+.main-menu-toggle-icon::before,
+.main-menu-toggle-icon::after {
+  position: absolute;
+  left: 0;
+}
+
+.main-menu-toggle-icon::before {
+  top: -7px;
+}
+
+.main-menu-toggle-icon::after {
+  top: 7px;
+}
+
 .container {
   max-width: 960px;
   margin: 0 auto;
@@ -358,6 +411,17 @@ ul.unosi-list li {
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
+#llm-status-modal {
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+#llm-status-modal > div {
+  box-sizing: border-box;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+
 /* Spinner animacija */
 .ocr-loading-state {
   text-align: center;
@@ -386,6 +450,69 @@ ul.unosi-list li {
 @media (max-width: 640px) {
   body {
     padding: 16px 12px;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      justify-content: space-between;
+      padding: 8px 12px;
+    }
+
+    .nav-dashboard {
+      min-height: 44px;
+    }
+
+    .main-menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      min-height: 44px;
+      padding: 0;
+      color: var(--heading-color);
+      background: transparent;
+      border: 1px solid var(--border-color);
+    }
+
+    .main-menu-toggle:hover,
+    .main-menu-toggle[aria-expanded="true"] {
+      color: #fff;
+      background: var(--accent-color);
+    }
+
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      padding: 8px 12px 12px;
+      background: #fff;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-links.is-open {
+      display: flex;
+    }
+
+    .nav-links .nav-item {
+      min-height: 44px;
+      padding: 6px 8px;
+    }
+
+    .modal-overlay {
+      align-items: flex-start;
+      overflow-y: auto;
+    }
+
+    .modal-card {
+      max-height: calc(100dvh - 32px);
+      overflow-y: auto;
+    }
   }
 
   /* Prebacivanje grid rasporeda u jedan stupac */
@@ -1271,6 +1398,16 @@ ul.unosi-list li {
 }
 
 @media (max-width: 700px) {
+  #modal-glosar {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  #modal-glosar .modal-dialog,
+  #modal-glosar .modal-content {
+    max-height: calc(100dvh - 32px);
+  }
+
   #modal-glosar .modal-header,
   #modal-glosar .modal-body {
     padding-left: 18px;
