@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Terms of Service
+title: Terms of Service | pagenorma
 permalink: /tos/
 ---
 

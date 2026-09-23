@@ -17,14 +17,6 @@ url: https://pagenorma.eu # the base hostname & protocol for your site, e.g. htt
 
 timezone: Europe/Zagreb
 
-plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-minifier
-
-include:
-  - _pages
-
 exclude:
   - .sass-cache/
   - .jekyll-cache/
@@ -37,8 +29,16 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
 
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-minifier
+
 keep_files: [app]
-include: [app]
+include:
+  - app
+  - _pages
+
 defaults:
   - scope:
       path: "app"
