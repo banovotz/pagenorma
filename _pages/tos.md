@@ -22,10 +22,13 @@ By accessing or using the Service, you agree to be bound by these Terms. If you 
 * Source-to-target text analysis, terminology glossaries, concordance lookup, synonym discovery, and AI-assisted stylistic reviews.
 * Cross-platform operation supporting all Latin-script language pairs.
 
+
+pagenorma is temporarily offered free of charge without functional limitations. We reserve the right to introduce tiered service plans. Core functionality will remain accessible under a free tier, while enhanced features may require an active pagenorma QS subscription.
+<strike>
 The Service is provided in two tiers:
 1. **pagenorma S (Studio):** Free edition offering project tracking, advanced financial and text analytics, and AI assistance module in limited scope.
-2. **pagenorma QS (Quiet Studio):** Premium subscription tier offering distraction-free environments, unlimited projects. Currently free for limited time.
-
+2. **pagenorma QS (Quiet Studio):** Premium subscription tier offering distraction-free environments, unlimited projects. 
+</strike>
 ---
 
 ## 2. User Accounts and Authentication
@@ -39,7 +42,7 @@ To use certain features of the Service, you may be required to authenticate usin
 ---
 
 ## 3. Subscriptions, Promotions, and Payments
-For a limited time both Pagenorma S and QS tiers are free for use. 
+pagenorma is temporarily offered free of charge without functional limitations. We reserve the right to introduce tiered service plans. Core functionality will remain accessible under a free tier, while enhanced features may require an active pagenorma QS subscription.
 <strike>
 ### 3.1 Subscription Plans
 Access to **pagenorma QS** is billed on a recurring subscription basis (e.g., Annual Subscription). You will be billed in advance on a recurring and periodic basis depending on your selected plan.
