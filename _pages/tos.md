@@ -6,7 +6,7 @@ permalink: /tos/
 
 # Terms of Service
 
-*Last updated: September 12, 2026*
+*Last updated: September 23, 2026*
 
 Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the **pagenorma** web application, progressive web app (PWA), and desktop applications (collectively, the "Service") operated by pagenorma ("us", "we", or "our").
 
@@ -24,7 +24,7 @@ By accessing or using the Service, you agree to be bound by these Terms. If you 
 
 The Service is provided in two tiers:
 1. **pagenorma S (Studio):** Free edition offering project tracking, advanced financial and text analytics, and AI assistance module in limited scope.
-2. **pagenorma QS (Quiet Studio):** Premium subscription tier offering distraction-free environments, unlimited projects.
+2. **pagenorma QS (Quiet Studio):** Premium subscription tier offering distraction-free environments, unlimited projects. Currently free for limited time.
 
 ---
 
@@ -39,7 +39,8 @@ To use certain features of the Service, you may be required to authenticate usin
 ---
 
 ## 3. Subscriptions, Promotions, and Payments
-
+For a limited time both Pagenorma S and QS tiers are free for use. 
+<strike>
 ### 3.1 Subscription Plans
 Access to **pagenorma QS** is billed on a recurring subscription basis (e.g., Annual Subscription). You will be billed in advance on a recurring and periodic basis depending on your selected plan.
 
@@ -52,8 +53,8 @@ All subscription state calculations, trial periods, and promotion expirations ar
 
 ### 3.4 Cancellations and Refunds
 You may cancel your subscription at any time through the in-app subscription management screen (`/settings/subscription`) or via our payment processor interface. Cancellation takes effect at the end of the current paid billing cycle. Payments are non-refundable except where required by law.
-
 ---
+</strike>
 
 ## 4. User Data and Cloud Synchronization
 
