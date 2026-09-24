@@ -6,7 +6,7 @@ permalink: /tos/
 
 # Terms of Service
 
-*Last updated: September 23, 2026*
+*Last updated: September 24, 2026*
 
 Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the **pagenorma** web application, progressive web app (PWA), and desktop applications (collectively, the "Service") operated by pagenorma ("us", "we", or "our").
 
@@ -21,14 +21,8 @@ By accessing or using the Service, you agree to be bound by these Terms. If you 
 * Financial analytics, fee calculations, and deduction tracking for sole proprietorships and freelance contracts.
 * Source-to-target text analysis, terminology glossaries, concordance lookup, synonym discovery, and AI-assisted stylistic reviews.
 * Cross-platform operation supporting all Latin-script language pairs.
+* pagenorma is temporarily offered free of charge without functional limitations. We reserve the right to introduce tiered service plans. Core functionality will remain accessible under a free tier, while enhanced features may require an active pagenorma QS subscription.
 
-
-pagenorma is temporarily offered free of charge without functional limitations. We reserve the right to introduce tiered service plans. Core functionality will remain accessible under a free tier, while enhanced features may require an active pagenorma QS subscription.
-<strike>
-The Service is provided in two tiers:
-1. **pagenorma S (Studio):** Free edition offering project tracking, advanced financial and text analytics, and AI assistance module in limited scope.
-2. **pagenorma QS (Quiet Studio):** Premium subscription tier offering distraction-free environments, unlimited projects. 
-</strike>
 ---
 
 ## 2. User Accounts and Authentication
@@ -43,21 +37,6 @@ To use certain features of the Service, you may be required to authenticate usin
 
 ## 3. Subscriptions, Promotions, and Payments
 pagenorma is temporarily offered free of charge without functional limitations. We reserve the right to introduce tiered service plans. Core functionality will remain accessible under a free tier, while enhanced features may require an active pagenorma QS subscription.
-<strike>
-### 3.1 Subscription Plans
-Access to **pagenorma QS** is billed on a recurring subscription basis (e.g., Annual Subscription). You will be billed in advance on a recurring and periodic basis depending on your selected plan.
-
-### 3.2 Promotional Codes and Grace Periods
-* **Subscription Extension Codes (e.g., +1 Month Free):** Redeemable promo codes during paid subscription checkout grant an additional usage period (e.g., 13 months of access for the price of 12).
-* **Free Trial Codes:** Grant temporary access to *pagenorma QS* features for a designated period (e.g., 30 days) without immediate charge. Upon expiration, access reverts to *pagenorma S* unless a paid subscription is activated.
-
-### 3.3 Server-Side Subscription Validation
-All subscription state calculations, trial periods, and promotion expirations are validated and enforced on server-side infrastructure (Firebase Cloud Firestore / Payment Gateways). Any local manipulation of device dates or client storage will not alter your official subscription status.
-
-### 3.4 Cancellations and Refunds
-You may cancel your subscription at any time through the in-app subscription management screen (`/settings/subscription`) or via our payment processor interface. Cancellation takes effect at the end of the current paid billing cycle. Payments are non-refundable except where required by law.
----
-</strike>
 
 ## 4. User Data and Cloud Synchronization
 
