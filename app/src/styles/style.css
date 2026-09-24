@@ -86,6 +86,32 @@ body {
   margin: 0 auto;
 }
 
+.app-footer {
+  max-width: 960px;
+  margin: 40px auto 0;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.app-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+}
+
+.app-footer-links a {
+  color: var(--accent-color);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.app-footer-links a:hover,
+.app-footer-links a:focus-visible {
+  color: var(--accent-color-hover);
+  text-decoration: underline;
+}
+
 header {
   display: flex;
   justify-content: space-between;
