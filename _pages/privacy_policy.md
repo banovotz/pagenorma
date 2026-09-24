@@ -47,11 +47,7 @@ We do not sell or rent your personal information or manuscript content.
 
 ## 5. Subscription and Account Information
 
-[Keep this section only if subscriptions or accounts are currently offered.]
-
-If you create an account or subscribe to pagenorma QS, we collect the contact, account, subscription-status, and billing information necessary to provide the service and process payment. Payments are processed by [payment processor name], which processes payment information under its own privacy policy: [link].
-
-We use this information to administer subscriptions, provide support, prevent fraud, and comply with applicable legal obligations.
+pagenorma is temporarily offered free of charge without functional limitations. We reserve the right to introduce tiered service plans. Core functionality will remain accessible under a free tier, while enhanced features may require an active pagenorma QS subscription.
 
 ## 6. Changes to This Privacy Policy
 
