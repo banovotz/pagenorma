@@ -30,7 +30,11 @@
       <div class="container footer-content">
         <p>&copy; {{ 'now' | date: "%Y" }} pagenorma. Designed for literary and academic translators.</p>
         <p class="footer-subtext">Local-first. Privacy-focused. Independent.</p>
+        <div class="footer-links">
+        <p><a href="{{ '/about/' | relative_url }}">About</a></p>
+        <p><a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a></p>
         <p><a href="{{ '/tos/' | relative_url }}">Terms of Service</a></p>
+        <p><a href="{{ '/contact/' | relative_url }}">Contact</a></p>
       </div>
     </footer>
   </body>
