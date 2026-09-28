@@ -1,1 +1,130 @@
-const a28_0x1f05d9=a28_0x5ee8;function a28_0x5ee8(_0x19475b,_0x1046f8){_0x19475b=_0x19475b-0xd7;const _0x13f1ae=a28_0x13f1();let _0x5ee89c=_0x13f1ae[_0x19475b];if(a28_0x5ee8['GXGWtI']===undefined){var _0x4ffe2c=function(_0x2003ae){const _0x30b89c='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x579652='',_0x2f593e='';for(let _0x4daf5d=0x0,_0x535b0b,_0x485e49,_0x3e0d99=0x0;_0x485e49=_0x2003ae['charAt'](_0x3e0d99++);~_0x485e49&&(_0x535b0b=_0x4daf5d%0x4?_0x535b0b*0x40+_0x485e49:_0x485e49,_0x4daf5d++%0x4)?_0x579652+=String['fromCharCode'](0xff&_0x535b0b>>(-0x2*_0x4daf5d&0x6)):0x0){_0x485e49=_0x30b89c['indexOf'](_0x485e49);}for(let _0x3f794a=0x0,_0x2bd958=_0x579652['length'];_0x3f794a<_0x2bd958;_0x3f794a++){_0x2f593e+='%'+('00'+_0x579652['charCodeAt'](_0x3f794a)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x2f593e);};const _0x176957=function(_0x31213d,_0x41deaf){let _0x5465db=[],_0x342f5b=0x0,_0x173b1f,_0x1d362a='';_0x31213d=_0x4ffe2c(_0x31213d);let _0x2ad6a6;for(_0x2ad6a6=0x0;_0x2ad6a6<0x100;_0x2ad6a6++){_0x5465db[_0x2ad6a6]=_0x2ad6a6;}for(_0x2ad6a6=0x0;_0x2ad6a6<0x100;_0x2ad6a6++){_0x342f5b=(_0x342f5b+_0x5465db[_0x2ad6a6]+_0x41deaf['charCodeAt'](_0x2ad6a6%_0x41deaf['length']))%0x100,_0x173b1f=_0x5465db[_0x2ad6a6],_0x5465db[_0x2ad6a6]=_0x5465db[_0x342f5b],_0x5465db[_0x342f5b]=_0x173b1f;}_0x2ad6a6=0x0,_0x342f5b=0x0;for(let _0x506ce1=0x0;_0x506ce1<_0x31213d['length'];_0x506ce1++){_0x2ad6a6=(_0x2ad6a6+0x1)%0x100,_0x342f5b=(_0x342f5b+_0x5465db[_0x2ad6a6])%0x100,_0x173b1f=_0x5465db[_0x2ad6a6],_0x5465db[_0x2ad6a6]=_0x5465db[_0x342f5b],_0x5465db[_0x342f5b]=_0x173b1f,_0x1d362a+=String['fromCharCode'](_0x31213d['charCodeAt'](_0x506ce1)^_0x5465db[(_0x5465db[_0x2ad6a6]+_0x5465db[_0x342f5b])%0x100]);}return _0x1d362a;};a28_0x5ee8['JcWwdc']=_0x176957,a28_0x5ee8['zZdcHj']={},a28_0x5ee8['GXGWtI']=!![];}const _0x166c4d=_0x13f1ae[0x0];a28_0x5ee8['VFiiNJ']!==_0x166c4d&&(a28_0x5ee8['zZdcHj']={},a28_0x5ee8['VFiiNJ']=_0x166c4d);const _0x5606b1=a28_0x5ee8['zZdcHj'][_0x19475b];return _0x5606b1===undefined?(a28_0x5ee8['zNBScp']===undefined&&(a28_0x5ee8['zNBScp']=!![]),_0x5ee89c=a28_0x5ee8['JcWwdc'](_0x5ee89c,_0x1046f8),a28_0x5ee8['zZdcHj'][_0x19475b]=_0x5ee89c):_0x5ee89c=_0x5606b1,_0x5ee89c;}(function(_0x5612bd,_0x3cf9b0){const _0xb0d6e7=a28_0x5ee8,_0x41743e=_0x5612bd();while(!![]){try{const _0x50351a=-parseInt(_0xb0d6e7(0x115,'5jw7'))/0x1+-parseInt(_0xb0d6e7(0xfa,'aHL0'))/0x2*(parseInt(_0xb0d6e7(0xe8,'3]!L'))/0x3)+-parseInt(_0xb0d6e7(0xef,'Am3P'))/0x4+-parseInt(_0xb0d6e7(0x118,'fSDQ'))/0x5*(parseInt(_0xb0d6e7(0xda,'tHnt'))/0x6)+-parseInt(_0xb0d6e7(0x11a,'mgGm'))/0x7*(-parseInt(_0xb0d6e7(0xe4,'WBwp'))/0x8)+-parseInt(_0xb0d6e7(0x113,'y%pa'))/0x9*(parseInt(_0xb0d6e7(0xf8,'NOfP'))/0xa)+parseInt(_0xb0d6e7(0xf5,'o6e6'))/0xb*(parseInt(_0xb0d6e7(0xf0,'ON7E'))/0xc);if(_0x50351a===_0x3cf9b0)break;else _0x41743e['push'](_0x41743e['shift']());}catch(_0x318d23){_0x41743e['push'](_0x41743e['shift']());}}}(a28_0x13f1,0x3e764));const CACHE_NAME='pagenorma-v19',ASSETS_TO_CACHE=['./',a28_0x1f05d9(0xf1,'Chs['),'./src/styles/style.css',a28_0x1f05d9(0xfd,'fSDQ'),a28_0x1f05d9(0xff,'NOfP'),'./public/icons/icon-512.png','./public/icons/apple-splash.png','./src/app.js',a28_0x1f05d9(0x10c,'3]!L'),a28_0x1f05d9(0x124,'RCDc'),'./src/core/state.js',a28_0x1f05d9(0xe2,'NOfP'),'./src/features/interlinear/interlinear.ui.js','./src/features/interlinear/interlinear.js','./src/features/projects/projects.ui.js',a28_0x1f05d9(0xfb,'yeg!'),a28_0x1f05d9(0xfe,'tHnt'),'./src/features/subscription/subscription.js',a28_0x1f05d9(0x100,'yeg!'),a28_0x1f05d9(0x129,'RCDc'),a28_0x1f05d9(0x11d,'3A^s'),'./src/features/document-parser/document.parser.js',a28_0x1f05d9(0xe0,'L671'),a28_0x1f05d9(0x110,'jwV&'),a28_0x1f05d9(0x11b,'V6n9'),'./src/features/analytics/analytics.ui.js','./src/utils/llmJson.js',a28_0x1f05d9(0xe1,'U467'),a28_0x1f05d9(0x122,'ON7E'),'./src/components/modal.js',a28_0x1f05d9(0x12d,'SHR2'),'./src/services/concordanceService.js',a28_0x1f05d9(0xde,'aMym')];self[a28_0x1f05d9(0xe9,'mgGm')](a28_0x1f05d9(0xdb,'jLtq'),_0x579652=>{const _0x2784ac=a28_0x1f05d9;self[_0x2784ac(0x127,'ON7E')](),_0x579652['waitUntil'](caches[_0x2784ac(0x112,'Ilzk')](CACHE_NAME)['then'](async _0x2f593e=>{const _0xf35b3c=_0x2784ac;await Promise[_0xf35b3c(0x106,'qDO9')](ASSETS_TO_CACHE[_0xf35b3c(0x103,'p1Sa')](async _0x4daf5d=>{const _0x181735=_0xf35b3c;try{const _0x535b0b=await fetch(_0x4daf5d,{'cache':'reload'});_0x535b0b['ok']?await _0x2f593e[_0x181735(0x11e,'41TS')](_0x4daf5d,_0x535b0b):console[_0x181735(0x12c,'ptVU')](_0x181735(0x123,'ON7E')+_0x4daf5d);}catch(_0x485e49){console[_0x181735(0x11f,'jLtq')](_0x181735(0x101,'V6n9')+_0x4daf5d,_0x485e49);}}));}));}),self[a28_0x1f05d9(0x10d,'V6n9')](a28_0x1f05d9(0x126,'chhY'),_0x3e0d99=>{const _0x33c97a=a28_0x1f05d9;_0x3e0d99[_0x33c97a(0x116,'yeg!')](caches['keys']()[_0x33c97a(0xf4,'y%pa')](_0x3f794a=>Promise[_0x33c97a(0x12a,'SHR2')](_0x3f794a[_0x33c97a(0xed,'aHL0')](_0x2bd958=>{const _0x44ac1c=_0x33c97a;if(_0x2bd958!==CACHE_NAME)return caches[_0x44ac1c(0x109,'Am3P')](_0x2bd958);})))['then'](()=>self[_0x33c97a(0xdf,'WBwp')][_0x33c97a(0x125,'ON7E')]()));}),self['addEventListener']('fetch',_0x31213d=>{const _0x5bcb91=a28_0x1f05d9;if(_0x31213d[_0x5bcb91(0x11c,'RCDc')][_0x5bcb91(0x121,'k52O')]==='navigate'){_0x31213d[_0x5bcb91(0x117,'5jw7')](fetch(_0x31213d[_0x5bcb91(0x108,'y%pa')])[_0x5bcb91(0x111,'!^LG')](_0x41deaf=>{const _0xf509da=_0x5bcb91,_0x5465db=_0x41deaf[_0xf509da(0xd7,'WBwp')]();return caches[_0xf509da(0xe6,'yeg!')](CACHE_NAME)[_0xf509da(0x12b,'jwV&')](_0x342f5b=>_0x342f5b[_0xf509da(0x102,'jLtq')](_0x31213d[_0xf509da(0xea,'SHR2')],_0x5465db)),_0x41deaf;})['catch'](()=>caches[_0x5bcb91(0xe3,'V6n9')](_0x31213d['request'])[_0x5bcb91(0xf6,'5VdP')](_0x173b1f=>_0x173b1f||caches['match'](_0x5bcb91(0x10f,'U467')))));return;}if(new URL(_0x31213d[_0x5bcb91(0xf9,'ZRJE')][_0x5bcb91(0x128,'yE7L')])['pathname'][_0x5bcb91(0x105,'p1Sa')]('.js')){_0x31213d[_0x5bcb91(0xd9,'3Cup')](fetch(_0x31213d['request'])[_0x5bcb91(0x10b,'4B$f')](_0x1d362a=>{const _0xa42179=_0x5bcb91,_0x2ad6a6=_0x1d362a[_0xa42179(0xf7,'o6e6')]();return caches[_0xa42179(0xd8,'QpCs')](CACHE_NAME)[_0xa42179(0x10e,'aYTF')](_0x506ce1=>_0x506ce1[_0xa42179(0x119,'RgNc')](_0x31213d[_0xa42179(0xeb,'3A^s')],_0x2ad6a6)),_0x1d362a;})[_0x5bcb91(0x107,'3]!L')](()=>caches['match'](_0x31213d['request'])));return;}_0x31213d['respondWith'](caches[_0x5bcb91(0x104,'5VdP')](_0x31213d['request'])[_0x5bcb91(0xf2,'RCDc')](_0x102512=>{return _0x102512||fetch(_0x31213d['request']);}));});let trenutniProjektId=null;function a28_0x13f1(){const _0x5ba3ce=['W7ddIahdPYxcVmkKW4yWkG','kCowcSkGofKM','df1YW79BW5xdU8ojlmoV','W6xdQvBcLmkJWPqIBwbr','W4xdRCk7B2VcTJ7cV3XIj8knDbWpWOm6q8o2WQeEWOVdTs4SFHBdMZW','dmkYWQjcWRFcQ8ku','W5jXd8o7W4JdJuiPnY7dHtbtW683mcBdLau8WOtcSmoQreJdNCkiW50fW7FdM8k+W6v1CZGWna','dfJcQ8oCeSoKk2/cKNerq0NcH8kukWajyJJcKrjCxCk5A0mABdfxW7i','amoXEmoHW7tcStP+fSkWn1P0W6Gux8k6q8k7kKCNW6btWONdJ8k7oGSxW6DgW6fCggVdKdG','WPLJudNdQG','w8oVW7KxWO3cKSkowW0+','hSoPWO7dHmkpWP/dPCoaW4G','W54jpHi','WObipaXGWO1/WOC','xConWOhcUdpdJHpdOmkn','xa0HWO9fW5BdJCo/aCooiCknW4tdL8kAWOe','lr0sWP8IWQ3cRG','qmkFW48JdeNcQW','jSowvvJdGSkjW4a','vq7cTW','BK9vW591W6FdRmkdW6LoWR4mWP8','W4lcVmk+W7W5uaaZASo9WRfoWRa','W6BdPLxcK8oGW6rqauTeB8oEWOldIa','WPCwWQVdP2X3qszrW7RdPcG','W5XBar8','W4lcU8o6WOHJd3Cp','iMdcIuK','W5lcSgRcSNpdV2eA','W7aDWOjD','WOddRwlcRee','h8oUECosW7/dUb1d','euH6W7xcMx7cGG','c1/dTCoUW5FcLvXVz8oA','WP9wka5uW5v+WORdMmk8EbpdTwldQCk0WPfDt2FdKCklWQRcTXuIcSonWQ5VWQJdUmkdW6Xp','EWlcKG3cGtufurxcR8kDxW','WONdJXSkbLpdMmouW6rtygtcHCoaW7e','W6ZdKuxcPtddKmkgW7StodubWOhcHdnjW6BdMSkkogxcQ8kMqSkXe8oFW7RcRx7cVSoMwmkKW7VcVSkIgMe','amoXE8oMW7xdSJv4wmkTiuD/W6GurCk8wmkHBHH5WQfsWORdHmkO','WP9wka5uW5v+WORdMmk8EbpdTwldQCkHWPnhrY/dGSkEWQVdQWaIsSocWRT5WR7cPCoDW6DoWOpdQXuaWRTB','WQ9rqsJdTmkHW6OgWQLQW5ZcOmoqWRRcPeBcRSo/WQteVqj4CdXlWPPXW7tcMSkXW7i6Xz7dSL9DoLVcVW','mmondq','lmkdjW','W6KuWPnqka','jmkmm8oQW5bkWOmI','wSk5ec9VmmoIW6e7WQO','cSkFW43cNYe','jg3cNvlcLL/cGG','WPFdRSoKWQX/da','cvBdS8oVWQFdKZSlySoyDCoOimkm','WO98WRVdOa','r8orW4RcJIRcGZ/dOSkfW4P/nXi8DM8','WPvMqb/dTmkTW6CxWRjSW53cV8oqWQBcNbq','xSkYW5pdRG','dfJcSCoafCkUjJxcK2Kpaa','WP3dVCoEW5NcNsDhW55UduxcVgDpWRWDr8oMW67dMfZcQSkltfrpW6CoWPWOyhnwrSk5','WOBcUG7cHG','mJfXBq','yJJdNHpdGXVdH8orodTDW5BdIa','WOjjAuPYWO9jWR/dLCk5','W5pcLSoNvSoeWQJcLmkehCkWbCoR','W4yymGHIWPrSWOBdLq','WPddGCkJfSkBW7tcVmk3lCkGcW','WPBdLefEafZdPSoZW7zV','cSkTDG','cJ8/WOjfW5hdSW','W5OTvYJdOCoNW68gWP9XW5VcUCoqWRVdLGNcH8oVWQ49g305iL7dNd7dVSkxWRBdPsK9W7PFugelW6W','W5PwfqtdUvFcQG','hmovW40KcHxcUCkKW6b3WPSHW4tcVr7cTq/cKSkBWP4qy8k4n30oFCkIW7RcQ8ohtaXtWRdcGmkhyv8w','WRhdGCkC','n8ozc8k6','W7xcHmoAes7cTchdNGVcO2JcSSkP','tmkOWPZdKq','W7NdSbldLSk2W7GtquTBrmkdWQddISk2zSocWRHHW5v/W73dVeBdJbG','WOZcJatdLSkJWR4fuhvyrCohWRhdNCktmSohWRv8W51LW73dPqNcHGvJhColWRpcSmolWPFcUYthIK4gW73cNbuiW4vLjhVdLq','WOyCfWpdVWVcVr3dU23cGgvqWP5bDeVcIaNcUq','WRtcSWddJCk4','W6u/WP7cNJK1W589','WQtcTaJdLmkcWRypquTzua','W4qPoW','WOyCfWpdVWVcUbFdQhZdMMvAWPGADLBdIqtcPN0hkhXKWODMCaSUWRf4WP/dQCoSW4ixvCkCW71B','pHqp','W4FcUSoiW4u','zSoHxx4','CvCqWPGKW7hcUCkiW6XBWQyrWRi2W55yW5v7lmkMW5DTWRRdQmkp','dmkYWQrjWRW','W53dULy7','ofxdLK3dNMKTyIxcV8kt'];a28_0x13f1=function(){return _0x5ba3ce;};return a28_0x13f1();}
+const CACHE_NAME = 'pagenorma-v19';
+const  ASSETS_TO_CACHE = [
+  './',
+  './index.html',
+  './src/styles/style.css',
+  './manifest.json',
+  './public/icons/icon-192.png',
+  './public/icons/icon-512.png',
+  './public/icons/apple-splash.png',
+  './src/app.js',
+ './src/core/db.js',
+ './src/core/router.js',
+ './src/core/state.js',
+ './src/features/settings/settings.ui.js',
+ './src/features/interlinear/interlinear.ui.js',
+ './src/features/interlinear/interlinear.js',
+ './src/features/projects/projects.ui.js',
+ './src/features/projects/projects.js',
+ './src/features/pdf-parser/pdf.parser.js',
+ './src/features/subscription/subscription.js',
+ './src/features/epub-parser/epub.parser.js',
+ './src/features/google-drive/drive.auth.js',
+ './src/features/google-drive/drive.api.js',
+ './src/features/document-parser/document.parser.js',
+ './src/features/glossary/glossary.ui.js',
+ './src/features/glossary/glossary.js',
+ './src/features/onboarding/onboarding.js',
+ './src/features/analytics/analytics.ui.js',
+ './src/utils/llmJson.js',
+ './src/utils/interlinearSearch.js',
+ './src/utils/textAligner.js',
+ './src/components/modal.js',
+ './src/components/toast.js',
+ './src/services/concordanceService.js',
+'./src/services/llmProvider.js'
+
+
+];
+
+// Instalacija Service Workera i spremanje datoteka u cache
+self.addEventListener('install', (event) => {
+  // Ne čekaj da se stare kartice zatvore - odmah pređi u "waiting to activate"
+  // i potakni odmah preuzimanje kontrole (vidi 'activate' niže).
+  self.skipWaiting();
+
+  event.waitUntil(
+    // KLJUČNO: koristiti ISTI CACHE_NAME koji se provjerava i briše u 'activate',
+    // inače se nova verzija sprema u drugi cache, a 'activate' briše sve OSIM
+    // trenutnog CACHE_NAME (pa je efektivno brisao upravo ono što je 'install' napunio).
+    caches.open(CACHE_NAME).then(async (cache) => {
+      // Umjesto cache.addAll(ASSETS_TO_CACHE):
+      await Promise.allSettled(
+        ASSETS_TO_CACHE.map(async (url) => {
+          try {
+            // 'reload' osigurava da i sam install dohvati svježe datoteke s mreže,
+            // a ne stariju verziju koju je eventualno već keširao browser HTTP cache.
+            const response = await fetch(url, { cache: 'reload' });
+            if (response.ok) {
+              await cache.put(url, response);
+            } else {
+              console.warn(`[ServiceWorker] Datoteka nije pronađena (404): ${url}`);
+            }
+          } catch (err) {
+            console.warn(`[ServiceWorker] Greška pri dohvaćanju: ${url}`, err);
+          }
+        })
+      );
+    })
+  );
+});
+
+// Aktivacija, čišćenje starih verzija cachea i PREUZIMANJE KONTROLE nad otvorenim karticama
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      ))
+      // Bez ovoga nova SW verzija ostaje "activated" ali ne kontrolira već otvorene
+      // kartice/instalirani PWA sve dok se ručno ne zatvore - pa korisnik i dalje
+      // vidi stari JS iako je nova verzija tehnički aktivna.
+      .then(() => self.clients.claim())
+  );
+});
+
+// Dohvaćanje resursa: Prvo traži u Cacheu, ako nema - ide na Mrežu.
+// Za HTML navigacije (npr. učitavanje/refresh same app) koristimo network-first
+// s cache fallbackom, kako bi korisnik čim prije dobio najnoviju ljusku aplikacije
+// (a ne zauvijek staru index.html iz cachea dok ga SW jednom ne osvježi).
+self.addEventListener('fetch', (e) => {
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
+    // Application modules must be refreshed from the network so security fixes
+  // cannot remain hidden behind an older service-worker cache.
+  if (new URL(e.request.url).pathname.endsWith('.js')) {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  e.respondWith(
+    caches.match(e.request).then((cachedResponse) => {
+      return cachedResponse || fetch(e.request);
+    })
+  );
+});
+
+let trenutniProjektId = null; // ID projekta kojem dodajemo unos
