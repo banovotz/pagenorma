@@ -280,7 +280,23 @@
         <label for="kartica-1500" style="cursor: not-allowed;">1500 characters without spaces <em>(Coming soon)</em></label>
       </div>
     </section>
-    <!-- SECTION 3: Google Docs -->
+    <!-- SECTION 3: Hugging Face -->
+    <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
+      <h3 style="margin-top: 0; color: #333;">Hugging Face analysis token</h3>
+      <p style="color: #666; font-size: 0.9em; margin-bottom: 12px;">
+        pagenorma S uses your personal Hugging Face token with Qwen3-32B, without pagenorma analysis limits. Create a fine-grained token at
+        <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">Hugging Face Tokens</a>
+        and allow inference access. The token stays only in this browser.
+      </p>
+      <label for="hugging-face-token" class="form-label">Hugging Face access token</label>
+      <input type="password" class="form-control" id="hugging-face-token" autocomplete="off" placeholder="hf_...">
+      <div style="margin-top: 12px;">
+        <button type="button" id="btn-save-hugging-face-token" class="btn-primary">Save Hugging Face token</button>
+      </div>
+      <p id="hugging-face-token-status" role="status" style="margin: 10px 0 0; font-size: 0.9em;"></p>
+    </section>
+
+    <!-- SECTION 4: Google Docs -->
     <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
       <h3 style="margin-top: 0; color: #333;">Private Google Docs</h3>
       <p style="color: #666; font-size: 0.9em; margin-bottom: 0;">
@@ -459,18 +475,6 @@
     <p>Selected plan: <strong>pagenorma QS</strong></p>
     <p>Promo code: <strong id="checkout-promo">No promo code</strong></p>
     <button type="button" id="mock-payment">Simulate Successful Payment</button>
-  </div>
-</div>
-
-<div id="quota-exhausted-modal" class="modal-overlay sakriveno" role="dialog" aria-modal="true" aria-labelledby="quota-exhausted-title">
-  <div class="modal-card">
-    <h2 id="quota-exhausted-title">Monthly analysis allowance reached</h2>
-    <p>You have used all 18,000 source words or 18,000 translated words included with pagenorma S for this calendar month.</p>
-    <p>Subscribe to pagenorma QS for unlimited text analysis.</p>
-    <div class="subscription-modal-actions">
-      <button type="button" id="quota-exhausted-close" class="btn-secondary">Close</button>
-      <button type="button" id="quota-exhausted-subscribe" class="btn-primary">View subscription</button>
-    </div>
   </div>
 </div>
 
