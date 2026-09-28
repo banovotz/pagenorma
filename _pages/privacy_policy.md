@@ -34,7 +34,9 @@ When you choose an AI-powered feature, such as concordance support, glossary ext
 - **Your Gemini API key:** Requests are made using the Gemini API key that you provide. The key is stored in your browser’s local storage on your device and is used to make Gemini API requests on your behalf.
 - **Purpose of processing:** pagenorma uses submitted text to produce the analysis, commentary, glossary extraction, or verification that you request.
 - **No pagenorma AI-content server:** pagenorma does not operate a server that stores copies of text submitted to the Gemini API or copies of your Gemini API key.
-- **Google’s processing:** Google’s handling, logging, retention, and use of information sent to the Gemini API are governed by the applicable Google Gemini API terms and privacy documentation. Please review those terms before submitting confidential, personal, or proprietary information.
+- **Google’s processing:** Google’s handling, logging, retention, and use of information sent to the Gemini API are governed by the applicable Google Gemini API terms and privacy documentation. Please review those terms before submitting confidential, personal, or proprietary information. 
+
+Pagenorma’s use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy?utm_source=gemini" target="_blank">Google API Services User Data Policy</a>, including the Limited Use requirements
 
 ## 4. Third-Party Services
 
@@ -42,6 +44,8 @@ pagenorma uses Google services when you choose the related optional features:
 
 - **Google Docs API and Google OAuth** to authorize and retrieve the Google Docs document URL that you choose to import.
 - **Google Gemini API** to provide the AI-powered features that you choose to use.
+
+Google Docs user data accessed by Pagenorma is strictly used to provide user-facing features (text analysis and interlinear text preview). We do not use Google Workspace data to train, develop, or improve AI/ML models. Any text processed via external AI infrastructure (such as Google Gemini APIs) is handled under paid enterprise agreements with zero data retention for model training.
 
 We do not sell or rent your personal information or manuscript content.
 
