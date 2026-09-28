@@ -280,22 +280,7 @@
         <label for="kartica-1500" style="cursor: not-allowed;">1500 characters without spaces <em>(Coming soon)</em></label>
       </div>
     </section>
-<!-- SECTION 3: Gemini -->
-     <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
-      <h3 style="margin-top: 0; color: #333;">Gemini integration</h3>
-    
-      <div class="mb-3">
-  <label for="gemini-api-key" class="form-label">Gemini API Key</label>
-  <input type="password" class="form-control" id="gemini-api-key" placeholder="AIzaSy..." />
-   <p style="color: #666; font-size: 0.9em; margin-bottom: 16px;">
-    You can generate a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
-    It is stored exclusively locally in your browser.
-   </p>
-</div>
-<button class="btn btn-primary" >Save Settings</button>
-
-</section>
-    <!-- SECTION 4: Google Docs -->
+    <!-- SECTION 3: Google Docs -->
     <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
       <h3 style="margin-top: 0; color: #333;">Private Google Docs</h3>
       <p style="color: #666; font-size: 0.9em; margin-bottom: 0;">
@@ -372,7 +357,6 @@
         Save Settings
       </button>
     </div>
-<!--- 
     <div id="subscription-page" class="subscription-page" style="max-width: 800px; margin: 0 auto; padding: 20px;">
     <section class="subscription-card" data-subscription-auth>
       <h2>Sign in to pagenorma</h2>
@@ -384,14 +368,16 @@
         <label for="subscription-password-input">Password</label>
         <input id="subscription-password-input" type="password" autocomplete="current-password" minlength="6" required>
         <button id="subscription-email-submit" type="submit">Sign in</button>
+        <button id="subscription-password-reset" type="button" class="btn-secondary">Forgot password?</button>
         <button id="subscription-signup-toggle" type="button" class="btn-secondary">New account</button>
       </form>
-    </section>-->
+    </section>
 
     <section class="subscription-card sakriveno" data-subscription-account>
       <p>Signed in as <strong data-subscription-email></strong>.</p>
       <p>Current plan: <strong data-subscription-plan></strong></p>
       <button type="button" id="subscription-signout" class="btn-secondary">Sign out</button>
+      <button type="button" id="subscription-delete-account" class="btn-danger">Delete account</button>
     </section>
     <section class="subscription-card sakriveno" data-subscription-offer>
       <h2>pagenorma QS — Quiet Studio</h2>
@@ -473,6 +459,18 @@
     <p>Selected plan: <strong>pagenorma QS</strong></p>
     <p>Promo code: <strong id="checkout-promo">No promo code</strong></p>
     <button type="button" id="mock-payment">Simulate Successful Payment</button>
+  </div>
+</div>
+
+<div id="quota-exhausted-modal" class="modal-overlay sakriveno" role="dialog" aria-modal="true" aria-labelledby="quota-exhausted-title">
+  <div class="modal-card">
+    <h2 id="quota-exhausted-title">Monthly analysis allowance reached</h2>
+    <p>You have used all 18,000 source words or 18,000 translated words included with pagenorma S for this calendar month.</p>
+    <p>Subscribe to pagenorma QS for unlimited text analysis.</p>
+    <div class="subscription-modal-actions">
+      <button type="button" id="quota-exhausted-close" class="btn-secondary">Close</button>
+      <button type="button" id="quota-exhausted-subscribe" class="btn-primary">View subscription</button>
+    </div>
   </div>
 </div>
 
