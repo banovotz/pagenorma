@@ -5,7 +5,7 @@ permalink: /privacy/
 description: Learn how pagenorma respects your privacy, handles your book translation projects, and protects your local data.
 ---
 
-*Last updated: September 24, 2026*
+*Last updated: September 28, 2026*
 
 At **pagenorma**, we believe the texts and translations you work with belong to you. This Privacy Policy explains how pagenorma processes information when you use the application, including optional Google Docs import and Gemini-powered analysis features.
 
