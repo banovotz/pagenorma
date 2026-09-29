@@ -373,52 +373,57 @@
         Save Settings
       </button>
     </div>
-    <div id="subscription-page" class="subscription-page" style="max-width: 800px; margin: 0 auto; padding: 20px;">
-    <section class="subscription-card" data-subscription-auth>
-      <h2>Sign in to pagenorma</h2>
-      <p id="subscription-status" role="status">Sign in to manage your subscription.</p>
-      <button type="button" id="subscription-google" class="subscription-google">Continue with Google</button>
-      <form id="subscription-email-form">
-        <label for="subscription-email-input">Email</label>
-        <input id="subscription-email-input" type="email" autocomplete="email" required>
+<div id="subscription-page" class="subscription-page" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+  <section class="subscription-card" data-subscription-auth>
+    <h2 id="subscription-title">Sign in to pagenorma</h2>
+    <p id="subscription-status" role="status">Sign in to manage your subscription.</p>
+    <button type="button" id="subscription-google" class="subscription-google">Continue with Google</button>
+    
+    <form id="subscription-email-form">
+      <label for="subscription-email-input">Email</label>
+      <input id="subscription-email-input" type="email" autocomplete="email" required>
+      
+      <!-- Obmotano u div radi lakšeg sakrivanja -->
+      <div id="password-group">
         <label for="subscription-password-input">Password</label>
         <input id="subscription-password-input" type="password" autocomplete="current-password" minlength="6" required>
-        <button id="subscription-email-submit" type="submit">Sign in</button>
-        <button id="subscription-password-reset" type="button" class="btn-secondary">Forgot password?</button>
-        <button id="subscription-signup-toggle" type="button" class="btn-secondary">New account</button>
-      </form>
-    </section>
-
-    <section class="subscription-card sakriveno" data-subscription-account>
-      <p>Signed in as <strong data-subscription-email></strong>.</p>
-      <p>Current plan: <strong data-subscription-plan></strong></p>
-      <button type="button" id="subscription-signout" class="btn-secondary">Sign out</button>
-      <button type="button" id="subscription-delete-account" class="btn-danger">Delete account</button>
-    </section>
-    <section class="subscription-card sakriveno" data-subscription-offer>
-      <h2>pagenorma QS — Quiet Studio</h2>
-      <ul>
-        <li>Native Desktop (Tauri) and PWA application</li>
-        <li>Ad-free experience without promotional notices</li>
-        <li>Unlimited active projects</li>
-        <li>Unlimited AI analyses and glossary tools</li>
-      </ul>
-      <label for="subscription-promo">Promo code</label>
-      <input id="subscription-promo" type="text" autocomplete="off" placeholder="Enter promo code">
-      <div class="subscription-choice">
-        <label><input type="radio" name="subscriptionType" value="annual" checked> Annual subscription (+ 1 bonus month with promo code)</label>
-        <label><input type="radio" name="subscriptionType" value="trial"> Free trial (1 month)</label>
       </div>
-      <button type="button" id="subscription-checkout">Subscribe now</button>
-    </section>
-    <section class="subscription-card sakriveno" data-subscription-active>
-      <h2>pagenorma QS is active</h2>
-      <p>Your access is managed through verified status in Firestore.</p>
-    </section>
-  </div>
-  </div>
+
+      <button id="subscription-email-submit" type="submit">Sign in</button>
+      <button id="subscription-password-reset" type="button" class="btn-secondary">Forgot password?</button>
+      <button id="subscription-signup-toggle" type="button" class="btn-secondary">New account</button>
+    </form>
   </section>
- 
+
+  <section class="subscription-card sakriveno" data-subscription-account>
+    <p>Signed in as <strong data-subscription-email></strong>.</p>
+    <p>Current plan: <strong data-subscription-plan></strong></p>
+    <button type="button" id="subscription-signout" class="btn-secondary">Sign out</button>
+    <button type="button" id="subscription-delete-account" class="btn-danger">Delete account</button>
+  </section>
+
+  <section class="subscription-card sakriveno" data-subscription-offer>
+    <h2>pagenorma QS — Quiet Studio</h2>
+    <ul>
+      <li>Native Desktop (Tauri) and PWA application</li>
+      <li>Ad-free experience without promotional notices</li>
+      <li>Unlimited active projects</li>
+      <li>Unlimited AI analyses and glossary tools</li>
+    </ul>
+    <label for="subscription-promo">Promo code</label>
+    <input id="subscription-promo" type="text" autocomplete="off" placeholder="Enter promo code">
+    <div class="subscription-choice">
+      <label><input type="radio" name="subscriptionType" value="annual" checked> Annual subscription (+ 1 bonus month with promo code)</label>
+      <label><input type="radio" name="subscriptionType" value="trial"> Free trial (1 month)</label>
+    </div>
+    <button type="button" id="subscription-checkout">Subscribe now</button>
+  </section>
+
+  <section class="subscription-card sakriveno" data-subscription-active>
+    <h2>pagenorma QS is active</h2>
+    <p>Your access is managed through verified status in Firestore.</p>
+  </section>
+</div> 
   <!-- ANALYTICS SCREEN -->
    <section id="page-analytics" class="page-section hidden">
   <div id="analytics-page" class="page-content" style="max-width: 800px; margin: 0 auto; padding: 20px;">
