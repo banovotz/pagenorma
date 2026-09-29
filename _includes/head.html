@@ -37,6 +37,19 @@
 
   gtag('config', 'G-YS4729VL89');
   </script>
+
+  <script>
+  (function forwardAuthParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+    const oobCode = urlParams.get('oobCode');
+
+    if (mode && oobCode) {
+      // Preusmjeri na PWA aplikaciju i proslijedi sve parametre + otvori #settings
+      window.location.href = '/app/?mode=' + encodeURIComponent(mode) + '&oobCode=' + encodeURIComponent(oobCode) + '#settings';
+    }
+  })();
+</script>
   <!-- Google Fonts: Lora (serif) & Inter (sans-serif) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
