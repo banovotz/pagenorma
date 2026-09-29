@@ -380,13 +380,22 @@
     <button type="button" id="subscription-google" class="subscription-google">Continue with Google</button>
     
     <form id="subscription-email-form">
-      <label for="subscription-email-input">Email</label>
-      <input id="subscription-email-input" type="email" autocomplete="email" required>
+      <!-- Obmotano u div radi lakšeg sakrivanja u confirmReset modu -->
+      <div id="email-group">
+        <label for="subscription-email-input">Email</label>
+        <input id="subscription-email-input" type="email" autocomplete="email" required>
+      </div>
       
-      <!-- Obmotano u div radi lakšeg sakrivanja -->
+      <!-- Standardno polje za lozinku (Sign in / Register) -->
       <div id="password-group">
         <label for="subscription-password-input">Password</label>
         <input id="subscription-password-input" type="password" autocomplete="current-password" minlength="6" required>
+      </div>
+
+      <!-- Novo polje koje se prikazuje SAMO kada korisnik klikne link iz e-maila -->
+      <div id="new-password-group" style="display: none;">
+        <label for="subscription-new-password-input">New Password</label>
+        <input id="subscription-new-password-input" type="password" autocomplete="new-password" minlength="6">
       </div>
 
       <button id="subscription-email-submit" type="submit">Sign in</button>
@@ -401,7 +410,7 @@
     <button type="button" id="subscription-signout" class="btn-secondary">Sign out</button>
     <button type="button" id="subscription-delete-account" class="btn-danger">Delete account</button>
   </section>
-
+</div>
  <!--- <section class="subscription-card sakriveno" data-subscription-offer>
     <h2>pagenorma QS — Quiet Studio</h2>
     <ul>
