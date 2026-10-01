@@ -290,7 +290,20 @@
         and allow inference access. The token stays only in this browser.
       </p>
       <label for="hugging-face-token" class="form-label">Hugging Face access token</label>
-      <input type="password" class="form-control" id="hugging-face-token" autocomplete="off" placeholder="hf_...">
+      <input
+        type="text"
+        class="form-control"
+        id="hugging-face-token"
+        name="hugging-face-access-token"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        data-1p-ignore="true"
+        data-bwignore="true"
+        data-lpignore="true"
+        style="-webkit-text-security: disc;"
+        placeholder="hf_..."
+      >
       <div style="margin-top: 12px;">
         <button type="button" id="btn-save-hugging-face-token" class="btn-primary">Save Hugging Face token</button>
       </div>
