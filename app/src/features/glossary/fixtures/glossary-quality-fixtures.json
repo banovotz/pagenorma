@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "idle-tales-wrong-translation",
+      "description": "Idiomatski izraz preveden nepovezanim izrazom.",
+      "segment": {
+        "source": "Now I know that its real object was to keep from my ears the idle tales of the dread curse upon our line, told and magnified night by night by the simple peasantry as they conversed in hushed accents in the glow of their cottage hearths.",
+        "target": "Sada znam da je njegov pravi cilj bio sakriti od mojih ušiju prazne puške o strašnom prokletstvu nad našom lozom, koje su svake noći pričali i uvećavali jednostavni stanari dok su tiho razgovarali u sjaju svojih grijalica."
+      },
+      "candidate": {
+        "source_term": "idle tales",
+        "translation": "prazne puške"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 24,
+        "issue_type": "idiom_or_fixed_expression",
+        "must_include_reason_terms": ["priče"]
+      }
+    },
+    {
+      "id": "cottage-hearths-wrong-object",
+      "description": "Predmet je pogrešno preveden unatoč jasnom kontekstu.",
+      "segment": {
+        "source": "as they conversed in hushed accents in the glow of their cottage hearths.",
+        "target": "dok su tiho razgovarali u sjaju svojih grijalica."
+      },
+      "candidate": {
+        "source_term": "cottage hearths",
+        "translation": "grijalica"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 24,
+        "issue_type": "wrong_sense",
+        "must_include_reason_terms": ["ognjišta", "vatra"]
+      }
+    },
+    {
+      "id": "the-papers-historical-context-error",
+      "description": "Arhivski dokumenti ili spisi pogrešno prevedeni kao suvremene dnevne novine.",
+      "segment": {
+        "source": "The papers carried me back to the days of the thirteenth century, when the old castle in which I sat was a fear-inspiring and impregnable fortress.",
+        "target": "Dnevne novine su me vratile u dane trinaestog stoljeća, kada je stari dvorac u kojem sam sjedio bio strašna i neosvojiva tvrđava."
+      },
+      "candidate": {
+        "source_term": "The papers",
+        "translation": "Dnevne novine"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 20,
+        "issue_type": "wrong_sense",
+        "must_include_reason_terms": ["spisi", "dokumenti", "papiri"]
+      }
+    },
+    {
+      "id": "ink-of-night-literal-translation",
+      "description": "Metafora za tminu ili mrak prevedena je doslovno kao pisaća tinta.",
+      "segment": {
+        "source": "he vanished behind the ink of night.",
+        "target": "dok je ovaj nestajao iza tinte noći."
+      },
+      "candidate": {
+        "source_term": "ink of night",
+        "translation": "tinte noći"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 30,
+        "issue_type": "literal_translation_of_figurative",
+        "must_include_reason_terms": ["tmina", "mrak", "crnilo"]
+      }
+    },
+    {
+      "id": "skull-cap-mistranslation",
+      "description": "Tradicionalno pokrivalo za glavu (kalota) pogrešno prevedeno kao rekvizit za kupanje.",
+      "segment": {
+        "source": "He was a man clad in a skull-cap and long mediaeval tunic of dark colour.",
+        "target": "Bio je to čovjek odjeven u kapu za kupanje i dugu srednjovjekovnu tuniku tamne boje."
+      },
+      "candidate": {
+        "source_term": "skull-cap",
+        "translation": "kapu za kupanje"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 15,
+        "issue_type": "wrong_sense",
+        "must_include_reason_terms": ["kalota", "kapica"]
+      }
+    },
+    {
+      "id": "curiosity-killed-the-cat-unwarranted-insertion",
+      "description": "Ubacivanje cijelog stranog idioma u tekst u kojem se nalazi samo jedna riječ.",
+      "segment": {
+        "source": "the mind, recalling what had occurred, shrank from the thought of seeing more; yet curiosity overcame all.",
+        "target": "a um, sjećajući se što se dogodilo, povukao se od pomisli da će vidjeti još; no znatiželja je ubila mačku, pa je sve nadvladala."
+      },
+      "candidate": {
+        "source_term": "curiosity",
+        "translation": "znatiželja je ubila mačku"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 10,
+        "issue_type": "unwarranted_addition",
+        "must_include_reason_terms": ["znatiželja", "radoznalost"]
+      }
+    },
+    {
+      "id": "wainscoting-inappropriate-register",
+      "description": "Upotreba suvremenog/neprikladnog pojma umjesto povijesno točne drvene obloge.",
+      "segment": {
+        "source": "sagging floors, worm-eaten wainscoting, and faded tapestries within",
+        "target": "ulegnuti podovi, crvotočni parketi i izblijedjele tapiserije iznutra"
+      },
+      "candidate": {
+        "source_term": "wainscoting",
+        "translation": "parketi"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 40,
+        "issue_type": "inappropriate_register_or_terminology",
+        "must_include_reason_terms": ["obloge", "lamperija"]
+      }
+    },
+    {
+      "id": "dishearten-modern-corporate-jargon",
+      "description": "Korištenje modernog poslove/korporativnog žargona umjesto književnog stila.",
+      "segment": {
+        "source": "yet what little knowledge I was enabled to gain seemed to dishearten me greatly.",
+        "target": "no ono malo znanja koje sam uspio steći činilo se da me jako demotivira."
+      },
+      "candidate": {
+        "source_term": "dishearten",
+        "translation": "demotivira"
+      },
+      "expected": {
+        "review_status": "needs_improvement",
+        "quality_score_max": 50,
+        "issue_type": "stylistic_register_mismatch",
+        "must_include_reason_terms": ["obeshrabriti", "oboriti duh", "dešperirati"]
+      }
+    },
+    {
+      "id": "estates-legal-terminology",
+      "description": "Pravno-ekonomski pojam upotrebljen umjesto povijesnog vlastelinskog imanja.",
+      "segment": {
+        "source": "There was a rumour of a certain old man who had once lived on our estates",
+        "target": "Pričalo se o izvjesnom starom čovjeku koji je nekoć živio na našim nekretninama"
+      },
+      "candidate": {
+        "source_term": "estates",
+        "translation": "nekretninama"
+      },
+      "expected": {
+        "review_status": "needs_improvement",
+        "quality_score_max": 45,
+        "issue_type": "inappropriate_terminology",
+        "must_include_reason_terms": ["imanjima", "posjedima"]
+      }
+    },
+    {
+      "id": "apartment-modern-housing-sense",
+      "description": "Zastarjelo značenje riječi 'apartment' (odaja/prostorija) prevedeno kao suvremeni stan.",
+      "segment": {
+        "source": "At the other end of the apartment was an opening leading out into one of the many wild ravines",
+        "target": "Na drugom kraju stana bio je otvor koji je vodio u jednu od mnogih divljih gudura"
+      },
+      "candidate": {
+        "source_term": "apartment",
+        "translation": "stana"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 30,
+        "issue_type": "wrong_sense",
+        "must_include_reason_terms": ["odaja", "prostorija", "dvorana"]
+      }
+    },
+    {
+      "id": "inconsistent-lord-translation",
+      "description": "Randomna izmjena pojma za plemićku titulu kroz tekst (lord -> šef).",
+      "segment": {
+        "source": "small reduced descendants of the once mighty lords of the estate.",
+        "target": "žalosno smanjene potomke nekoć moćnih šefova imanja."
+      },
+      "candidate": {
+        "source_term": "lords",
+        "translation": "šefova"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 35,
+        "issue_type": "inconsistent_terminology_and_register",
+        "must_include_reason_terms": ["gospodari", "gospoda", "velikaši"]
+      }
+    },
+    {
+      "id": "inconsistent-sorcerer-translation",
+      "description": "Nekonzistentno prevođenje ključnog naziva bez jasnog stilskog razloga (sorcerer -> vrač / čarobnjak).",
+      "segment": {
+        "source": "and who was therefore styled Le Sorcier, or the Sorcerer.",
+        "target": "i koji je stoga bio nazvan Le Sorcier ili Vrač."
+      },
+      "candidate": {
+        "source_term": "Sorcerer",
+        "translation": "Vrač"
+      },
+      "expected": {
+        "review_status": "needs_improvement",
+        "quality_score_max": 60,
+        "issue_type": "inconsistent_terminology",
+        "must_include_reason_terms": ["čarobnjak", "vještac"]
+      }
+    },
+    {
+      "id": "acceptable-nonliteral-idiom",
+      "description": "Nedoslovan, ali značenjski ispravan prijevod idioma ne smije biti označen kao greška.",
+      "segment": {
+        "source": "He finally spilled the beans.",
+        "target": "Napokon je otkrio tajnu."
+      },
+      "candidate": {
+        "source_term": "spilled the beans",
+        "translation": "otkrio tajnu"
+      },
+      "expected": {
+        "review_status": "appears_correct",
+        "quality_score_min": 75
+      }
+    }
+  ]
+}
