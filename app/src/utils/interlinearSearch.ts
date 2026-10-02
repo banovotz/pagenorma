@@ -8,10 +8,15 @@ export function normalizeInterlinearSearchText(value: unknown): string {
 export function findMatchingParagraphIndices(
   sourceParagraphs: unknown[] = [],
   targetParagraphs: unknown[] = [],
-  query: string
+  query: string,
+  commentTexts: unknown[] = []
 ): number[] {
   const normalizedQuery = normalizeInterlinearSearchText(query).trim();
-  const paragraphCount = Math.max(sourceParagraphs.length, targetParagraphs.length);
+  const paragraphCount = Math.max(
+    sourceParagraphs.length,
+    targetParagraphs.length,
+    commentTexts.length
+  );
 
   if (!normalizedQuery) {
     return Array.from({ length: paragraphCount }, (_, index) => index);
@@ -21,7 +26,10 @@ export function findMatchingParagraphIndices(
     .filter(index => {
       const source = normalizeInterlinearSearchText(sourceParagraphs[index]);
       const target = normalizeInterlinearSearchText(targetParagraphs[index]);
-      return source.includes(normalizedQuery) || target.includes(normalizedQuery);
+      const comment = normalizeInterlinearSearchText(commentTexts[index]);
+      return source.includes(normalizedQuery) ||
+        target.includes(normalizedQuery) ||
+        comment.includes(normalizedQuery);
     });
 }
 
@@ -29,7 +37,13 @@ export function getInterlinearSearchSuggestions(
   sourceParagraphs: unknown[] = [],
   targetParagraphs: unknown[] = [],
   query: string,
+  commentTexts: unknown[] = [],
   limit = 5
 ): number[] {
-  return findMatchingParagraphIndices(sourceParagraphs, targetParagraphs, query).slice(0, limit);
+  return findMatchingParagraphIndices(
+    sourceParagraphs,
+    targetParagraphs,
+    query,
+    commentTexts
+  ).slice(0, limit);
 }
