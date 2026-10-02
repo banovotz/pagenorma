@@ -1310,11 +1310,15 @@ ul.unosi-list li {
 
 .glossary-source-column,
 .glossary-target-column {
-  width: 38%;
+  width: 30%;
+}
+
+.glossary-quality-column {
+  width: 20%;
 }
 
 .glossary-action-column {
-  width: 24%;
+  width: 20%;
 }
 
 .glossary-table thead th {
@@ -1348,6 +1352,74 @@ ul.unosi-list li {
 
 .glossary-table .glossary-context-toggle {
   float: right;
+}
+
+.glossary-filter-wrap select {
+  min-height: 38px;
+  max-width: 190px;
+  border: 1px solid #c5ddd8;
+  border-radius: 999px;
+  background: #fff;
+  color: #315753;
+  padding: 0 30px 0 12px;
+}
+
+.glossary-quality {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.glossary-quality-badge {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 4px 8px;
+}
+
+.glossary-quality-badge.red-flag {
+  background: #fde7e7;
+  color: #a21c1c;
+}
+
+.glossary-quality-badge.needs-improvement {
+  background: #fff3d6;
+  color: #8a5700;
+}
+
+.glossary-quality-badge.appears-correct {
+  background: #e2f4e8;
+  color: #1f6c3b;
+}
+
+.glossary-quality-badge.not-assessed {
+  background: #edf1f0;
+  color: #526966;
+}
+
+.glossary-quality-score {
+  color: #526966;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.glossary-assessment-details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 5px 12px;
+  margin: 0 0 14px;
+}
+
+.glossary-assessment-details dt {
+  color: #315753;
+  font-weight: 700;
+}
+
+.glossary-assessment-details dd {
+  margin: 0;
 }
 
 #glosar-backdrop {

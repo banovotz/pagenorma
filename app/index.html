@@ -640,6 +640,22 @@
             <input id="glossary-search" type="search" placeholder="Search source or target term..." autocomplete="off">
             <button type="button" id="glossary-search-reset" class="glossary-search-reset" aria-label="Clear search" title="Clear search">×</button>
           </label>
+          <label class="glossary-filter-wrap" for="glossary-quality-filter">
+            <span class="sr-only">Filter translation quality</span>
+            <select id="glossary-quality-filter">
+              <option value="all">All assessments</option>
+              <option value="likely_incorrect">Red flags</option>
+              <option value="needs_improvement">Needs improvement</option>
+              <option value="appears_correct">Appears correct</option>
+              <option value="not_assessed">Not assessed</option>
+            </select>
+          </label>
+          <label class="glossary-filter-wrap" for="glossary-issue-filter">
+            <span class="sr-only">Filter translation issue type</span>
+            <select id="glossary-issue-filter">
+              <option value="all">All issue types</option>
+            </select>
+          </label>
           <p id="glossary-result-count" class="glossary-result-count" aria-live="polite"></p>
         </div>
         <div id="prazan-glosar-poruka" class="text-center text-muted my-3" style="display: none;">
@@ -650,12 +666,14 @@
             <colgroup>
               <col class="glossary-source-column">
               <col class="glossary-target-column">
+              <col class="glossary-quality-column">
               <col class="glossary-action-column">
             </colgroup>
             <thead>
               <tr>
                 <th scope="col"><button type="button" class="glossary-sort-button" data-sort="source">Source term <span aria-hidden="true">↕</span></button></th>
                 <th scope="col"><button type="button" class="glossary-sort-button" data-sort="target">Target term <span aria-hidden="true">↕</span></button></th>
+                <th scope="col"><button type="button" class="glossary-sort-button" data-sort="quality">Assessment <span aria-hidden="true">↕</span></button></th>
                 <th scope="col" class="glossary-action-heading"><button type="button" class="glossary-sort-button" data-sort="contexts">Context <span aria-hidden="true">↕</span></button></th>
               </tr>
             </thead>
