@@ -232,6 +232,126 @@
         "review_status": "appears_correct",
         "quality_score_min": 75
       }
+    },
+    {
+      "id": "philosophers-stone-incomplete-extraction",
+      "description": "Izdvajanje samo dijela fraze ('Kamena') umjesto punog semantičkog pojma 'Kamena mudraca'.",
+      "segment": {
+        "source": "He had studied beyond the custom of his kind, seeking such things as the Philosopher’s Stone, or the Elixir of Eternal Life",
+        "target": "Studirao je izvan uobičajenog za svoju vrstu, tražeći stvari poput Kamena mudraca ili Eliksira vječnog života"
+      },
+      "candidate": {
+        "source_term": "Philosopher’s Stone",
+        "translation": "Kamena"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 20,
+        "issue_type": "incomplete_term_extraction",
+        "must_include_reason_terms": ["mudraca", "Kamen mudraca"]
+      }
+    },
+    {
+      "id": "ancestor-wrong-pairing",
+      "description": "Netačno sparivanje gdje je imenica 'ancestor' uparena samo s pridjevom 'nesretnog' umjesto punog izraza 'nesretnog pretka'.",
+      "segment": {
+        "source": "when little below the age of their unfortunate ancestor at his murder.",
+        "target": "kada su bili malo mlađi od svog nesretnog pretka u trenutku njegovog ubojstva."
+      },
+      "candidate": {
+        "source_term": "ancestor",
+        "translation": "nesretnog"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 0,
+        "issue_type": "mismatch_or_incomplete_pair",
+        "must_include_reason_terms": ["predak", "pretka"]
+      }
+    },
+    {
+      "id": "le-sorcier-truncated-name",
+      "description": "Izdvajanje samo francuskog člana 'Le' umjesto punog imena/titule 'Le Sorcier' ili prijevoda 'Vrač'.",
+      "segment": {
+        "source": "and who had therefore been called Le Sorcier, or the Wizard.",
+        "target": "i koji je stoga bio nazvan Le Sorcier ili Vrač."
+      },
+      "candidate": {
+        "source_term": "Le Sorcier",
+        "translation": "Le"
+      },
+      "expected": {
+        "review_status": "likely_incorrect",
+        "quality_score_max": 15,
+        "issue_type": "truncated_entity_extraction",
+        "must_include_reason_terms": ["Sorcier", "Vrač", "Čarobnjak"]
+      }
+    },
+    {
+      "id": "black-magic-grammatical-case-only",
+      "description": "Djelomično uparivanje u genitivu 'Crne magije' umjesto prepoznavanja osnovnog pojma u kanonskom/nominativnom obliku 'Crna magija'.",
+      "segment": {
+        "source": "and was reputed wise in the terrible secrets of Black Magic and Alchemy.",
+        "target": "i bio je poznat kao mudrac u strašnim tajnama Crne magije i Alkemije."
+      },
+      "candidate": {
+        "source_term": "Black Magic",
+        "translation": "Crne magije"
+      },
+      "expected": {
+        "review_status": "appears_correct",
+        "quality_score_min": 90,
+        "issue_type": "none"
+      }
+    },
+    {
+      "id": "michel-mauvais-case-mismatch-in-extraction",
+      "description": "Prepoznavanje dativnog oblika 'Michelu Mauvaisu' kao primarnog prijevoda za nominativni pojam izvora.",
+      "segment": {
+        "source": "dwelt on the wrong perpetrated by my ancestor against old Michel Mauvais",
+        "target": "zadržavao se na nepravdi koju je moj predak počinio starom Michelu Mauvaisu"
+      },
+      "candidate": {
+        "source_term": "Michel Mauvais",
+        "translation": "Michelu Mauvaisu"
+      },
+      "expected": {
+        "review_status": "appears_correct",
+        "quality_score_min": 90,
+        "issue_type": "none"
+      }
+    },
+    {
+      "id": "philosophers-stone-correct-full-pair",
+      "description": "Potpuno i semantički točno uparivanje znanog alijasa u nominativu/odgovarajućem padežu.",
+      "segment": {
+        "source": "seeking such things as the Philosopher’s Stone, or the Elixir of Eternal Life",
+        "target": "tražeći stvari poput Kamena mudraca ili Eliksira vječnog života"
+      },
+      "candidate": {
+        "source_term": "Philosopher’s Stone",
+        "translation": "Kamena mudraca"
+      },
+      "expected": {
+        "review_status": "appears_correct",
+        "quality_score_min": 90
+      }
+    },
+    {
+      "id": "unfortunate-ancestor-correct-full-pair",
+      "description": "Potpuno uparivanje sintagme s imenicom i pripadajućim pridjevom.",
+      "segment": {
+        "source": "when little below the age of their unfortunate ancestor at his murder.",
+        "target": "kada su bili malo mlađi od svog nesretnog pretka u trenutku njegovog ubojstva."
+      },
+      "candidate": {
+        "source_term": "unfortunate ancestor",
+        "translation": "nesretnog pretka"
+      },
+      "expected": {
+        "review_status": "appears_correct",
+        "quality_score_min": 90
+      }
     }
   ]
 }
