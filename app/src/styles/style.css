@@ -1373,11 +1373,27 @@ ul.unosi-list li {
 
 .glossary-quality-badge {
   display: inline-block;
+  border: 0;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 700;
   line-height: 1.2;
   padding: 4px 8px;
+}
+
+button.glossary-quality-badge {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+button.glossary-quality-badge:hover,
+button.glossary-quality-badge[aria-expanded="true"] {
+  filter: brightness(0.94);
+}
+
+button.glossary-quality-badge:focus-visible {
+  outline: 2px solid #007878;
+  outline-offset: 2px;
 }
 
 .glossary-quality-badge.red-flag {
@@ -1404,6 +1420,19 @@ ul.unosi-list li {
   color: #526966;
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
+}
+
+.glossary-assessment-popover {
+  flex-basis: 100%;
+  margin-top: 4px;
+  padding: 10px;
+  border: 1px solid #d9eeee;
+  border-radius: 6px;
+  background: #edf6f3;
+}
+
+.glossary-assessment-popover .glossary-assessment-details {
+  margin: 0;
 }
 
 .glossary-assessment-details {
