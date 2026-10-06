@@ -1422,19 +1422,6 @@ button.glossary-quality-badge:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-.glossary-assessment-popover {
-  flex-basis: 100%;
-  margin-top: 4px;
-  padding: 10px;
-  border: 1px solid #d9eeee;
-  border-radius: 6px;
-  background: #edf6f3;
-}
-
-.glossary-assessment-popover .glossary-assessment-details {
-  margin: 0;
-}
-
 .glossary-assessment-details {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
@@ -1530,6 +1517,16 @@ button.glossary-quality-badge:focus-visible {
   background: #edf6f3 !important;
   border-bottom: 1px solid #d9eeee;
   padding: 10px 14px !important;
+}
+
+.glossary-assessment-cell {
+  background: #edf6f3 !important;
+  border-bottom: 1px solid #d9eeee;
+  padding: 10px 14px !important;
+}
+
+.glossary-assessment-cell .glossary-assessment-details {
+  margin: 0;
 }
 
 .glossary-context-list {
