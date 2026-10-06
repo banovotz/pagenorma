@@ -1451,6 +1451,55 @@ button.glossary-quality-badge:focus-visible {
   margin: 0;
 }
 
+.translation-file-picker-overlay {
+  position: fixed;
+  z-index: 2100;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.translation-file-picker-modal {
+  width: min(100%, 480px);
+  padding: 24px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.translation-file-picker-modal h2 {
+  margin: 0 0 12px;
+  color: #008080;
+}
+
+.translation-file-picker-modal p {
+  margin: 0 0 12px;
+}
+
+.translation-file-picker-name {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #f3fbfb;
+  color: #315753;
+  overflow-wrap: anywhere;
+}
+
+.translation-file-picker-formats {
+  color: #526966;
+  font-size: 0.9rem;
+}
+
+.translation-file-picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
 #glosar-backdrop {
   position: fixed;
   top: 0;
