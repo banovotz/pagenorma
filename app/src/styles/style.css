@@ -1487,6 +1487,49 @@ button.glossary-quality-badge:focus-visible {
   margin-top: 20px;
 }
 
+.analysis-quota-card {
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  border: 1px solid #b9d7d7;
+  border-left: 4px solid #008080;
+  border-radius: 8px;
+  background: #f3fbfb;
+}
+
+.analysis-quota-card h2 {
+  margin: 0 0 8px;
+  color: #006b6b;
+  font-size: 1.05rem;
+}
+
+.analysis-quota-card p {
+  margin: 8px 0 0;
+  color: #315753;
+}
+
+.analysis-quota-counters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  color: #315753;
+}
+
+.analysis-quota-counters strong {
+  color: #006b6b;
+  font-size: 1.1rem;
+}
+
+.analysis-quota-card-error {
+  border-color: #f0b8b8;
+  border-left-color: #b42318;
+  background: #fff5f5;
+}
+
+.analysis-quota-card-error h2,
+.analysis-quota-card-error p {
+  color: #8a1c1c;
+}
+
 #glosar-backdrop {
   position: fixed;
   top: 0;
