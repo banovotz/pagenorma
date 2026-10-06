@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pagenorma-v20';
+const CACHE_NAME = 'pagenorma-v21';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -16,8 +16,10 @@ const  ASSETS_TO_CACHE = [
  './src/features/interlinear/interlinear.js',
  './src/features/projects/projects.ui.js',
  './src/features/projects/projects.js',
+ './src/features/projects/projectProgress.js',
  './src/features/pdf-parser/pdf.parser.js',
  './src/features/subscription/subscription.js',
+ './src/features/subscription/analysisQuota.js',
  './src/features/epub-parser/epub.parser.js',
  './src/features/google-drive/drive.auth.js',
  './src/features/google-drive/drive.api.js',
@@ -27,6 +29,7 @@ const  ASSETS_TO_CACHE = [
  './src/features/onboarding/onboarding.js',
  './src/features/analytics/analytics.ui.js',
  './src/utils/llmJson.js',
+ './src/utils/logger.js',
  './src/utils/interlinearSearch.js',
  './src/utils/textAligner.js',
  './src/components/modal.js',
