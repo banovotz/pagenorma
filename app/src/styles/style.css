@@ -1530,6 +1530,18 @@ button.glossary-quality-badge:focus-visible {
   color: #8a1c1c;
 }
 
+.subscription-verification {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-left: 3px solid #d97706;
+  border-radius: 4px;
+  background: #fff8e8;
+}
+
+.subscription-verification p {
+  margin: 0 0 8px;
+}
+
 #glosar-backdrop {
   position: fixed;
   top: 0;

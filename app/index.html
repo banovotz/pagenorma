@@ -422,6 +422,12 @@
   <section class="subscription-card sakriveno" data-subscription-account>
     <p>Signed in as <strong data-subscription-email></strong>.</p>
     <p>Current plan: <strong data-subscription-plan></strong></p>
+    <div class="subscription-verification sakriveno" data-subscription-verification>
+      <p>Your email must be verified before you can use AI analysis or view its monthly allowance.</p>
+      <button type="button" id="subscription-resend-verification" class="btn-secondary">Resend verification email</button>
+      <button type="button" id="subscription-refresh-verification" class="btn-secondary">I have verified my email</button>
+      <p id="subscription-verification-status" role="status"></p>
+    </div>
     <button type="button" id="subscription-signout" class="btn-secondary">Sign out</button>
     <button type="button" id="subscription-delete-account" class="btn-danger">Delete account</button>
   </section>
