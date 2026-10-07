@@ -1489,17 +1489,19 @@ button.glossary-quality-badge:focus-visible {
 
 .analysis-quota-card {
   margin-bottom: 20px;
-  padding: 16px 18px;
-  border: 1px solid #b9d7d7;
-  border-left: 4px solid #008080;
-  border-radius: 8px;
-  background: #f3fbfb;
+  padding: 20px 22px;
+  border: 1px solid #b7c4c4;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(24, 69, 69, 0.12);
 }
 
-.analysis-quota-card h2 {
+.analysis-quota-title {
   margin: 0 0 8px;
-  color: #006b6b;
-  font-size: 1.05rem;
+  color: #124f52;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
+  line-height: 1.1;
 }
 
 .analysis-quota-card p {
@@ -1507,16 +1509,87 @@ button.glossary-quality-badge:focus-visible {
   color: #315753;
 }
 
-.analysis-quota-counters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  color: #315753;
+.analysis-quota-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.8fr) minmax(0, 1.8fr);
+  align-items: center;
+  gap: 16px 28px;
 }
 
-.analysis-quota-counters strong {
-  color: #006b6b;
-  font-size: 1.1rem;
+.analysis-quota-layout .analysis-quota-title {
+  margin: 0;
+}
+
+.analysis-quota-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.analysis-quota-metric {
+  display: flex;
+  align-items: center;
+  min-height: 108px;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid #8dadad;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #f3faf9 0%, #e7f2f1 100%);
+  color: #15575a;
+}
+
+.analysis-quota-icon {
+  display: inline-flex;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+}
+
+.analysis-quota-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.analysis-quota-metric-content {
+  display: grid;
+  gap: 3px;
+}
+
+.analysis-quota-metric-value {
+  color: #15575a;
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  line-height: 1;
+}
+
+.analysis-quota-metric-label {
+  color: #1f3739;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.analysis-quota-reset {
+  grid-column: 2;
+  margin: -5px 0 0;
+  text-align: right;
+  color: #31484a;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 760px) {
+  .analysis-quota-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-quota-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-quota-reset {
+    grid-column: auto;
+    margin: 0;
+    text-align: left;
+  }
+}
 }
 
 .analysis-quota-card-error {
