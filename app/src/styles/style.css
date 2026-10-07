@@ -1496,6 +1496,16 @@ button.glossary-quality-badge:focus-visible {
   box-shadow: 0 2px 8px rgba(24, 69, 69, 0.1);
 }
 
+.analysis-quota-card a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.analysis-quota-card a:hover {
+  color: var(--accent-color-hover);
+  text-decoration: underline;
+}
+
 .analysis-quota-title {
   margin: 0 0 8px;
   color: #124f52;
@@ -1508,6 +1518,12 @@ button.glossary-quality-badge:focus-visible {
   margin: 8px 0 0;
   color: #315753;
 }
+
+.analysis-quota-card a:focus-visible {
+  color: var(--accent-color-hover);
+  text-decoration: underline;
+}
+
 
 .analysis-quota-layout {
   display: grid;
