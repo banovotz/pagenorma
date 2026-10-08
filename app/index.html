@@ -408,40 +408,49 @@
 
   <section id="page-login" class="page-section hidden">
     <div id="login-page" class="page-content subscription-page">
-      <section class="subscription-card">
-        <h2 id="login-title">Sign in to pagenorma</h2>
-        <p id="login-status" role="status">Sign in here.</p>
-        <button type="button" id="login-google" class="subscription-google">Continue with Google</button>
-        <form id="login-email-form">
-          <div id="login-email-group">
-            <label for="login-email-input">Email</label>
-            <input id="login-email-input" type="email" autocomplete="email" required>
+      <div class="login-layout">
+        <section class="subscription-card">
+          <h2 id="login-title">Sign in to pagenorma</h2>
+          <p id="login-status" role="status">Sign in here.</p>
+          <button type="button" id="login-google" class="subscription-google">Continue with Google</button>
+          <form id="login-email-form">
+            <div id="login-email-group">
+              <label for="login-email-input">Email</label>
+              <input id="login-email-input" type="email" autocomplete="email" required>
+            </div>
+            <div id="login-password-group">
+              <label for="login-password-input">Password</label>
+              <input id="login-password-input" type="password" autocomplete="current-password" minlength="6" required>
+            </div>
+            <div id="login-new-password-group" hidden>
+              <label for="login-new-password-input">New password</label>
+              <input id="login-new-password-input" type="password" autocomplete="new-password" minlength="6">
+            </div>
+            <fieldset id="registration-consent" hidden>
+              <legend>Account preferences</legend>
+              <label class="consent-option">
+                <input id="registration-terms-consent" type="checkbox">
+                I accept the <a href="https://pagenorma.eu/tos/" target="_blank" rel="noopener noreferrer">Terms of Use</a>
+                and <a href="https://pagenorma.eu/privacy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+              </label>
+              <label class="consent-option">
+                <input id="registration-marketing-consent" type="checkbox">
+                I want to receive promotional offers and marketing communications.
+              </label>
+            </fieldset>
+            <button id="login-email-submit" type="submit">Sign in</button>
+            <button id="login-password-reset" type="button" class="btn-secondary">Forgot password?</button>
+            <button id="login-signup-toggle" type="button" class="btn-secondary">New account</button>
+          </form>
+        </section>
+        <aside id="login-vignette" class="login-vignette" hidden>
+          <img id="login-vignette-image" alt="">
+          <div class="login-vignette-content">
+            <p id="login-vignette-text" hidden></p>
+            <a id="login-vignette-cta" class="btn-primary" hidden></a>
           </div>
-          <div id="login-password-group">
-            <label for="login-password-input">Password</label>
-            <input id="login-password-input" type="password" autocomplete="current-password" minlength="6" required>
-          </div>
-          <div id="login-new-password-group" hidden>
-            <label for="login-new-password-input">New password</label>
-            <input id="login-new-password-input" type="password" autocomplete="new-password" minlength="6">
-          </div>
-          <fieldset id="registration-consent" hidden>
-            <legend>Account preferences</legend>
-            <label class="consent-option">
-              <input id="registration-terms-consent" type="checkbox">
-              I accept the <a href="https://pagenorma.eu/tos/" target="_blank" rel="noopener noreferrer">Terms of Use</a>
-              and <a href="https://pagenorma.eu/privacy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
-            </label>
-            <label class="consent-option">
-              <input id="registration-marketing-consent" type="checkbox">
-              I want to receive promotional offers and marketing communications.
-            </label>
-          </fieldset>
-          <button id="login-email-submit" type="submit">Sign in</button>
-          <button id="login-password-reset" type="button" class="btn-secondary">Forgot password?</button>
-          <button id="login-signup-toggle" type="button" class="btn-secondary">New account</button>
-        </form>
-      </section>
+        </aside>
+      </div>
     </div>
   </section>
 
