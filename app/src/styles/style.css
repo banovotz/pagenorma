@@ -159,8 +159,20 @@ h1 #pagenorma-logo {
   padding-left: 20px;
 }
 
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 .page-content {
   width: 100%;
+}
+
+#page-translation-analytics {
+  width: min(100%, 960px);
+  margin: 0 auto;
 }
 
 #forma-projekt-container {
