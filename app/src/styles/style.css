@@ -89,12 +89,12 @@ body {
 .app-footer {
   max-width: 960px;
   margin: 40px auto 0;
-  padding: 20px 0 0;
+  padding: 20px 0 40px;
   border-top: 1px solid var(--border-color);
 }
 
 .app-footer-links {
-  display: flex;
+  display:flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px 20px;
@@ -1385,10 +1385,12 @@ ul.unosi-list li {
 }
 
 .interlinear-workspace {
-  display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
-  min-height: 440px;
-  height: calc(100dvh - 230px);
+  display: flex;
+  flex-direction: column;
+  /* ZAMIJENJENO: izbačena fiksna visina calc(100dvh - 230px) */
+  min-height: calc(100vh - 200px); 
+  height: auto;
+  margin-bottom: 30px; /* Razmak prema footeru */
 }
 
 .interlinear-workspace .interlinear-grid {
@@ -1514,20 +1516,25 @@ ul.unosi-list li {
 }
 
 .interlinear-workspace .interlinear-pagination {
-  position: fixed;
-  z-index: 100;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  left: 50%;
+  position: bottom;
+  z-index:auto;  
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   box-sizing: border-box;
-  width: min(960px, calc(100vw - 40px));
+  width: 100%;
   margin: 0;
   padding: 12px 16px;
-  transform: translateX(-50%);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+ padding-bottom: max(12px, env(safe-area-inset-bottom));
+  transform: none; /* Uklonjen centrirajući transform jer je width 100% */
+  border-top: 1px solid var(--border-color);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0; /* Uklonjeni zaobljeni kutovi */
   background: var(--bg-color);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); /* Lagana sjena samo prema gore za vizualno odvajanje od sadržaja */
 }
 
 .interlinear-pagination:empty {
@@ -1588,7 +1595,7 @@ ul.unosi-list li {
 
 @media (max-width: 900px) {
   .interlinear-workspace {
-    display: block;
+    display:flexbox;
     min-height: 0;
     height: auto;
   }
