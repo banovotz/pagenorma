@@ -1384,6 +1384,18 @@ ul.unosi-list li {
   height: calc(100vh - 160px);
 }
 
+.interlinear-workspace {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  min-height: 440px;
+  height: calc(100dvh - 230px);
+}
+
+.interlinear-workspace .interlinear-grid {
+  min-height: 0;
+  height: auto;
+}
+
 .interlinear-col {
   display: flex;
   flex-direction: column;
@@ -1501,6 +1513,16 @@ ul.unosi-list li {
   margin-top: 16px;
 }
 
+.interlinear-workspace .interlinear-pagination {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin-top: 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-color);
+}
+
 .interlinear-pagination button {
   min-width: 38px;
   padding: 7px 10px;
@@ -1554,6 +1576,12 @@ ul.unosi-list li {
 }
 
 @media (max-width: 900px) {
+  .interlinear-workspace {
+    display: block;
+    min-height: 0;
+    height: auto;
+  }
+
   .interlinear-grid {
     grid-template-columns: 1fr;
     height: auto;
@@ -1562,6 +1590,10 @@ ul.unosi-list li {
   .interlinear-toolbar {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .interlinear-workspace .interlinear-pagination {
+    position: static;
   }
 }
 .para-box {

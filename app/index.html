@@ -543,47 +543,49 @@
 </div>
 
 <div id="interlinear-page" class="page-content">
-  <h2>LLM Translation Analysis</h2>
-  <div class="interlinear-toolbar">
-    <div class="interlinear-search-wrap">
-      <label for="interlinear-search">Search source, translation or comments</label>
-      <input id="interlinear-search" type="search" placeholder="Search source, translation or comments..." autocomplete="off">
-      <div id="interlinear-suggestions" class="interlinear-suggestions" hidden></div>
-    </div>
-    <span id="interlinear-results-count" class="interlinear-results-count"></span>
-  </div>
-  
-  <div class="interlinear-grid">
-    <!-- STUPAC 1: IZVORNIK -->
-    <div class="interlinear-column source-column">
-      <h3>Source</h3>
-      <div id="col-izvor"></div>
+  <div class="interlinear-workspace">
+    <h2>LLM Translation Analysis</h2>
+    <div class="interlinear-toolbar">
+      <div class="interlinear-search-wrap">
+        <label for="interlinear-search">Search source, translation or comments</label>
+        <input id="interlinear-search" type="search" placeholder="Search source, translation or comments..." autocomplete="off">
+        <div id="interlinear-suggestions" class="interlinear-suggestions" hidden></div>
+      </div>
+      <span id="interlinear-results-count" class="interlinear-results-count"></span>
     </div>
 
-    <!-- STUPAC 2: PRIJEVOD -->
-    <div class="interlinear-column translation-column">
-      <h3>Translation</h3>
-      <div id="col-prijevod"></div>
+    <div class="interlinear-grid">
+      <!-- STUPAC 1: IZVORNIK -->
+      <div class="interlinear-column source-column">
+        <h3>Source</h3>
+        <div id="col-izvor"></div>
+      </div>
+
+      <!-- STUPAC 2: PRIJEVOD -->
+      <div class="interlinear-column translation-column">
+        <h3>Translation</h3>
+        <div id="col-prijevod"></div>
+      </div>
+
+      <!-- STUPAC 3: LLM KOMENTARI -->
+      <div class="interlinear-column commentary-column">
+        <h3>LLM Commentary
+        <button type="button" class="btn-sync-small">
+          <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          <path d="M10 2v8l2.5-1.5L15 10V2"/>
+          </svg>
+          View Glossary
+        </button>
+       </h3>
+
+        <div id="col-komentari"></div>
+      </div>
     </div>
 
-    <!-- STUPAC 3: LLM KOMENTARI -->
-    <div class="interlinear-column commentary-column">
-      <h3>LLM Commentary
-      <button type="button"  class="btn-sync-small">
-        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-        <path d="M10 2v8l2.5-1.5L15 10V2"/>
-        </svg>  
-        View Glossary
-      </button>
-     </h3>
-     
-      <div id="col-komentari"></div>
-    </div>
-    
+    <nav id="interlinear-pagination" class="interlinear-pagination" aria-label="Interlinear text pages"></nav>
   </div>
-  <nav id="interlinear-pagination" class="interlinear-pagination" aria-label="Interlinear text pages"></nav>
 </div>
  </section>
 
