@@ -79,8 +79,27 @@
     <li><a href data-target="analytics" class="nav-item"><img class="nav-icon" src="public/icons/financial-analytics.svg" alt=""> Financial Analytics</a></li>
     <li><a href data-target="translation-analytics" class="nav-item"><img class="nav-icon" src="public/icons/translation-analitycs.svg" alt=""> Translation Analyses</a></li>
     <li><a href data-target="settings" class="nav-item"><img class="nav-icon" src="public/icons/settings.svg" alt=""> Settings</a></li>
+    <li data-auth-navigation="login"><a href data-target="login" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pagenorma-icon-profile">
+  <!-- Glava / Profilna kružnica -->
+  <circle cx="12" cy="7" r="4" />  
+  <!-- Tijelo / Ramena -->
+  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+</svg>
+Login</a></li>
+    <li data-auth-navigation="profile" class="sakriveno"><a href data-target="profile" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pagenorma-icon-profile-active">
+  <!-- Glava -->
+  <circle cx="12" cy="7" r="4" />
+  
+  <!-- Tijelo -->
+  <path d="M19 21v-1.5a3.5 3.5 0 0 0-3.5-3.5h-7A3.5 3.5 0 0 0 5 19.5V21" />
+  
+  <!-- Indikator prijave (Status dot) -->
+  <circle cx="19" cy="5" r="2" fill="currentColor" stroke="none" />
+</svg>
+Profile</a></li>
   </ul>
 </nav>
+
 
 
 
@@ -388,73 +407,70 @@
         Save Settings
       </button>
     </div>
-<div id="subscription-page" class="subscription-page" style="max-width: 800px; margin: 0 auto; padding: 20px;">
-  <section class="subscription-card" data-subscription-auth>
-    <h2 id="subscription-title">Sign in to pagenorma</h2>
-    <p id="subscription-status" role="status">Sign in here.</p>
-    <button type="button" id="subscription-google" class="subscription-google">Continue with Google</button>
-    
-    <form id="subscription-email-form">
-      <!-- Obmotano u div radi lakšeg sakrivanja u confirmReset modu -->
-      <div id="email-group">
-        <label for="subscription-email-input">Email</label>
-        <input id="subscription-email-input" type="email" autocomplete="email" required>
-      </div>
-      
-      <!-- Standardno polje za lozinku (Sign in / Register) -->
-      <div id="password-group">
-        <label for="subscription-password-input">Password</label>
-        <input id="subscription-password-input" type="password" autocomplete="current-password" minlength="6" required>
-      </div>
-
-      <!-- Novo polje koje se prikazuje SAMO kada korisnik klikne link iz e-maila -->
-      <div id="new-password-group" style="display: none;">
-        <label for="subscription-new-password-input">New Password</label>
-        <input id="subscription-new-password-input" type="password" autocomplete="new-password" minlength="6">
-      </div>
-
-      <button id="subscription-email-submit" type="submit">Sign in</button>
-      <button id="subscription-password-reset" type="button" class="btn-secondary">Forgot password?</button>
-      <button id="subscription-signup-toggle" type="button" class="btn-secondary">New account</button>
-    </form>
-  </section>
-
-  <section class="subscription-card sakriveno" data-subscription-account>
-    <p>Signed in as <strong data-subscription-email></strong>.</p>
-    <p>Current plan: <strong data-subscription-plan></strong></p>
-    <div class="subscription-verification sakriveno" data-subscription-verification>
-      <p>Your email must be verified before you can use AI analysis or view its monthly allowance.</p>
-      <button type="button" id="subscription-resend-verification" class="btn-secondary">Resend verification email</button>
-      <button type="button" id="subscription-refresh-verification" class="btn-secondary">I have verified my email</button>
-      <p id="subscription-verification-status" role="status"></p>
-    </div>
-    <button type="button" id="subscription-signout" class="btn-secondary">Sign out</button>
-    <button type="button" id="subscription-delete-account" class="btn-danger">Delete account</button>
-  </section>
-</div>
- <section class="subscription-card sakriveno" data-subscription-offer>
-    <h2>pagenorma QS — Quiet Studio</h2>
-    <ul>
-      <li>Native Desktop (Tauri) and PWA application</li>
-      <li>Ad-free experience without promotional notices</li>
-      <li>Unlimited active projects</li>
-      <li>Unlimited AI analyses and glossary tools</li>
-    </ul>
-    <label for="subscription-promo">Promo code</label>
-    <input id="subscription-promo" type="text" autocomplete="off" placeholder="Enter promo code">
-    <div class="subscription-choice">
-      <label><input type="radio" name="subscriptionType" value="annual" checked> Annual subscription (+ 1 bonus month with promo code)</label>
-      <label><input type="radio" name="subscriptionType" value="trial"> Free trial (1 month)</label>
-    </div>
-    <button type="button" id="subscription-checkout">Subscribe now</button>
-  </section>
-
-  <section class="subscription-card sakriveno" data-subscription-active>
-    <h2>pagenorma QS is active</h2>
-    <p>Your access is managed through verified status in Firestore.</p>
-  </section>
-</div>
 </section><!-- /#page-settings -->
+
+  <section id="page-login" class="page-section hidden">
+    <div id="login-page" class="page-content subscription-page">
+      <section class="subscription-card">
+        <h2 id="login-title">Sign in to pagenorma</h2>
+        <p id="login-status" role="status">Sign in here.</p>
+        <button type="button" id="login-google" class="subscription-google">Continue with Google</button>
+        <form id="login-email-form">
+          <div id="login-email-group">
+            <label for="login-email-input">Email</label>
+            <input id="login-email-input" type="email" autocomplete="email" required>
+          </div>
+          <div id="login-password-group">
+            <label for="login-password-input">Password</label>
+            <input id="login-password-input" type="password" autocomplete="current-password" minlength="6" required>
+          </div>
+          <div id="login-new-password-group" hidden>
+            <label for="login-new-password-input">New password</label>
+            <input id="login-new-password-input" type="password" autocomplete="new-password" minlength="6">
+          </div>
+          <fieldset id="registration-consent" hidden>
+            <legend>Account preferences</legend>
+            <label class="consent-option">
+              <input id="registration-terms-consent" type="checkbox">
+              I accept the <a href="https://pagenorma.eu/tos/" target="_blank" rel="noopener noreferrer">Terms of Use</a>
+              and <a href="https://pagenorma.eu/privacy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+            </label>
+            <label class="consent-option">
+              <input id="registration-marketing-consent" type="checkbox">
+              I want to receive promotional offers and marketing communications.
+            </label>
+          </fieldset>
+          <button id="login-email-submit" type="submit">Sign in</button>
+          <button id="login-password-reset" type="button" class="btn-secondary">Forgot password?</button>
+          <button id="login-signup-toggle" type="button" class="btn-secondary">New account</button>
+        </form>
+      </section>
+    </div>
+  </section>
+
+  <section id="page-profile" class="page-section hidden">
+    <div id="profile-page" class="page-content subscription-page">
+      <section class="subscription-card">
+        <h2>Profile</h2>
+        <p>Signed in as <strong data-profile-email></strong>.</p>
+        <div id="profile-verification" class="subscription-verification sakriveno">
+          <p>Your email must be verified before you can use AI analysis or view its monthly allowance.</p>
+          <button type="button" id="profile-resend-verification" class="btn-secondary">Resend verification email</button>
+          <button type="button" id="profile-refresh-verification" class="btn-secondary">I have verified my email</button>
+          <p id="profile-verification-status" role="status"></p>
+        </div>
+        <fieldset>
+          <legend>Marketing preferences</legend>
+          <label class="consent-option">
+            <input id="profile-marketing-consent" type="checkbox" disabled>
+            I want to receive promotional offers and marketing communications.
+          </label>
+        </fieldset>
+        <button type="button" id="profile-signout" class="btn-secondary">Sign out</button>
+        <button type="button" id="profile-delete-account" class="btn-danger">Delete account</button>
+      </section>
+    </div>
+  </section>
 
   <!-- ANALYTICS SCREEN -->
    <section id="page-analytics" class="page-section hidden">
@@ -504,17 +520,6 @@
   </section>
 
 </div>
-
-<div id="mock-checkout" class="modal-overlay sakriveno" role="dialog" aria-modal="true" aria-labelledby="mock-checkout-title">
-  <div class="modal-card">
-    <button type="button" id="mock-checkout-close" class="btn-secondary" style="float: right;">×</button>
-    <h2 id="mock-checkout-title">Mocked Checkout</h2>
-    <p>Selected plan: <strong>pagenorma QS</strong></p>
-    <p>Promo code: <strong id="checkout-promo">No promo code</strong></p>
-    <button type="button" id="mock-payment">Simulate Successful Payment</button>
-  </div>
-</div>
-
 
 <!-- STRANICA ZA PREGLED INTERLONEARNOG TEKSTA I AI KOMENTARA -->
  <section id="page-translation-analytics" class="page-section hidden">

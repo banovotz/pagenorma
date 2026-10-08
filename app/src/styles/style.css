@@ -226,6 +226,39 @@ input:focus, select:focus {
   border-color: var(--accent-color);
 }
 
+#page-settings input[type="checkbox"],
+#page-settings input[type="radio"],
+#page-login input[type="checkbox"],
+#page-login input[type="radio"],
+#page-profile input[type="checkbox"],
+#page-profile input[type="radio"] {
+  width: auto;
+  padding: 0;
+  margin: 0;
+}
+
+#page-settings input[type="checkbox"] + label,
+#page-settings input[type="radio"] + label {
+  display: inline;
+  margin: 0 0 0 8px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.consent-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.consent-option input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin-top: 0.2em;
+}
+
 button {
   display: inline-flex;
   align-items: center;
@@ -2110,4 +2143,15 @@ button.glossary-quality-badge:focus-visible {
 
 .demo-tour-launch-btn:hover {
   background: #e6f4f4 !important;
+}
+
+.pagenorma-icon-profile {
+  width: 24px;
+  height: 24px;
+  color: var(--accent-color); /* ili tvoja primarna boja UI-ja */
+  transition: color 0.3s ease;
+}
+
+.pagenorma-icon-profile:hover {
+  color: #0066cc;
 }
