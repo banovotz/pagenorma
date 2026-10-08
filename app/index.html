@@ -120,7 +120,7 @@
   </header>
 
   <!-- Project Form -->
-  <div id="forma-projekt-container" style="display: none;">
+  <div id="forma-projekt-container">
     <h2 id="forma-naslov">New Project</h2>
     <form id="projekt-forma" onsubmit="event.preventDefault(); return false;">
       <input type="hidden" id="p-id">
@@ -134,7 +134,7 @@
         <div class="form-group">
           <label for="p-epub-file">Select source ePub or PDF</label>
           <input type="file" id="p-epub-file" accept=".epub,.pdf,application/epub+zip,application/pdf">
-          <div id="p-epub-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">No file selected</div>
+          <div id="p-epub-file-name" class="selected-file-name">No file selected</div>
         </div>
 
         <div class="form-group">
@@ -149,8 +149,8 @@
           <div id="translation-file-panel" class="sakriveno">
             <label for="p-translation-file">Document file (docx/rtf/odt/txt)</label>
             <input type="file" id="p-translation-file" accept=".docx,.rtf,.odt,.txt,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,text/plain">
-            <button type="button" id="btn-choose-translation-file" class="btn-secondary" style="margin-top: 8px;">Choose file with change tracking</button>
-            <div id="p-translation-file-name" style="margin-top: 5px; font-size: 0.9em; color: #555; font-style: italic;">No file selected</div>
+            <button type="button" id="btn-choose-translation-file" class="btn-secondary file-picker-trigger">Choose file with change tracking</button>
+            <div id="p-translation-file-name" class="selected-file-name">No file selected</div>
             <small>The selected document is saved with the project. Where supported, use “Choose file with change tracking” so Refresh Translation reads updates at the original path; otherwise Refresh Translation asks you to select the updated file.</small>
           </div>
           <input type="hidden" id="p-translation-source-mode" value="gdoc">
@@ -158,21 +158,21 @@
       </div>
       
       <!-- Fetch and Analyze Action Button -->
-      <div class="form-group" style="margin-bottom: 15px;">
+      <div class="form-group fetch-data-group">
         <button 
           type="button" 
           id="btn-povuci-podatke" 
           class="btn-secondary" 
-          style="width: 100%; font-weight: bold; background: #e6f2f2; color: #008080; border: 1px solid #008080;">
+          >
         ⚡         Fetch Data from ePub/PDF & Translation
         </button>
-        <small id="fetch-status-msg" class="text-muted" style="display:none; color: #008080; font-weight: bold; margin-top: 5px; text-align: center; display: block;"></small>
+        <small id="fetch-status-msg" class="text-muted"></small>
       </div>
 
       <!-- Preview Metadata Box -->
-      <div id="metrika-preview" class="preview-box" style="display:none; background: #f4f8f8; padding: 12px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #008080;">
-        <div style="display: flex; gap: 12px; align-items: center;">
-          <img id="img-cover-preview" src="" alt="" style="display:none; width: 45px; height: 65px; object-fit: cover; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+      <div id="metrika-preview" class="preview-box">
+        <div class="preview-box-content">
+          <img id="img-cover-preview" src="" alt="">
           <div>
             <div><strong>Source (ePub/PDF):</strong> <span id="lbl-slova-orig">0</span> characters (~<span id="lbl-kartice-orig">0</span> standard pages)</div>
             <div><strong>Translation:</strong> <span id="lbl-slova-doc">0</span> characters (~<span id="lbl-kartice-doc">0</span> standard pages)</div>
@@ -245,20 +245,20 @@
 
   <!-- SETTINGS SCREEN -->
    <section id="page-settings" class="page-section hidden">
-  <div id="settings-page" class="page-content" style="max-width: 800px; margin: 0 auto; padding: 20px;">
-    <h2 style="color: #008080; margin-bottom: 24px;">Application Settings</h2>
+  <div id="settings-page" class="page-content">
+    <h2 class="page-heading">Application Settings</h2>
 
     <!-- SECTION 1: Financial Settings -->
-    <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
-      <h3 style="margin-top: 0; color: #333;">Financials & Deductions</h3>
-      <p style="color: #666; font-size: 0.9em; margin-bottom: 16px;">
+    <section class="settings-card">
+      <h3>Financials & Deductions</h3>
+      <p class="section-description">
         These settings calculate net income on the <strong>Analytics</strong> screen and do not alter gross totals displayed on the dashboard.
       </p>
 
-      <div style="margin-bottom: 16px;">
-        <label style="font-weight: bold; display: block; margin-bottom: 8px;">Deduction model:</label>
+      <div class="setting-group">
+        <label class="setting-label">Deduction model:</label>
         
-        <div style="margin-bottom: 8px;">
+        <div class="choice-option">
           <input type="radio" id="model-obrt" name="modelDoprinosa" value="obrt" checked>
           <label for="model-obrt">Sole proprietorship / Business (Fixed monthly contribution deductions)</label>
         </div>
@@ -270,38 +270,38 @@
       </div>
 
       <!-- Option A: Fixed -->
-      <div id="polje-fiksni" style="margin-top: 12px; padding: 12px; background: #f9fbfb; border-radius: 6px;">
-        <label for="fiksni-iznos" style="display: block; font-size: 0.9em; margin-bottom: 4px;">Fixed monthly contributions (€):</label>
-        <input type="number" id="fiksni-iznos" placeholder="e.g. 200" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 200px;">
+      <div id="polje-fiksni" class="setting-input-panel">
+        <label for="fiksni-iznos">Fixed monthly contributions (€):</label>
+        <input type="number" id="fiksni-iznos" placeholder="e.g. 200">
       </div>
 
       <!-- Option B: Percentage -->
-      <div id="polje-postotak" style="display: none; margin-top: 12px; padding: 12px; background: #f9fbfb; border-radius: 6px;">
-        <label for="postotak-iznos" style="display: block; font-size: 0.9em; margin-bottom: 4px;">Contribution rate (%):</label>
-        <input type="number" id="postotak-iznos" placeholder="e.g. 15" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 200px;">
+      <div id="polje-postotak" class="setting-input-panel">
+        <label for="postotak-iznos">Contribution rate (%):</label>
+        <input type="number" id="postotak-iznos" placeholder="e.g. 15">
       </div>
     </section>
 
     <!-- SECTION 2: Standard Page Definition -->
-    <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
-      <h3 style="margin-top: 0; color: #333;">Standard Page Definition</h3>
-      <p style="color: #666; font-size: 0.9em; margin-bottom: 16px;">Select the standard standard page metric for character calculations.</p>
+    <section class="settings-card">
+      <h3>Standard Page Definition</h3>
+      <p class="section-description">Select the standard standard page metric for character calculations.</p>
 
-      <div style="margin-bottom: 10px;">
+      <div class="choice-option">
         <input type="radio" id="kartica-1800" name="vrstaKartice" value="1800" checked>
         <label for="kartica-1800"><strong>1800 characters with spaces</strong> (Standard European translation page standard)</label>
       </div>
 
-      <div style="opacity: 0.5; cursor: not-allowed;" title="Option coming soon">
+      <div class="choice-option choice-option-disabled" title="Option coming soon">
         <input type="radio" id="kartica-1500" name="vrstaKartice" value="1500" disabled>
-        <label for="kartica-1500" style="cursor: not-allowed;">1500 characters without spaces <em>(Coming soon)</em></label>
+        <label for="kartica-1500">1500 characters without spaces <em>(Coming soon)</em></label>
       </div>
     </section>
     <!-- SECTION 3: Hugging Face -->
      <div id="hugging-page" class="hugging-page">
-    <section class="hugging-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
-      <h3  id="hugging-title" style="margin-top: 0; color: #333;">Hugging Face analysis token</h3>
-      <p id="hugging-status"style="color: #666; font-size: 0.9em; margin-bottom: 12px;">
+    <section class="hugging-card settings-card">
+      <h3 id="hugging-title">Hugging Face analysis token</h3>
+      <p id="hugging-status" class="section-description compact">
         pagenorma S uses your personal Hugging Face token to access LLM models without pagenorma analysis limits. Create account and obtain a fine-grained token at
         <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">Hugging Face Tokens</a>
         and allow inference access. The token stays only in this browser.
@@ -318,24 +318,23 @@
         data-1p-ignore="true"
         data-bwignore="true"
         data-lpignore="true"
-        style="-webkit-text-security: disc;"
         placeholder="hf_..."
       >
-      <div style="margin-top: 12px;">
+      <div class="section-actions">
         <button type="button" id="btn-save-hugging-face-token" class="btn-primary">Save Hugging Face token</button>
       </div>
-      <p id="hugging-face-token-status" role="status" style="margin: 10px 0 0; font-size: 0.9em;"></p>
+      <p id="hugging-face-token-status" class="form-status" role="status"></p>
     </section>
     </div>
 
     <!-- SECTION 4: Google Docs -->
-    <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
-      <h3 style="margin-top: 0; color: #333;">Private Google Docs</h3>
-      <p style="color: #666; font-size: 0.9em; margin-bottom: 0;">
+    <section class="settings-card">
+      <h3>Private Google Docs</h3>
+      <p class="section-description compact">
         Authenticate with the Google account that owns or can access the private documents.
         Your access token is kept only for this browser session.
       </p>
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
+      <div class="section-actions button-group">
         <button type="button" id="btn-google-authenticate" class="btn-primary">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
           <!-- Tijelo lokota -->
@@ -357,16 +356,16 @@
          Sign out
         </button>
       </div>
-      <p id="google-auth-status" role="status" style="margin: 10px 0 0; font-size: 0.9em;"></p>
+      <p id="google-auth-status" class="form-status" role="status"></p>
     </section>
 <!-- SECTION 5: Backup & Restore -->
-    <section class="settings-card" style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eef2f2;">
-      <h3 style="margin-top: 0; color: #333;">Database Backup (Export & Import)</h3>
-      <p style="color: #666; font-size: 0.9em; margin-bottom: 16px;">
+    <section class="settings-card">
+      <h3>Database Backup (Export & Import)</h3>
+      <p class="section-description">
         Export your complete projects database to a JSON file or restore a previously saved backup.
       </p>
 
-      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <div class="button-group">
         <button type="button" id="btn-export-backup" class="btn-primary">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
           <!-- Baza podataka / Cilindri -->
@@ -395,7 +394,7 @@
     </section>
 
     <!-- Save Settings Button -->
-    <div style="text-align: right; margin-top: 20px;">
+    <div class="page-actions">
       <button  class="btn-primary">
         <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
@@ -472,12 +471,12 @@
 
   <!-- ANALYTICS SCREEN -->
    <section id="page-analytics" class="page-section hidden">
-  <div id="analytics-page" class="page-content" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+  <div id="analytics-page" class="page-content">
     
-    <div style="margin-bottom: 24px;">
-      <h2 style="color: #008080; margin-bottom: 6px;">Monthly Project Analytics</h2>
+    <div class="page-intro">
+      <h2 class="page-heading">Monthly Project Analytics</h2>
       <div class="info-box">
-      <p style="color: #666; font-size: 0.9em; margin: 0; background: #e6f2f2; padding: 10px 14px; border-radius: 6px; border-left: 4px solid #008080;">
+      <p class="info-note">
         <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/>
         <line x1="12" y1="16" x2="12" y2="12"/>
@@ -486,29 +485,29 @@
         <strong>Note:</strong> Displayed analytics are informational and intended for internal planning of work pace and earnings.
       </p></div>
     </div>
-    <div style="background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
-      <label for="odabir-godine" style="font-weight: bold; color: #333;">Select year:</label>
-      <select id="odabir-godine" style="padding: 8px 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer;">
+    <div class="analytics-year-selector">
+      <label for="odabir-godine">Select year:</label>
+      <select id="odabir-godine">
       </select>
     </div>
 
-    <div style="background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95em;">
+    <div class="analytics-table-card">
+      <table class="analytics-table">
         <thead>
-          <tr style="background-color: #f0f7f7; color: #008080; border-bottom: 2px solid #008080;">
-            <th style="padding: 12px; min-width: 110px;">Month</th>
-            <th style="padding: 12px;">Translation (Title)</th>
-            <th style="padding: 12px;">Client / Publisher</th>
-            <th style="padding: 12px; text-align: right; min-width: 130px;">Net Earnings (€)</th>
-            <th style="padding: 12px; min-width: 150px;">Notes</th>
+          <tr>
+            <th class="analytics-month-heading">Month</th>
+            <th>Translation (Title)</th>
+            <th>Client / Publisher</th>
+            <th class="analytics-net-heading">Net Earnings (€)</th>
+            <th class="analytics-notes-heading">Notes</th>
           </tr>
         </thead>
         <tbody id="analitika-tablica-body">
         </tbody>
         <tfoot>
-          <tr style="background-color: #f9fbfb; font-weight: bold; border-top: 2px solid #ccc;">
-            <td colspan="3" style="padding: 12px; text-align: right;">Total annual net earnings:</td>
-            <td id="analitika-ukupno-neto" style="padding: 12px; text-align: right; color: #008080; font-size: 1.1em;">€0.00</td>
+          <tr>
+            <td colspan="3">Total annual net earnings:</td>
+            <td id="analitika-ukupno-neto">€0.00</td>
             <td></td>
           </tr>
         </tfoot>
@@ -523,16 +522,16 @@
  <section id="page-translation-analytics" class="page-section hidden">
 
 <!-- OČIŠĆENA SEKCIJA U index.html -->
-<div id="analize-page" class="page-content" style="display: none; padding: 20px; max-width: 800px; margin: 0 auto; padding: 20px;" >
-  <h2 style="color: #008080; margin-bottom: 6px;">Saved Translation Analyses</h2>
+<div id="analize-page" class="page-content">
+  <h2 class="page-heading">Saved Translation Analyses</h2>
   <p class="text-muted">List of all projects with generated translation alignment and analysis.</p>
   
-  <div id="lista-analiza-container" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+  <div id="lista-analiza-container">
     <!-- Cards dynamically loaded -->
   </div>
 </div>
 
-<div id="interlinear-page" class="page-content" style="padding: 20px;">
+<div id="interlinear-page" class="page-content">
   <h2>LLM Translation Analysis</h2>
   <div class="interlinear-toolbar">
     <div class="interlinear-search-wrap">
@@ -543,22 +542,22 @@
     <span id="interlinear-results-count" class="interlinear-results-count"></span>
   </div>
   
-  <div class="interlinear-grid" style="display: flex; gap: 12px; height: 75vh;">
+  <div class="interlinear-grid">
     <!-- STUPAC 1: IZVORNIK -->
-    <div style="flex: 1; display: flex; flex-direction: column;">
-      <h3 style="color: #008080; margin-bottom: 8px;">Source</h3>
-      <div id="col-izvor" style="flex: 1; overflow-y: auto; border: 1px solid #ddd; background: #fff; padding: 8px; border-radius: 6px;"></div>
+    <div class="interlinear-column source-column">
+      <h3>Source</h3>
+      <div id="col-izvor"></div>
     </div>
 
     <!-- STUPAC 2: PRIJEVOD -->
-    <div style="flex: 1; display: flex; flex-direction: column;">
-      <h3 style="color: #2e7d32; margin-bottom: 8px;">Translation</h3>
-      <div id="col-prijevod" style="flex: 1; overflow-y: auto; border: 1px solid #ddd; background: #fff; padding: 8px; border-radius: 6px;"></div>
+    <div class="interlinear-column translation-column">
+      <h3>Translation</h3>
+      <div id="col-prijevod"></div>
     </div>
 
     <!-- STUPAC 3: LLM KOMENTARI -->
-    <div style="flex: 1; display: flex; flex-direction: column;">
-      <h3 style="color: #8e24aa; margin-bottom: 8px;">LLM Commentary  
+    <div class="interlinear-column commentary-column">
+      <h3>LLM Commentary
       <button type="button"  class="btn-sync-small">
         <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
@@ -569,7 +568,7 @@
       </button>
      </h3>
      
-      <div id="col-komentari" style="flex: 1; overflow-y: auto; border: 1px solid #ddd; background: #fff; padding: 8px; border-radius: 6px;"></div>
+      <div id="col-komentari"></div>
     </div>
     
   </div>
@@ -578,61 +577,61 @@
  </section>
 
 <!-- MODAL ZA WEBLLM PREUZIMANJE I ANALIZU -->
-<div id="llm-status-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
-  <div style="background: #fff; padding: 24px; border-radius: 10px; max-width: 500px; width: 90%; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-    <h3 style="margin-top: 0; color: #008080;">AI Translation Analysis</h3>
+<div id="llm-status-modal">
+  <div class="llm-status-dialog">
+    <h3>AI Translation Analysis</h3>
     
     <div id="llm-info-box"></div>
 
-    <div id="llm-analysis-options" style="display: none; margin: 15px 0; padding: 12px; border: 1px solid #d7e7e7; border-radius: 6px; background: #f7fbfb;">
-      <div style="font-weight: 600; margin-bottom: 8px;">What would you like to recreate?</div>
-      <label style="display: block; margin: 6px 0;">
+    <div id="llm-analysis-options">
+      <div class="llm-options-title">What would you like to recreate?</div>
+      <label class="llm-option">
         <input type="checkbox" id="llm-recreate-glossary">
         Glossary
       </label>
-      <label style="display: block; margin: 6px 0;">
+      <label class="llm-option">
         <input type="checkbox" id="llm-recreate-analysis">
         Commentary analysis
       </label>
-      <div id="llm-options-error" style="display: none; color: #b42318; font-size: 0.85em; margin-top: 8px;">
+      <div id="llm-options-error">
         Please select at least one option.
       </div>
-      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px;">
+      <div class="llm-options-actions">
         <button type="button" id="llm-options-cancel" class="btn-secondary">
           Cancel
         </button>
-        <button type="button" id="llm-options-start" class="btn-primary" style="padding: 7px 14px;">
+        <button type="button" id="llm-options-start" class="btn-primary">
           Start Selected
         </button>
       </div>
     </div>
 
-    <div id="llm-progress-container" style="display: none; margin: 15px 0;">
-      <div style="background: #eee; height: 12px; border-radius: 6px; overflow: hidden;">
-        <div id="llm-progress-bar" style="background: #008080; width: 0%; height: 100%; transition: width 0.2s;"></div>
+    <div id="llm-progress-container">
+      <div class="llm-progress-track">
+        <div id="llm-progress-bar"></div>
       </div>
     </div>
 
-    <div id="llm-status-text" style="font-size: 0.9em; color: #555; text-align: center; margin-bottom: 15px;">
+    <div id="llm-status-text">
       <div id="llm-status-message"></div>
-      <div id="llm-status-estimate" style="min-height: 1.2em;">
+      <div id="llm-status-estimate">
         <span>Estimated: </span><span id="llm-estimated-total">-</span>
         <span>; remaining: </span><span id="llm-estimated-remaining">-</span>
       </div>
     </div>
-    <div style="font-size: 0.85em; color: #8a4b08; text-align: center; margin-bottom: 15px;">
+    <div class="llm-status-warning">
       Please do not close or turn off your browser while the analysis is running.
     </div>
 
-    <div style="text-align: right;">
-      <button id="btn-zapocni-download" class="btn-primary" style="display: none; padding: 8px 16px; background: #008080; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+    <div class="llm-download-action">
+      <button id="btn-zapocni-download" class="btn-primary">
         Download model & start
       </button>
     </div>
   </div>
 </div>
 <!-- Modal za prikaz cijelog glosara -->
-<div id="modal-glosar" class="modal glossary-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+<div id="modal-glosar" class="modal glossary-modal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -667,7 +666,7 @@
           </label>
           <p id="glossary-result-count" class="glossary-result-count" aria-live="polite"></p>
         </div>
-        <div id="prazan-glosar-poruka" class="text-center text-muted my-3" style="display: none;">
+        <div id="prazan-glosar-poruka" class="text-center text-muted my-3">
           Glossary is empty or not loaded for the current analysis.
         </div>
         <div class="table-responsive">

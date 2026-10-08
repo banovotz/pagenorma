@@ -159,6 +159,398 @@ h1 #pagenorma-logo {
   padding-left: 20px;
 }
 
+.page-content {
+  width: 100%;
+}
+
+#forma-projekt-container {
+  display: none;
+}
+
+.page-heading {
+  margin-bottom: 24px;
+  color: var(--accent-color);
+}
+
+.page-intro {
+  margin-bottom: 24px;
+}
+
+.settings-card,
+.analytics-table-card,
+.analytics-year-selector {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.settings-card h3 {
+  margin-top: 0;
+}
+
+.section-description {
+  margin: 0 0 16px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.section-description.compact {
+  margin-bottom: 12px;
+}
+
+.setting-group {
+  margin-bottom: 16px;
+}
+
+.setting-label {
+  margin-bottom: 8px;
+}
+
+.choice-option {
+  margin-bottom: 8px;
+}
+
+.choice-option-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.choice-option-disabled label {
+  cursor: not-allowed;
+}
+
+.setting-input-panel {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #f9fbfb;
+}
+
+.setting-input-panel label {
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.setting-input-panel input {
+  width: min(100%, 200px);
+  padding: 8px;
+}
+
+.section-actions {
+  margin-top: 12px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-status {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+}
+
+.page-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.selected-file-name {
+  margin-top: 5px;
+  color: #555;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.file-picker-trigger {
+  margin-top: 8px;
+}
+
+.fetch-data-group {
+  margin-bottom: 15px;
+}
+
+#btn-povuci-podatke {
+  width: 100%;
+  border-color: var(--accent-color);
+  background: #e6f2f2;
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+#fetch-status-msg {
+  display: none;
+  margin-top: 5px;
+  color: var(--accent-color);
+  font-weight: 700;
+  text-align: center;
+}
+
+#metrika-preview {
+  display: none;
+  margin-bottom: 20px;
+  padding: 12px;
+  border-left: 4px solid var(--accent-color);
+  border-radius: 8px;
+  background: #f4f8f8;
+}
+
+.preview-box-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#img-cover-preview {
+  display: none;
+  width: 45px;
+  height: 65px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+#hugging-face-token {
+  -webkit-text-security: disc;
+}
+
+.info-note {
+  margin: 0;
+  padding: 10px 14px;
+  border-left: 4px solid var(--accent-color);
+  border-radius: 6px;
+  background: #e6f2f2;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.analytics-year-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.analytics-year-selector label {
+  margin: 0;
+}
+
+.analytics-year-selector select {
+  width: auto;
+  min-width: 130px;
+  padding: 8px 12px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.analytics-table-card {
+  overflow-x: auto;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.analytics-table thead tr {
+  border-bottom: 2px solid var(--accent-color);
+  background: #f0f7f7;
+  color: var(--accent-color);
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: 12px;
+}
+
+.analytics-month-heading {
+  min-width: 110px;
+}
+
+.analytics-net-heading,
+.analytics-table tfoot td {
+  min-width: 130px;
+  text-align: right;
+}
+
+.analytics-notes-heading {
+  min-width: 150px;
+}
+
+.analytics-table tfoot tr {
+  border-top: 2px solid #ccc;
+  background: #f9fbfb;
+  font-weight: 700;
+}
+
+#analitika-ukupno-neto {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+}
+
+#analize-page {
+  display: none;
+}
+
+#lista-analiza-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.interlinear-grid {
+  display: flex;
+  height: 75vh;
+  gap: 12px;
+}
+
+.interlinear-column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.interlinear-column h3 {
+  margin-bottom: 8px;
+}
+
+.source-column h3 {
+  color: var(--accent-color);
+}
+
+.translation-column h3 {
+  color: #2e7d32;
+}
+
+.commentary-column h3 {
+  color: #8e24aa;
+}
+
+.interlinear-column > div {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+}
+
+#llm-status-modal {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.llm-status-dialog {
+  width: min(90%, 500px);
+  padding: 24px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.llm-status-dialog h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+}
+
+#llm-analysis-options {
+  display: none;
+  margin: 15px 0;
+  padding: 12px;
+  border: 1px solid #d7e7e7;
+  border-radius: 6px;
+  background: #f7fbfb;
+}
+
+.llm-options-title {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.llm-option {
+  margin: 6px 0;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+#llm-options-error {
+  display: none;
+  margin-top: 8px;
+  color: #b42318;
+  font-size: 0.85rem;
+}
+
+.llm-options-actions,
+.llm-download-action {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#llm-options-start {
+  padding: 7px 14px;
+}
+
+#llm-progress-container {
+  display: none;
+  margin: 15px 0;
+}
+
+.llm-progress-track {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #eee;
+}
+
+#llm-progress-bar {
+  width: 0;
+  height: 100%;
+  background: var(--accent-color);
+  transition: width 0.2s;
+}
+
+#llm-status-text {
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+#llm-status-estimate {
+  min-height: 1.2em;
+}
+
+.llm-status-warning {
+  margin-bottom: 15px;
+  color: #8a4b08;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+#btn-zapocni-download {
+  display: none;
+  padding: 8px 16px;
+}
+
+#modal-glosar,
+#prazan-glosar-poruka {
+  display: none;
+}
+
 .subscription-google {
   background: #4285f4;
 }
