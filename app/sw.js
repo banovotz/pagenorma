@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pagenorma-v21';
+const CACHE_NAME = 'pagenorma-v22';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -108,9 +108,10 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-    // Application modules must be refreshed from the network so security fixes
-  // cannot remain hidden behind an older service-worker cache.
-  if (new URL(e.request.url).pathname.endsWith('.js')) {
+    // Application code and content must be refreshed from the network so
+    // deployed behavior or visual fixes cannot remain hidden behind an older
+    // service-worker cache.
+    if (/\.(?:css|js|json)$/.test(new URL(e.request.url).pathname)) {
     e.respondWith(
       fetch(e.request)
         .then((response) => {

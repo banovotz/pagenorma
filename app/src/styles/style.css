@@ -1386,7 +1386,7 @@ ul.unosi-list li {
 
 .interlinear-workspace {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr);
   min-height: 440px;
   height: calc(100dvh - 230px);
 }
@@ -1514,13 +1514,24 @@ ul.unosi-list li {
 }
 
 .interlinear-workspace .interlinear-pagination {
-  position: sticky;
-  bottom: 0;
-  z-index: 1;
-  margin-top: 0;
-  padding: 12px 0;
-  border-top: 1px solid var(--border-color);
+  position: fixed;
+  z-index: 100;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  left: 50%;
+  display: flex;
+  box-sizing: border-box;
+  width: min(960px, calc(100vw - 40px));
+  margin: 0;
+  padding: 12px 16px;
+  transform: translateX(-50%);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
   background: var(--bg-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.interlinear-pagination:empty {
+  display: none;
 }
 
 .interlinear-pagination button {
@@ -1592,8 +1603,17 @@ ul.unosi-list li {
     flex-direction: column;
   }
 
+}
+
+@media (max-width: 600px) {
   .interlinear-workspace .interlinear-pagination {
     position: static;
+    width: auto;
+    padding: 12px 0;
+    transform: none;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 }
 .para-box {
