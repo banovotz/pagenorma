@@ -5,7 +5,7 @@ permalink: /privacy/
 description: Learn how pagenorma respects your privacy, handles your book translation projects, and protects your local data.
 ---
 
-*Last updated: October 7, 2026*
+*Last updated: October 9, 2026*
 
 At **pagenorma**, we believe the texts and translations you work with belong to you. This Privacy Policy explains how pagenorma processes information when you use the application, including optional Google Docs import and Hugging Face-powered analysis features.
 
@@ -25,7 +25,9 @@ pagenorma uses Google services for authentication and optional document import.
 ### Account Authentication (Sign-In with Google)
 If you choose to sign in to pagenorma using your Google account, we request basic profile scopes (`openid`, `email`, `profile`). 
 
-This information is used strictly to authenticate your identity, create or manage your local user session, and display your basic profile information (such as your email address) within the application interface. We do not use your personal profile data for marketing, nor do we share or sell it to third parties.
+This information is used strictly to authenticate your identity, create or manage your local user session, and display your basic profile information (such as your email address) within the application interface. 
+
+We do not automatically use your personal profile data for marketing, nor do we share or sell it to third parties. If you explicitly opt in during sign-up or registration to receive promotional offers and marketing communications, we will send these updates to your email address. You can change your marketing preferences or opt out at any time directly from your user profile settings in the application.
 
 ### Google Docs Import
 
@@ -60,10 +62,18 @@ Google user data accessed by pagenorma is strictly used to provide user-facing f
 
 We do not sell or rent your personal information or manuscript content.
 
-## 5. Subscription and Account Information
+## 5. Monthly Quota Tracking & Fraud Prevention
+
+To manage resource limits and prevent abuse of free monthly AI analysis allowances (such as repeatedly deleting and re-registering an account using the same email address), pagenorma retains a pseudonymized record of monthly feature usage tied to a cryptographic hash of your verified email address.
+
+- **Purpose and Scope:** This record contains only the monthly usage counter and the pseudonymized hash. It is stored solely for rate limiting, anti-fraud prevention, and ensuring fair access to service quotas.
+- **Retention Period:** Usage tracking data is retained strictly until the end of the current calendar month, after which monthly counters reset automatically.
+- **Account Deletion:** If you delete your account, your personal information and profile data are removed immediately. However, the pseudonymized hash and remaining quota usage counter are retained until the end of that calendar month to prevent immediate account re-creation for quota bypass.
+
+## 6. Subscription and Account Information
 
 pagenorma is temporarily offered free of charge without functional limitations. We reserve the right to introduce tiered service plans. Core functionality will remain accessible under a free tier, while enhanced features may require an active pagenorma QS subscription.
 
-## 6. Changes to This Privacy Policy
+## 7. Changes to This Privacy Policy
 
 We may update this Privacy Policy to reflect changes to pagenorma, our service providers, or applicable legal requirements. We will post the updated policy on this page and revise the “Last updated” date.
