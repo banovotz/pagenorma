@@ -614,6 +614,18 @@ h1 #pagenorma-logo {
   padding: 8px 16px;
 }
 
+.interlinear-partial-notice {
+  background: #fff8e1;
+  border: 1px solid #f0d279;
+  border-left: 5px solid #d6a400;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  color: #7a5c00;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 #modal-glosar,
 #prazan-glosar-poruka {
   display: none;
