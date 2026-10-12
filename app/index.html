@@ -148,6 +148,15 @@
             <div id="p-gdoc-name" class="selected-file-name">No document selected</div>
             <input type="hidden" id="p-gdoc-url">
             <small>Select a document with Google. Only Google Docs files are shown, and pagenorma is granted access only to the documents you pick — never to the rest of your Drive.</small>
+            <div id="gdoc-cookie-hint" class="gdoc-cookie-hint sakriveno" role="status" aria-live="polite">
+              <span>
+                <strong>Note:</strong> your browser may block the third-party cookies
+                Google's document picker needs. If the picker is blank or keeps asking
+                you to sign in, allow cookies for Google for this site (in Brave: open
+                the lion icon and choose “Allow all cookies”), or use Chrome.
+              </span>
+              <button type="button" id="btn-gdoc-cookie-hint-close" class="gdoc-cookie-hint-close" aria-label="Dismiss notice">&times;</button>
+            </div>
           </div>
           <div id="translation-file-panel" class="sakriveno">
             <label for="p-translation-file">Document file (docx/rtf/odt/txt)</label>

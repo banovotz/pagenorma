@@ -338,6 +338,41 @@ h1 #pagenorma-logo {
   margin-top: 8px;
 }
 
+.gdoc-cookie-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid #f0c36d;
+  border-left: 4px solid #e0a800;
+  border-radius: 6px;
+  background: #fdf6e3;
+  color: #6b5300;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.gdoc-cookie-hint strong {
+  color: #6b5300;
+}
+
+.gdoc-cookie-hint-close {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 0 4px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.gdoc-cookie-hint-close:hover {
+  color: #000;
+}
+
 .fetch-data-group {
   margin-bottom: 15px;
 }

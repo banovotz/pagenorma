@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pagenorma-v24';
+const CACHE_NAME = 'pagenorma-v25';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -96,6 +96,18 @@ self.addEventListener('activate', (e) => {
 // s cache fallbackom, kako bi korisnik čim prije dobio najnoviju ljusku aplikacije
 // (a ne zauvijek staru index.html iz cachea dok ga SW jednom ne osvježi).
 self.addEventListener('fetch', (e) => {
+  // Nikada ne diraj zahtjeve prema drugim originima (npr. apis.google.com,
+  // accounts.google.com, docs.google.com). Google Identity Services i Google
+  // Picker preko tih zahtjeva postavljaju sesiju i komuniciraju preko
+  // postMessagea; presretanje/keširanje ih može slomiti.
+  let requestUrl;
+  try {
+    requestUrl = new URL(e.request.url);
+  } catch {
+    return;
+  }
+  if (requestUrl.origin !== self.location.origin) return;
+
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request)
@@ -112,7 +124,7 @@ self.addEventListener('fetch', (e) => {
     // Application code and content must be refreshed from the network so
     // deployed behavior or visual fixes cannot remain hidden behind an older
     // service-worker cache.
-    if (/\.(?:css|js|json)$/.test(new URL(e.request.url).pathname)) {
+    if (/\.(?:css|js|json)$/.test(requestUrl.pathname)) {
     e.respondWith(
       fetch(e.request)
         .then((response) => {
