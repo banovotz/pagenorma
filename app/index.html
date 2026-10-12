@@ -139,12 +139,15 @@
 
         <div class="form-group">
           <div class="unos-tabs" role="tablist" aria-label="Translation source">
-            <button type="button" class="btn-tab active" id="tab-gdoc" role="tab" aria-selected="true">Translation Google Docs URL</button>
+            <button type="button" class="btn-tab active" id="tab-gdoc" role="tab" aria-selected="true">Translation Google Doc</button>
             <button type="button" class="btn-tab" id="tab-document-file" role="tab" aria-selected="false">Document file (docx/rtf/odt/txt)</button>
           </div>
           <div id="translation-gdoc-panel">
-            <label for="p-gdoc-url">Translation Google Docs URL</label>
-            <input type="url" id="p-gdoc-url" placeholder="https://docs.google.com/document/d/...">
+            <label for="btn-choose-gdoc">Google Docs document</label>
+            <button type="button" id="btn-choose-gdoc" class="btn-secondary file-picker-trigger">Choose Google Doc…</button>
+            <div id="p-gdoc-name" class="selected-file-name">No document selected</div>
+            <input type="hidden" id="p-gdoc-url">
+            <small>Select a document with Google. Only Google Docs files are shown, and pagenorma is granted access only to the documents you pick — never to the rest of your Drive.</small>
           </div>
           <div id="translation-file-panel" class="sakriveno">
             <label for="p-translation-file">Document file (docx/rtf/odt/txt)</label>
@@ -329,8 +332,8 @@
     <section class="settings-card">
       <h3>Private Google Docs</h3>
       <p class="section-description compact">
-        Authenticate with the Google account that owns or can access the private documents.
-        Your access token is kept only for this browser session.
+        Connect the Google account you use for Google Docs. Authentication happens automatically when you pick a document.
+        pagenorma is granted access only to the Google Docs you select — never to the rest of your Drive — and the token is kept only for this browser session.
       </p>
       <div class="section-actions button-group">
         <button type="button" id="btn-google-authenticate" class="btn-primary">

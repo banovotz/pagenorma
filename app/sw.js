@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pagenorma-v22';
+const CACHE_NAME = 'pagenorma-v23';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -23,6 +23,7 @@ const  ASSETS_TO_CACHE = [
  './src/features/epub-parser/epub.parser.js',
  './src/features/google-drive/drive.auth.js',
  './src/features/google-drive/drive.api.js',
+ './src/features/google-drive/drive.picker.js',
  './src/features/document-parser/document.parser.js',
  './src/features/glossary/glossary.ui.js',
  './src/features/glossary/glossary.js',
