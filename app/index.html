@@ -488,6 +488,24 @@
           <p id="profile-verification-status" role="status"></p>
         </div>
         <fieldset>
+          <legend>Analysis tokens</legend>
+          <p>Token balance: <strong data-token-balance>0 tokens (0 pages)</strong></p>
+          <p class="text-muted">1 token covers 100 standard analysis pages. Your free monthly allowance is always used first.</p>
+          <form id="profile-voucher-form">
+            <label for="profile-voucher-code" class="form-label">Voucher code</label>
+            <input
+              id="profile-voucher-code"
+              name="profile-voucher-code"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="e.g. WELCOME10"
+            >
+            <button type="submit" class="btn-secondary">Redeem voucher</button>
+          </form>
+          <p id="profile-voucher-status" class="form-status" role="status"></p>
+        </fieldset>
+        <fieldset>
           <legend>Marketing preferences</legend>
           <label class="consent-option">
             <input id="profile-marketing-consent" type="checkbox" disabled>
@@ -629,6 +647,41 @@
         <input type="checkbox" id="llm-recreate-analysis">
         Commentary analysis
       </label>
+
+      <div id="llm-pages-picker" class="llm-pages-picker" hidden>
+        <label class="llm-pages-label" for="llm-pages-input">Pages to analyse</label>
+        <input
+          id="llm-pages-input"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="e.g. 22-56, 60-75, 78"
+          aria-describedby="llm-pages-hint"
+        >
+        <p id="llm-pages-hint" class="llm-pages-hint">
+          Single page equals 1800 characters with spaces. Below are first lines of each page so you can easier navigate.
+          Write page ranges the same way as when printing, e.g. 22-56, 60-75, 78.
+          A single page is just 78. Leave empty to start from page 1.
+        </p>
+        <div class="llm-pages-toolbar">
+          <button type="button" id="llm-pages-all" class="btn-secondary">All pages</button>
+          <button type="button" id="llm-pages-clear" class="btn-secondary">Clear</button>
+          <button type="button" id="llm-pages-fit" class="btn-secondary" hidden>
+            Fit to allowance
+          </button>
+        </div>
+        <div id="llm-pages-browser" class="llm-pages-browser" tabindex="0"></div>
+        <div id="llm-pages-error" class="llm-pages-error" role="alert"></div>
+      </div>
+
+      <div id="llm-pages-load" class="llm-pages-load" hidden>
+        <button type="button" id="llm-pages-load-button" class="btn-secondary">
+          Load pages
+        </button>
+        <span id="llm-pages-load-status" class="llm-pages-load-status" role="status"></span>
+      </div>
+
+      <div id="llm-options-pages"></div>
       <div id="llm-options-error">
         Please select at least one option.
       </div>

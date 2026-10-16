@@ -556,7 +556,7 @@ h1 #pagenorma-logo {
 }
 
 .llm-status-dialog {
-  width: min(90%, 500px);
+  width: min(90%, 620px);
   padding: 24px;
   border-radius: 10px;
   background: #fff;
@@ -593,6 +593,156 @@ h1 #pagenorma-logo {
   margin-top: 8px;
   color: #b42318;
   font-size: 0.85rem;
+}
+
+#llm-options-pages {
+  display: none;
+  margin-top: 10px;
+  color: #475467;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+#llm-options-pages.prekoracenje {
+  color: #b42318;
+  font-weight: 600;
+}
+
+/* Biranje stranica za pokretanje (rasponi kao pri ispisu) */
+
+.llm-pages-picker {
+  margin-top: 12px;
+}
+
+.llm-pages-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+#llm-pages-input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+#llm-pages-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.12);
+}
+
+.llm-pages-hint {
+  margin: 6px 0 0;
+  color: #667085;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.llm-pages-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.llm-pages-toolbar .btn-secondary {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+}
+
+.llm-pages-browser {
+  max-height: 210px;
+  margin-top: 8px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.llm-pages-browser:empty {
+  display: none;
+}
+
+.llm-page-card {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 6px 10px;
+  border-bottom: 1px solid #f0ede9;
+}
+
+.llm-page-card:last-child {
+  border-bottom: none;
+}
+
+.llm-page-card.nastavak .llm-page-number,
+.llm-page-card.nastavak .llm-page-preview {
+  color: #98a2b3;
+  font-style: italic;
+}
+
+.llm-page-card.odabrana {
+  background: #e8f3f3;
+  box-shadow: inset 3px 0 0 var(--accent-color);
+}
+
+.llm-page-number {
+  flex: 0 0 auto;
+  min-width: 62px;
+  color: var(--accent-color);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.llm-page-preview {
+  flex: 1 1 auto;
+  overflow: hidden;
+  color: #475467;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.llm-pages-error {
+  display: none;
+  margin-top: 8px;
+  color: #b42318;
+  font-size: 0.85rem;
+}
+
+.llm-pages-error.prikazi {
+  display: block;
+}
+
+.llm-pages-load {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.llm-pages-load[hidden],
+.llm-pages-picker[hidden] {
+  display: none;
+}
+
+.llm-pages-load .btn-secondary {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+}
+
+.llm-pages-load-status {
+  color: #667085;
+  font-size: 0.8rem;
+}
+
+.llm-pages-load-status.greska {
+  color: #b42318;
 }
 
 .llm-options-actions,
@@ -2109,7 +2259,7 @@ button.glossary-quality-badge:focus-visible {
   margin: 0 0 8px;
   color: #124f52;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.1rem, 1.7vw, 1.35rem);
+  font-size: clamp(1.1rem, 1.7vw, 1.1rem);
   line-height: 1.1;
 }
 
@@ -2144,7 +2294,7 @@ button.glossary-quality-badge:focus-visible {
 .analysis-quota-metric {
   display: flex;
   align-items: center;
-  min-height: 52px;
+  min-height: 22px;
   gap: 9px;
   padding: 7px 10px;
   border: 1px solid #8dadad;
@@ -2172,7 +2322,7 @@ button.glossary-quality-badge:focus-visible {
 
 .analysis-quota-metric-value {
   color: #15575a;
-  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-size: clamp(1.1rem, 2vw, 1.2rem);
   line-height: 1;
 }
 
@@ -2253,6 +2403,202 @@ button.glossary-quality-badge:focus-visible {
 .analysis-quota-card-error h2,
 .analysis-quota-card-error p {
   color: #8a1c1c;
+}
+
+.analysis-quota-tokens {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #b7c4c4;
+  display: grid;
+  gap: 10px;
+}
+
+.analysis-quota-token-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 16px;
+}
+
+.analysis-quota-token-balance {
+  margin: 0;
+   font-size: 1.1rem;
+  font-weight:bolder;
+  color: #15575a;
+}
+
+.analysis-quota-token-pages {
+  color: #1f3739;
+  font-size: 0.82rem;
+}
+
+.analysis-quota-token-actions {
+  display: flex;
+  font-weight: 600;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 20px;
+}
+
+/* Poveznice koje otvaraju dijalog za vaučer odnosno najavu kupnje tokena. */
+.analysis-quota-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--accent-color);
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+
+
+.analysis-quota-toggle:hover,
+.analysis-quota-toggle.analysis-quota-toggle-aktivan {
+  color: var(--card-bg);
+}
+
+.analysis-quota-toggle:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.analysis-quota-toggle-icon {
+  display: inline-flex;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.analysis-quota-toggle-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.analysis-quota-panel {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid #dfe8e6;
+  border-radius: 8px;
+  background: #f5f8f8;
+}
+
+.analysis-quota-panel[hidden] {
+  display: none;
+}
+
+.analysis-quota-tokens .analysis-quota-panel p {
+  margin: 0;
+}
+
+.analysis-quota-voucher {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.analysis-quota-voucher input {
+  flex: 0 1 340px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid #b7c4c4;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+.analysis-quota-voucher input::placeholder {
+  color: #757575;
+}
+
+.analysis-quota-voucher button[type="submit"] {
+  flex: 0 0 auto;
+  padding: 8px 13px;
+  border: 1px solid #2c6b6c;
+  border-radius: 6px;
+  background: #377e7f;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.analysis-quota-voucher button[type="submit"]:hover:not(:disabled) {
+  background: #2c6b6c;
+}
+
+.analysis-quota-voucher button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.analysis-quota-voucher-status {
+  min-height: 1.1em;
+  font-size: 0.82rem;
+}
+
+.analysis-quota-voucher-status.analysis-quota-voucher-error {
+  color: #8a1c1c;
+}
+
+.analysis-quota-tokens .analysis-quota-buy-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: #576866;
+  font-size: 0.85rem;
+}
+
+.analysis-quota-coming-soon {
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: #cc7c2e;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.analysis-quota-packs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+}
+
+.analysis-quota-pack {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #f2f6f6;
+  color: #676868;
+  font-size: 0.85rem;
+  cursor: not-allowed;
+}
+
+.analysis-quota-pack:hover {
+  color: var(--card-bg);
+  background: var(--accent-color-hover);
+}
+
+.analysis-quota-pack-price {
+  color: #7aa9a9;
+  font-size: 1.1rem;
+  line-height: 1.1;
 }
 
 .subscription-verification {
