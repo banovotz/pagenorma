@@ -592,7 +592,14 @@
         <input id="interlinear-search" type="search" placeholder="Search source, translation or comments..." autocomplete="off">
         <div id="interlinear-suggestions" class="interlinear-suggestions" hidden></div>
       </div>
-      <span id="interlinear-results-count" class="interlinear-results-count"></span>
+      <div class="interlinear-toolbar-controls">
+        <span id="interlinear-results-count" class="interlinear-results-count"></span>
+        <label class="interlinear-frontmatter-toggle" for="interlinear-hide-frontmatter">
+          <input id="interlinear-hide-frontmatter" type="checkbox" checked>
+          <span>Hide untranslated front matter</span>
+        </label>
+        <button type="button" id="interlinear-frontmatter-hint" class="interlinear-frontmatter-hint" hidden></button>
+      </div>
     </div>
 
     <div class="interlinear-grid">
