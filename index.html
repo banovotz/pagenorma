@@ -37,7 +37,7 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
 <!-- HERO SECTION -->
 <section class="hero-section">
   <!-- Pozadinska WebP Animacija -->
-  <picture class="hero-bg-picture">
+  <picture class="hero-bg-picture" data-parallax="0.35">
     <source srcset="{{ '/assets/images/hero.webp' | relative_url }}" type="image/webp">
     <img src="{{ '/assets/images/hero.webp' | relative_url }}" alt="Background Animation" class="hero-bg-img" loading="eager">
   </picture>
@@ -45,8 +45,12 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
   <!-- Tamni sloj za čitljivost teksta -->
   <div class="hero-overlay"></div>
 
+  <!-- Lebdeći dekorativni oblici (parallax) -->
+  <span class="deco-orb deco-orb-a" data-parallax="-0.18" aria-hidden="true"></span>
+  <span class="deco-orb deco-orb-b" data-parallax="0.12" aria-hidden="true"></span>
+
   <!-- Hero Sadržaj -->
-  <div class="container hero-content">
+  <div class="container hero-content" data-parallax="-0.08">
     <h1 class="hero-title">
       Translating Prose or Articles?<br>
       <span class="hero-title-highlight">Use The Translator's Quiet Studio → </span> <u>pagenorma</u>
@@ -69,19 +73,21 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
 </section>
 
 <script src="{{ '/assets/js/demo-launcher.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/parallax.js' | relative_url }}" defer></script>
 
 <!-- PROBLEM / EMPATHY SECTION -->
 {% assign problem = site.data.problem %}
 <section id="{{ problem.section_id }}" class="section-problem">
+  <span class="deco-orb deco-orb-c" data-parallax="0.1" aria-hidden="true"></span>
   <div class="container">
-    <div class="section-header">
+    <div class="section-header" data-reveal>
       <h2 class="section-title">{{ problem.heading }}</h2>
       <p class="section-subheading">{{ problem.subheading }}</p>
     </div>
 
     <div class="grid-three-col">
       {% for point in problem.pain_points %}
-        <div class="pain-card">
+        <div class="pain-card" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s">
           {% if point.id == 'how-long' %}
            <img alt="Project management" loading="lazy" src="{{ '/assets/icons/calendar.svg' | relative_url }}" width="52">
         {% elsif point.id == 'how-much' %}
@@ -100,8 +106,9 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
 <!-- THE STORY SECTION -->
 {% assign story = site.data.story %}
 <section id="{{ story.section_id }}" class="section-story">
+  <span class="deco-orb deco-orb-d" data-parallax="-0.09" aria-hidden="true"></span>
   <div class="container story-container">
-    <div class="story-content">
+    <div class="story-content" data-reveal>
       {% if story.badge %}
         <span class="story-badge">{{ story.badge }}</span>
       {% endif %}
@@ -115,7 +122,7 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
       </div>
 
       {% if story.quote %}
-        <blockquote class="story-quote">
+        <blockquote class="story-quote" data-reveal style="--reveal-delay: 0.15s">
           <p>“{{ story.quote.text }}”</p>
           <cite>
             <strong>{{ story.quote.author }}</strong>
@@ -130,15 +137,16 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
 <!-- UNIQUE VALUE PROPOSITION & FEATURES SECTION -->
 {% assign features = site.data.features %}
 <section id="{{ features.section_id }}" class="section-features">
+  <span class="deco-orb deco-orb-e" data-parallax="0.14" aria-hidden="true"></span>
   <div class="container">
-    <div class="section-header">
+    <div class="section-header" data-reveal>
       <h2 class="section-title">{{ features.heading }}</h2>
       <p class="section-subheading">{{ features.subheading }}</p>
     </div>
 
     <div class="grid-three-col">
       {% for feat in features.features_list %}
-        <div class="feature-card">
+        <div class="feature-card" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s">
           {% if feat.badge %}
             <span class="feature-badge">{{ feat.badge }}</span>
           {% endif %}
@@ -166,12 +174,12 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
 {% assign comp = site.data.comparison %}
 <section id="{{ comp.section_id }}" class="section-comparison">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header" data-reveal>
       <h2 class="section-title">{{ comp.heading }}</h2>
       <p class="section-subheading">{{ comp.subheading }}</p>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive" data-reveal style="--reveal-delay: 0.15s">
       <table class="comparison-table">
         <thead>
           <tr>
@@ -203,7 +211,8 @@ title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
 
 <!-- CLOSING CALL TO ACTION SECTION -->
 <section class="section-cta">
-  <div class="container cta-container">
+  <span class="deco-orb deco-orb-f" data-parallax="-0.12" aria-hidden="true"></span>
+  <div class="container cta-container" data-reveal>
     <h2 class="cta-title">Ready to bring structure to your manuscript workflow?</h2>
     <p class="cta-description">
       Join translators who spend less time managing spreadsheets and more time crafting prose.

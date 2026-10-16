@@ -5,6 +5,9 @@ _site
 vendor
 app/config/firebase.local.js
 AGENTS.md
+dev.pagenorma.eu.crt
+dev.pagenorma.eu.key
+start_jekyll_on_domain.sh
 
 # Ignoriraj sav sadržaj unutar app mape
 /app/*

@@ -1050,6 +1050,148 @@ body {
   }
 }
 
+/* ==========================================================================
+   Parallax decorations & scroll reveal
+   ========================================================================== */
+
+/* Sections with decorative orbs need a positioning context and must clip
+   the orbs; inner containers stack above them. */
+.section-problem,
+.section-story,
+.section-features,
+.section-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-problem > .container,
+.section-story > .container,
+.section-features > .container,
+.section-cta > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Give the hero background extra vertical bleed so the parallax translation
+   never exposes an edge while the hero scrolls through the viewport. */
+.hero-bg-picture {
+  top: -20%;
+  height: 140%;
+}
+
+/* Soft floating gradient blobs. Positioned per-section via modifier
+   classes; vertical drift comes from data-parallax (JS). */
+.deco-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.hero-section .deco-orb {
+  z-index: 2; /* above the overlay, below hero content */
+}
+
+.deco-orb-a {
+  width: 400px;
+  height: 400px;
+  top: 8%;
+  right: -120px;
+  background: radial-gradient(circle, rgba(77, 208, 225, 0.28), rgba(77, 208, 225, 0) 70%);
+}
+
+.deco-orb-b {
+  width: 280px;
+  height: 280px;
+  bottom: 4%;
+  left: -90px;
+  background: radial-gradient(circle, rgba(0, 128, 128, 0.35), rgba(0, 128, 128, 0) 70%);
+}
+
+.deco-orb-c {
+  width: 360px;
+  height: 360px;
+  top: 15%;
+  left: -140px;
+  background: radial-gradient(circle, rgba(0, 128, 128, 0.14), rgba(0, 128, 128, 0) 70%);
+}
+
+.deco-orb-d {
+  width: 320px;
+  height: 320px;
+  top: 8%;
+  right: -120px;
+  background: radial-gradient(circle, rgba(77, 208, 225, 0.16), rgba(77, 208, 225, 0) 70%);
+}
+
+.deco-orb-e {
+  width: 340px;
+  height: 340px;
+  bottom: 8%;
+  left: -110px;
+  background: radial-gradient(circle, rgba(0, 128, 128, 0.1), rgba(0, 128, 128, 0) 70%);
+}
+
+.deco-orb-f {
+  width: 420px;
+  height: 420px;
+  top: -80px;
+  right: -110px;
+  background: radial-gradient(circle, rgba(0, 128, 128, 0.55), rgba(0, 128, 128, 0) 70%);
+}
+
+@media (max-width: 768px) {
+  .deco-orb {
+    display: none;
+  }
+}
+
+/* Scroll reveal — only active when `js-effects` is set (JS on, no reduced
+   motion preference). Elements are otherwise fully visible. */
+.js-effects [data-reveal] {
+  opacity: 0;
+}
+
+.js-effects [data-reveal].is-visible {
+  opacity: 1;
+  /* fill-mode "backwards" holds the entrance state during the delay, then
+     releases transform to normal CSS so hover effects keep working. */
+  animation: reveal-up 0.7s backwards cubic-bezier(0.22, 0.61, 0.36, 1)
+    var(--reveal-delay, 0s);
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hero entrance — a one-off staggered rise on page load. */
+.js-effects .hero-content > * {
+  animation: hero-in 0.9s backwards cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.js-effects .hero-content > *:nth-child(2) { animation-delay: 0.1s; }
+.js-effects .hero-content > *:nth-child(3) { animation-delay: 0.2s; }
+.js-effects .hero-content > *:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Contact Form Styles */
 
 .contact-container {

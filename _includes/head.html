@@ -58,6 +58,14 @@
   <!-- Glavni CSS -->
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
+  <!-- Prije painta: uključi parallax/reveal stilove samo ako JS radi i korisnik
+       nije zatražio smanjenu animaciju (prefers-reduced-motion). -->
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js-effects');
+    }
+  </script>
+
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/favicon.ico">
 
