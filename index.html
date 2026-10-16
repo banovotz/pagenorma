@@ -3,6 +3,37 @@ layout: default
 title: "pagenorma - Translation Pacing & AI powered QA for Literary Translators"
 ---
 
+<!-- PROMO BANNER -->
+{% assign promo = site.data.promo %}
+{% if promo.live %}
+<aside class="promo-banner" id="promo-banner" data-voucher="{{ promo.voucher_code | escape }}" aria-label="Promotional offer">
+  <div class="container promo-banner-inner">
+    <p class="promo-banner-teaser">{{ promo.teaser }}</p>
+
+    <div class="promo-voucher">
+      <code class="promo-voucher-code" id="promo-voucher-code">{{ promo.voucher_code }}</code>
+      <button type="button" class="promo-copy-btn" id="promo-copy-btn" aria-label="Copy voucher code">
+        <svg class="promo-copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <span class="promo-copy-label">Copy</span>
+      </button>
+    </div>
+
+    <a href="{{ promo.link | relative_url }}" class="btn-primary promo-banner-cta">{{ promo.cta_text }}</a>
+  </div>
+
+  <button type="button" class="promo-dismiss-btn" id="promo-dismiss-btn" aria-label="Dismiss promo banner">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+</aside>
+<script src="{{ '/assets/js/promo-banner.js' | relative_url }}" defer></script>
+{% endif %}
+
 <!-- HERO SECTION -->
 <section class="hero-section">
   <!-- Pozadinska WebP Animacija -->

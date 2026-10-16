@@ -4,6 +4,7 @@ _site
 .jekyll-metadata
 vendor
 app/config/firebase.local.js
+AGENTS.md
 
 # Ignoriraj sav sadržaj unutar app mape
 /app/*
