@@ -1750,6 +1750,117 @@ ul.unosi-list li {
   color: var(--accent-color);
 }
 
+.thesaurus-search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.thesaurus-search-bar .form-group {
+  flex: 1 1 240px;
+  min-width: 200px;
+  margin-bottom: 0;
+}
+
+.thesaurus-search-bar .btn-primary {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+}
+
+.thesaurus-results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.thesaurus-definition {
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  line-height: 1.5;
+}
+
+.thesaurus-pos-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.thesaurus-pos-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.thesaurus-pos-title {
+  margin: 0;
+  font-size: 1rem;
+  text-transform: capitalize;
+}
+
+.thesaurus-pos-definition {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.thesaurus-synonym-group {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.thesaurus-synonym-group:last-child {
+  border-bottom: none;
+}
+
+.thesaurus-synonym-group-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.thesaurus-synonym-group--weak .thesaurus-synonym-group-title {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.thesaurus-synonym-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.thesaurus-synonym {
+  padding: 6px 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.thesaurus-synonym:hover {
+  background: var(--bg-hover);
+}
+
+.thesaurus-synonym-group--weak .thesaurus-synonym {
+  opacity: 0.85;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
 .interlinear-pagination {
   display: flex;
   justify-content: center;
@@ -2337,7 +2448,7 @@ button.glossary-quality-badge:focus-visible {
 
 .analysis-quota-metrics {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -2346,7 +2457,7 @@ button.glossary-quality-badge:focus-visible {
   align-items: center;
   min-height: 22px;
   gap: 9px;
-  padding: 7px 10px;
+  padding: 7px 7px;
   border: 1px solid #8dadad;
   border-radius: 6px;
   background: linear-gradient(135deg, #f3faf9 0%, #e7f2f1 100%);
@@ -3113,6 +3224,15 @@ button.glossary-quality-badge:focus-visible {
   color: var(--accent-color); /* ili tvoja primarna boja UI-ja */
   transition: color 0.3s ease;
 }
+
+.pagenorma-icon-thesaurus {
+  width: 24px;
+  height: 24px;
+  color: var(--accent-color); /* ili tvoja primarna boja UI-ja */
+  transition: color 0.3s ease;
+
+}
+
 
 .pagenorma-icon-profile:hover {
   color: #0066cc;

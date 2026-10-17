@@ -78,6 +78,19 @@
   <ul id="main-menu" class="nav-links">
     <li><a href data-target="analytics" class="nav-item"><img class="nav-icon" src="public/icons/financial-analytics.svg" alt=""> Financial Analytics</a></li>
     <li><a href data-target="translation-analytics" class="nav-item"><img class="nav-icon" src="public/icons/translation-analitycs.svg" alt=""> Translation Analyses</a></li>
+    <li><a href data-target="thesaurus" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="pagenorma-icon-thesaurus">
+  <!-- Otvorena knjiga / Korice -->
+  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+  
+  <!-- Slovo T (Thesaurus) / Sinonimske veze -->
+  <path d="M11 7h6" />
+  <path d="M14 7v10" />
+  <path d="M11 17h6" />
+  
+  <!-- Strelica koja simbolizira povezivanje sinonima -->
+  <path d="M17 10l3-3-3-3" stroke="#D97706" />
+</svg>Thesaurus</a></li>
     <li><a href data-target="settings" class="nav-item"><img class="nav-icon" src="public/icons/settings.svg" alt=""> Settings</a></li>
     <li data-auth-navigation="login"><a href data-target="login" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pagenorma-icon-profile">
   <!-- Glava / Profilna kružnica -->
@@ -93,7 +106,7 @@
   <path d="M19 21v-1.5a3.5 3.5 0 0 0-3.5-3.5h-7A3.5 3.5 0 0 0 5 19.5V21" />
   
   <!-- Indikator prijave (Status dot) -->
-  <circle cx="19" cy="5" r="2" fill="currentColor" stroke="none" />
+  <circle cx="19" cy="5" r="2" fill="currentColor" stroke="#D97706" />
 </svg>Profile</a></li>
   </ul>
 </nav>
@@ -565,6 +578,29 @@
       </table>
     </div>
   </div>
+  </section>
+
+  <!-- THESAURUS SCREEN -->
+  <section id="page-thesaurus" class="page-section hidden">
+    <div id="thesaurus-page" class="page-content">
+      <div class="page-intro">
+        <h2 class="page-heading">Thesaurus</h2>
+        <p class="text-muted">Find synonyms grouped by part of speech.</p>
+      </div>
+      <div class="thesaurus-search-bar">
+        <div class="form-group">
+          <label for="thesaurus-term">Search term</label>
+          <input id="thesaurus-term" type="search" placeholder="Enter a word..." autocomplete="off" spellcheck="false">
+        </div>
+        <div class="form-group">
+          <label for="thesaurus-lang">Language</label>
+          <select id="thesaurus-lang"></select>
+        </div>
+        <button id="thesaurus-search" class="btn-primary">Search</button>
+      </div>
+      <div id="thesaurus-status" role="status"></div>
+      <div id="thesaurus-results"></div>
+    </div>
   </section>
 
 </div>
