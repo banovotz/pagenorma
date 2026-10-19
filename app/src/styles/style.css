@@ -832,7 +832,7 @@ h1 #pagenorma-logo {
 /* "Continue with Hugging Face" - prepoznatljiva HF žuta boja na gumbovima
    prijave (tamni tekst jer je bijeli nečitljiv na žutoj). */
 .subscription-huggingface {
-  background: #ffd21e;
+  background: #edc41e;
   color: #1b1b1b;
 }
 
