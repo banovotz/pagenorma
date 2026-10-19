@@ -820,6 +820,24 @@ h1 #pagenorma-logo {
   background: #4285f4;
 }
 
+/* "Continue with Hugging Face" - prepoznatljiva HF žuta boja na gumbovima
+   prijave (tamni tekst jer je bijeli nečitljiv na žutoj). */
+.subscription-huggingface {
+  background: #ffd21e;
+  color: #1b1b1b;
+}
+
+.subscription-huggingface:hover {
+  background: #f2c600;
+}
+
+/* Razdjelnik između jednokliknog povezivanja i ručnog unosa tokena. */
+.hugging-separator {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 16px 0;
+}
+
 .subscription-choice {
   display: grid;
   gap: 8px;

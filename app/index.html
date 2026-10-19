@@ -339,9 +339,15 @@
     <section class="hugging-card settings-card">
       <h3 id="hugging-title">Hugging Face analysis token</h3>
       <p id="hugging-status" class="section-description compact">
-     To run QA analysis of your translations, create a free account  on <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">Hugging Face</a>, obtain a fine-grained token, and allow inference access. The token stays only in this browser.
+        To run QA analysis of your translations, connect your free <a href="https://huggingface.co" target="_blank" rel="noopener noreferrer">Hugging Face</a> account in one click, or <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">create a fine-grained token</a> manually and allow inference access. The token stays only in this browser.
       </p>
-      <label for="hugging-face-token" class="form-label">Hugging Face access token</label>
+      <div class="section-actions">
+        <button type="button" id="btn-hf-connect" class="btn-primary">Connect with Hugging Face</button>
+        <button type="button" id="btn-hf-disconnect" class="btn-secondary" hidden>Disconnect</button>
+      </div>
+      <p id="hf-connect-status" class="form-status" role="status"></p>
+      <hr class="hugging-separator">
+      <label for="hugging-face-token" class="form-label">Hugging Face access token (manual)</label>
       <input
         type="text"
         class="form-control"
@@ -448,6 +454,7 @@
           <h2 id="login-title">Sign in to pagenorma</h2>
           <p id="login-status" role="status">Sign in here.</p>
           <button type="button" id="login-google" class="subscription-google">Continue with Google</button>
+          <button type="button" id="login-huggingface" class="subscription-huggingface">Continue with Hugging Face</button>
           <form id="login-email-form">
             <div id="login-email-group">
               <label for="login-email-input">Email</label>
@@ -524,6 +531,11 @@
             <input id="profile-marketing-consent" type="checkbox" disabled>
             I want to receive promotional offers and marketing communications.
           </label>
+        </fieldset>
+        <fieldset>
+          <legend>Sign-in methods</legend>
+          <p class="text-muted" id="profile-signin-methods"></p>
+          <p class="text-muted">You can sign in with any of these methods — they all open the same account. Connect Hugging Face from Settings.</p>
         </fieldset>
         <div class="profile-actions">
           <button type="button" id="profile-signout" class="btn-secondary">Sign out</button>
