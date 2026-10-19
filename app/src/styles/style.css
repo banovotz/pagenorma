@@ -2843,6 +2843,79 @@ button.glossary-quality-badge:focus-visible {
   margin: 0;
 }
 
+/* Gumb thesaurusa uz pojam u tablici glosara */
+.glossary-thesaurus-trigger {
+  margin-left: 6px;
+  padding: 0 2px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  opacity: 0.55;
+}
+
+.glossary-thesaurus-trigger:hover,
+.glossary-thesaurus-trigger[aria-expanded="true"] {
+  opacity: 1;
+}
+
+/* Detaljni thesaurus redak ispod retka glosara */
+.glossary-thesaurus-cell {
+  background: #edf6f3 !important;
+  border-bottom: 1px solid #d9eeee;
+  padding: 10px 14px !important;
+}
+
+.glossary-thesaurus-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.glossary-thesaurus-block {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  overflow: hidden;
+}
+
+.glossary-thesaurus-block-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.glossary-thesaurus-block-title {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.glossary-thesaurus-open-page {
+  border: none;
+  background: none;
+  color: var(--accent-color);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.glossary-thesaurus-body {
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.glossary-thesaurus-status {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
 .glossary-context-list {
   display: grid;
   gap: 10px;
