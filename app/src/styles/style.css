@@ -222,6 +222,15 @@ h1 #pagenorma-logo {
   margin-top: 20px;
 }
 
+/* Vaučer forma na Profilu ostaje u istom rasporedu (grid, najviše 420px)
+   unatoč preseljenju iz subscription-card u settings-card. */
+#profile-voucher-form {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+  margin-top: 18px;
+}
+
 .page-content {
   width: 100%;
 }

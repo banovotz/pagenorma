@@ -347,24 +347,30 @@
       </div>
       <p id="hf-connect-status" class="form-status" role="status"></p>
       <hr class="hugging-separator">
-      <label for="hugging-face-token" class="form-label">Hugging Face access token (manual)</label>
-      <input
-        type="text"
-        class="form-control"
-        id="hugging-face-token"
-        name="hugging-face-access-token"
-        autocomplete="off"
-        autocapitalize="none"
-        spellcheck="false"
-        data-1p-ignore="true"
-        data-bwignore="true"
-        data-lpignore="true"
-        placeholder="hf_..."
-      >
-      <div class="section-actions">
-        <button type="button" id="btn-save-hugging-face-token" class="btn-primary">Save Hugging Face token</button>
+      <label class="consent-option">
+        <input type="checkbox" id="hf-manual-toggle" aria-controls="hf-manual-fields">
+        I want to insert Hugging Face token manually
+      </label>
+      <div id="hf-manual-fields" hidden>
+        <label for="hugging-face-token" class="form-label">Hugging Face access token (manual)</label>
+        <input
+          type="text"
+          class="form-control"
+          id="hugging-face-token"
+          name="hugging-face-access-token"
+          autocomplete="off"
+          autocapitalize="none"
+          spellcheck="false"
+          data-1p-ignore="true"
+          data-bwignore="true"
+          data-lpignore="true"
+          placeholder="hf_..."
+        >
+        <div class="section-actions">
+          <button type="button" id="btn-save-hugging-face-token" class="btn-primary">Save Hugging Face token</button>
+        </div>
+        <p id="hugging-face-token-status" class="form-status" role="status"></p>
       </div>
-      <p id="hugging-face-token-status" class="form-status" role="status"></p>
     </section>
     </div>
 
@@ -445,6 +451,7 @@
         Save Settings
       </button>
     </div>
+  </div><!-- /#settings-page -->
 </section><!-- /#page-settings -->
 
   <section id="page-login" class="page-section hidden">
@@ -497,51 +504,49 @@
   </section>
 
   <section id="page-profile" class="page-section hidden">
-    <div id="profile-page" class="page-content subscription-page">
-      <section class="subscription-card">
-        <h2>Profile</h2>
-        <p>Signed in as <strong data-profile-email></strong>.</p>
-        <div id="profile-verification" class="subscription-verification sakriveno">
-          <p>Your email must be verified before you can use AI analysis or view its monthly allowance.</p>
-          <button type="button" id="profile-resend-verification" class="btn-secondary">Resend verification email</button>
-          <button type="button" id="profile-refresh-verification" class="btn-secondary">I have verified my email</button>
-          <p id="profile-verification-status" role="status"></p>
-        </div>
-        <fieldset>
-          <legend>Analysis tokens</legend>
-          <p>Token balance: <strong data-token-balance>0 tokens (0 pages)</strong></p>
-          <p class="text-muted">1 token covers 100 standard analysis pages. Your free monthly allowance is always used first.</p>
-          <form id="profile-voucher-form">
-            <label for="profile-voucher-code" class="form-label">Voucher code</label>
-            <input
-              id="profile-voucher-code"
-              name="profile-voucher-code"
-              type="text"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="e.g. WELCOME10"
-            >
-            <button type="submit" class="btn-secondary">Redeem voucher</button>
-          </form>
-          <p id="profile-voucher-status" class="form-status" role="status"></p>
-        </fieldset>
-        <fieldset>
-          <legend>Marketing preferences</legend>
-          <label class="consent-option">
-            <input id="profile-marketing-consent" type="checkbox" disabled>
-            I want to receive promotional offers and marketing communications.
-          </label>
-        </fieldset>
-        <fieldset>
-          <legend>Sign-in methods</legend>
-          <p class="text-muted" id="profile-signin-methods"></p>
-          <p class="text-muted">You can sign in with any of these methods — they all open the same account. Connect Hugging Face from Settings.</p>
-        </fieldset>
-        <div class="profile-actions">
-          <button type="button" id="profile-signout" class="btn-secondary">Sign out</button>
-          <button type="button" id="profile-delete-account" class="btn-danger">Delete account</button>
-        </div>
+    <div id="profile-page" class="page-content">
+      <h2 class="page-heading">Profile</h2>
+      <p class="page-intro">Signed in as <strong data-profile-email></strong>.</p>
+      <div id="profile-verification" class="subscription-verification sakriveno">
+        <p>Your email must be verified before you can use AI analysis or view its monthly allowance.</p>
+        <button type="button" id="profile-resend-verification" class="btn-secondary">Resend verification email</button>
+        <button type="button" id="profile-refresh-verification" class="btn-secondary">I have verified my email</button>
+        <p id="profile-verification-status" role="status"></p>
+      </div>
+      <section class="settings-card">
+        <h3>Analysis tokens</h3>
+        <p>Token balance: <strong data-token-balance>0 tokens (0 pages)</strong></p>
+        <p class="text-muted">1 token covers 100 standard analysis pages. Your free monthly allowance is always used first.</p>
+        <form id="profile-voucher-form">
+          <label for="profile-voucher-code" class="form-label">Voucher code</label>
+          <input
+            id="profile-voucher-code"
+            name="profile-voucher-code"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="e.g. WELCOME10"
+          >
+          <button type="submit" class="btn-secondary">Redeem voucher</button>
+        </form>
+        <p id="profile-voucher-status" class="form-status" role="status"></p>
       </section>
+      <section class="settings-card">
+        <h3>Marketing preferences</h3>
+        <label class="consent-option">
+          <input id="profile-marketing-consent" type="checkbox" disabled>
+          I want to receive promotional offers and marketing communications.
+        </label>
+      </section>
+      <section class="settings-card">
+        <h3>Sign-in methods</h3>
+        <p class="text-muted" id="profile-signin-methods"></p>
+        <p class="text-muted">You can sign in with any of these methods — they all open the same account. Connect Hugging Face from Settings.</p>
+      </section>
+      <div class="profile-actions">
+        <button type="button" id="profile-signout" class="btn-secondary">Sign out</button>
+        <button type="button" id="profile-delete-account" class="btn-danger">Delete account</button>
+      </div>
     </div>
   </section>
 
