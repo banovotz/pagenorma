@@ -1,0 +1,22 @@
+---
+layout: page
+title: pagenorma Support
+description: Help articles for pagenorma, the workspace for literary translators.
+permalink: /support/
+---
+
+<h1 class="support-title">pagenorma Support</h1>
+
+{% assign articles = site.pages | where: "layout", "support-article" %}
+{% for cat in site.data.support_categories %}
+{% assign items = articles | where: "category_slug", cat.slug | sort: "nav_order" %}
+<section class="support-card">
+  <h2 class="support-card-title">{{ cat.icon }} {{ cat.title }}</h2>
+  <p class="support-card-description">{{ cat.description }}</p>
+  <ul class="support-card-links">
+    {% for a in items %}
+    <li><a href="{{ a.url | relative_url }}">{{ a.title }}</a> <span class="support-card-note">&ndash; {{ a.description }}</span></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}

@@ -44,3 +44,9 @@ defaults:
       path: "app"
     values:
       layout: null
+
+defaults:
+  - scope:
+      path: "support"
+    values:
+      layout: "support-article"
