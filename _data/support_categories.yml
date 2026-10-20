@@ -4,35 +4,35 @@
   description: Learn what pagenorma does, how the plans differ and how to find your way around.
   icon: 🚀
   order: 1
-- slug: account
-  title: Account & Sign-in
-  description: Create an account, sign in, verify your email and manage your profile.
-  icon: 👤
-  order: 2
 - slug: projects
   title: Projects & Dashboard
   description: Set up a translation project and follow your progress, pace and deadline.
   icon: 📚
-  order: 3
-- slug: connections
-  title: Connections
-  description: Connect Google Docs, local document files and Hugging Face.
-  icon: 🔌
-  order: 4
-- slug: analysis
-  title: AI Translation Analysis
-  description: Run an analysis and read the side-by-side view with AI commentary.
-  icon: 🔍
-  order: 5
-- slug: terminology
-  title: Glossary & Thesaurus
-  description: Work with the project glossary, quality assessments and the thesaurus.
-  icon: 📖
-  order: 6
+  order: 2  
 - slug: earnings
   title: Earnings & Analytics
   description: See monthly earnings and set up your deductions.
   icon: 💶
+  order: 3
+- slug: account
+  title: Account & Sign-in
+  description: Create an account, sign in, verify your email and manage your profile.
+  icon: 👤
+  order: 4
+- slug: connections
+  title: Connections
+  description: Connect Google Docs, local document files and Hugging Face.
+  icon: 🔌
+  order: 5
+- slug: analysis
+  title: AI Translation Analysis
+  description: Run an analysis and read the side-by-side view with AI commentary.
+  icon: 🔍
+  order: 6
+- slug: terminology
+  title: Glossary & Thesaurus
+  description: Work with the project glossary, quality assessments and the thesaurus.
+  icon: 📖
   order: 7
 - slug: usage
   title: Allowance, Tokens & Vouchers
