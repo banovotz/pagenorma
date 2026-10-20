@@ -7,6 +7,23 @@ permalink: /support/
 
 <h1 class="support-title">pagenorma Support</h1>
 
+<div class="support-search">
+  <label class="visually-hidden" for="support-search-input">Search the support articles</label>
+  <input
+    type="search"
+    id="support-search-input"
+    class="support-search-input"
+    placeholder="Search support articles…"
+    autocomplete="off"
+    autocapitalize="off"
+    spellcheck="false"
+  >
+  <p class="support-search-status" id="support-search-status" role="status" aria-live="polite"></p>
+</div>
+
+<ul class="support-search-results" id="support-search-results" hidden></ul>
+
+<div class="support-grid" id="support-category-grid">
 {% assign articles = site.pages | where: "layout", "support-article" %}
 {% for cat in site.data.support_categories %}
 {% assign items = articles | where: "category_slug", cat.slug | sort: "nav_order" %}
@@ -20,3 +37,6 @@ permalink: /support/
   </ul>
 </section>
 {% endfor %}
+</div>
+
+<script type="module" src="{{ '/assets/js/support-search.js' | relative_url }}"></script>

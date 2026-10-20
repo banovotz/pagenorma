@@ -1,8 +1,9 @@
 _site
+_site_check
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
-vendor
+/vendor
 app/config/firebase.local.js
 AGENTS.md
 dev.pagenorma.eu.crt
