@@ -1946,18 +1946,21 @@ ul.unosi-list li {
   color: #8e24aa;
 }
 
-.subscription-hook-row {
+/* Napomena "Congrats… Register or Sign in" na stranici financijske analitike:
+   blok je izvan horizontalno skrolirane kartice tablice da se na mobitelu
+   omota na širini zaslona. */
+.subscription-hook {
+  margin-top: 12px;
+  padding: 12px 16px;
   background: #fffaf0;
-}
-
-.subscription-hook-cell {
-  padding: 12px;
-  color: #6d4c41;
   border-left: 3px solid #d9a441;
+  border-radius: 0 8px 8px 0;
+  color: #6d4c41;
   font-size: 0.9em;
+  line-height: 1.5;
 }
 
-.subscription-hook-cell a,
+.subscription-hook a,
 .subscription-hook-comment a {
   color: #8e5b00;
   font-weight: 600;
