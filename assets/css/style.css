@@ -1868,3 +1868,37 @@ body {
     padding: 10px 14px 14px;
   }
 }
+
+/* ==========================================================================
+   404 page (/404.html)
+   The code and the explanation sit in a .support-card, next to a card with
+   the most useful destinations — same look as the support pages.
+   ========================================================================== */
+.notfound-code {
+  font-family: var(--font-serif);
+  font-size: 3.75rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -2px;
+  color: var(--color-primary);
+  margin: 0 0 10px;
+}
+
+.notfound-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-text-main);
+  margin: 0 0 12px;
+}
+
+@media (max-width: 768px) {
+  .notfound-code {
+    font-size: 3rem;
+  }
+
+  .notfound-title {
+    font-size: 1.35rem;
+  }
+}
