@@ -25,7 +25,7 @@ features_list:
     title: "Deep Textual & Concordance Analysis"
     description: "<strong>Maintain terminology consistency</strong> across a 100,000-word manuscript. Generate glossary with all the terms used in your text, analyze phrase/term occurrences, and run <strong>concordance checks</strong> between source text and your translation without losing context."
     badge: "Concordance"
-    image: "/assets/images/mockup5.jpeg"
+    image: "/assets/images/mockup8.jpeg"
 
   - id: "metrics"
     title: "Track Monthly Earnings Accross All Projects"
@@ -37,5 +37,5 @@ features_list:
     title: "Local-First & Privacy-Focused"
     description: "<strong>Your intellectual property stays yours.</strong> Built as a PWA with local storage (IndexedDB), your manuscripts, drafts, and original source files <strong>stay in your browser and on your computer.</strong>"
     badge: "Security"
-    image: "/assets/images/mockup6.jpeg"
+    image: "/assets/images/mockup2.jpeg"
 
