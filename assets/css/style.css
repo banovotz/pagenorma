@@ -1545,7 +1545,8 @@ body {
 /* --- Article: links in prose inherit the card-link style above ---------- */
 
 /* --- Article: callouts (app .info-note / .subscription-hook) ------------ */
-.support-article .applies-to {
+.support-article .applies-to,
+.support-article .legal-updated {
   display: inline-block;
   margin: 0 0 1.75rem;
   padding: 10px 14px;

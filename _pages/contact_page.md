@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Contact | pagenorma
+title: Contact
 permalink: /contact/
 description: Get in touch with the pagenorma team for questions, feedback, or support.
 ---

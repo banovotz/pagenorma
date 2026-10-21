@@ -1,11 +1,11 @@
 ---
-layout: page
-title: Privacy Policy | pagenorma
+layout: legal-article
+title: Privacy Policy
 permalink: /privacy/
 description: Learn how pagenorma respects your privacy, handles your book translation projects, and protects your local data.
+last_modified_at: '2026-10-09'
+related: [/faq/, /support/, /contact/]
 ---
-
-*Last updated: October 9, 2026*
 
 At **pagenorma**, we believe the texts and translations you work with belong to you. This Privacy Policy explains how pagenorma processes information when you use the application, including optional Google Docs import and Hugging Face-powered analysis features.
 

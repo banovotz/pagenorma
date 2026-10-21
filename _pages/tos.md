@@ -1,12 +1,11 @@
 ---
-layout: page
-title: Terms of Service | pagenorma
+layout: legal-article
+title: Terms of Service
+description: The terms that apply when you use pagenorma, covering accounts, subscriptions, AI assistance, acceptable use and liability.
 permalink: /tos/
+last_modified_at: '2026-09-24'
+related: [/faq/, /support/, /contact/]
 ---
-
-# Terms of Service
-
-*Last updated: September 24, 2026*
 
 Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the **pagenorma** web application, progressive web app (PWA), and desktop applications (collectively, the "Service") operated by pagenorma ("us", "we", or "our").
 

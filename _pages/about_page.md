@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About | pagenorma
+title: About
 permalink: /about/
 description: Learn about pagenorma, the dedicated pacing and QA tool built directly at the desk of book translators.
 ---

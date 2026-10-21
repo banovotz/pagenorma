@@ -1,0 +1,23 @@
+---
+layout: page
+---
+<article class="support-article legal-article">
+  <h1 class="support-title">{{ page.title }}</h1>
+  {% if page.last_modified_at %}
+  <p class="legal-updated">Last updated: {{ page.last_modified_at | date: "%-d %B %Y" }}</p>
+  {% endif %}
+
+  {{ content }}
+
+  {% if page.related %}
+  <aside class="related">
+    <h2>Related pages</h2>
+    <ul>
+    {% for url in page.related %}
+      {% assign rel = site.pages | where: "permalink", url | first %}
+      {% if rel %}<li><a href="{{ rel.url | relative_url }}">{{ rel.title }}</a></li>{% endif %}
+    {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+</article>
