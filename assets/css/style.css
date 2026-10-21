@@ -1193,75 +1193,66 @@ body {
   }
 }
 
-/* Contact Form Styles */
+/* Contact Form Styles — inside a .support-card on /contact/ */
 
-.contact-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    font-family: inherit;
-  }
-  .contact-intro {
-    margin-bottom: 2rem;
-  }
-  .contact-intro h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  .contact-intro p {
-    font-size: 1.125rem;
-    color: var(--color-text-main);
-    line-height: 1.6;
-  }
-  .form-group {
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-  .form-group label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--color-text-main);
-  }
-  .form-control {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #333344;
-    background-color: #f6f6f9;
-    color: var(--color-text-main);
-    box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  .form-control:focus {
-    outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-  }
-  textarea.form-control {
-    min-height: 140px;
-    resize: vertical;
-  }
-  .btn-submit {
-    background-color:var(--color-primary);
-    color: var(--color-primary-light);
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 0.85rem 1.75rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    width: 100%;
-  }
-  .btn-submit:hover {
-    background-color: var(--color-accent);
-  }
-  .btn-submit:active {
-    transform: scale(0.99);
-  }
+.support-article > p.contact-intro {
+  margin: 0 0 1.5rem;
+  font-size: 1.15rem;
+  color: var(--color-text-main);
+  line-height: 1.7;
+}
+
+.contact-card .form-group {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+.contact-card .form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--color-text-main);
+}
+.contact-card .form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-text-main);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.contact-card .form-control:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.15);
+}
+.contact-card textarea.form-control {
+  min-height: 140px;
+  resize: vertical;
+}
+.contact-card .btn-submit {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem 1.75rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  width: 100%;
+}
+.contact-card .btn-submit:hover {
+  background-color: var(--color-primary-dark);
+}
+.contact-card .btn-submit:active {
+  transform: scale(0.99);
+}
 
 /* ==========================================================================
    Support pages — category index and articles
@@ -1544,9 +1535,22 @@ body {
 
 /* --- Article: links in prose inherit the card-link style above ---------- */
 
+/* --- Article: CTA button in prose (site .btn-primary) ------------------- */
+.support-article a.btn-primary {
+  display: inline-block;
+  color: #ffffff;
+}
+
+.support-article a.btn-primary:hover,
+.support-article a.btn-primary:focus-visible {
+  background: var(--color-primary-dark);
+  color: #ffffff;
+  text-decoration: none;
+}
+
 /* --- Article: callouts (app .info-note / .subscription-hook) ------------ */
 .support-article .applies-to,
-.support-article .legal-updated {
+.support-article .article-updated {
   display: inline-block;
   margin: 0 0 1.75rem;
   padding: 10px 14px;

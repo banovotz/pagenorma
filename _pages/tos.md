@@ -1,8 +1,10 @@
 ---
-layout: legal-article
+layout: article
 title: Terms of Service
 description: The terms that apply when you use pagenorma, covering accounts, subscriptions, AI assistance, acceptable use and liability.
 permalink: /tos/
+parent_title: pagenorma
+parent_url: /
 last_modified_at: '2026-09-24'
 related: [/faq/, /support/, /contact/]
 ---

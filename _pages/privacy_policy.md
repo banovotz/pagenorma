@@ -1,8 +1,10 @@
 ---
-layout: legal-article
+layout: article
 title: Privacy Policy
 permalink: /privacy/
 description: Learn how pagenorma respects your privacy, handles your book translation projects, and protects your local data.
+parent_title: pagenorma
+parent_url: /
 last_modified_at: '2026-10-09'
 related: [/faq/, /support/, /contact/]
 ---

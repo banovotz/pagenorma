@@ -1,11 +1,13 @@
 ---
-layout: page
+layout: article
 title: About
+heading: Built at the Translation Desk
 permalink: /about/
 description: Learn about pagenorma, the dedicated pacing and QA tool built directly at the desk of book translators.
+parent_title: pagenorma
+parent_url: /
+related: [/faq/, /support/, /contact/]
 ---
-
-# Built at the Translation Desk
 
 Managing multiple book translation projects across different publishing houses quickly reveals gaps in standard software available to literary translators. Commercial CAT tools treat long-form literature like technical manuals, while keeping track of deadlines and daily targets often devolved into endless manual calculations. 
 
@@ -40,4 +42,4 @@ We believe your translated manuscripts and proprietary terminology belong strict
 
 Have questions, feature requests, or feedback on how to make pagenorma even better for your workflow? We’d love to hear from fellow translators.
 
-[Contact Us](/contact/){: .btn-link } or check out our [Terms of Service](/tos/) and [Privacy Policy](/privacy/).
+[Contact Us](/contact/){: .btn-primary } or check out our [Terms of Service](/tos/) and [Privacy Policy](/privacy/).

@@ -1,0 +1,32 @@
+---
+layout: page
+---
+<article class="support-article article">
+  {% if page.parent_title and page.parent_url %}
+  <nav class="breadcrumbs"><a href="{{ page.parent_url | relative_url }}">{{ page.parent_title }}</a> › {{ page.title }}</nav>
+  {% endif %}
+
+  <h1 class="support-title">{{ page.heading | default: page.title }}</h1>
+
+  {% if page.applies_to %}
+  <p class="applies-to">Applies to: {{ page.applies_to | join: ", " }}</p>
+  {% endif %}
+
+  {% if page.last_modified_at %}
+  <p class="article-updated">Last updated: {{ page.last_modified_at | date: "%-d %B %Y" }}</p>
+  {% endif %}
+
+  {{ content }}
+
+  {% if page.related %}
+  <aside class="related">
+    <h2>Related pages</h2>
+    <ul>
+    {% for url in page.related %}
+      {% assign rel = site.pages | where: "permalink", url | first %}
+      {% if rel %}<li><a href="{{ rel.url | relative_url }}">{{ rel.title }}</a></li>{% endif %}
+    {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+</article>

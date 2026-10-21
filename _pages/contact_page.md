@@ -1,15 +1,21 @@
 ---
-layout: page
+layout: article
 title: Contact
+heading: Get in Touch
 permalink: /contact/
 description: Get in touch with the pagenorma team for questions, feedback, or support.
+parent_title: pagenorma
+parent_url: /
+related: [/faq/, /support/, /tos/]
 ---
 
-<div class="contact-container">
-  <div class="contact-intro">
-    <h1>Get in Touch</h1>
-    <p>Have a question, suggestion, or feedback about <strong>pagenorma</strong>? Send us a message below and we’ll get back to you as soon as possible.</p>
-  </div>
+<p class="contact-intro">
+  Have a question, suggestion, or feedback about <strong>pagenorma</strong>? Send us a message
+  below and we&rsquo;ll get back to you as soon as possible.
+</p>
+
+<section class="support-card contact-card">
+  <h2 class="support-card-title">Send us a message</h2>
 
   <form action="https://api.web3forms.com/submit" method="POST">
     <input type="hidden" name="access_key" value="395159b1-242b-4ae8-ad5e-5672409264c9">
@@ -31,4 +37,4 @@ description: Get in touch with the pagenorma team for questions, feedback, or su
 
     <button type="submit" class="btn-submit">Send Message</button>
   </form>
-</div>
+</section>
