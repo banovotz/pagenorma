@@ -1,0 +1,238 @@
+# FAQ content for the pagenorma FAQ page (faq.md).
+# Structure: groups -> items. `answer` supports Markdown. `links` are optional "Learn more" links
+# (use site-relative paths; they are passed through relative_url so baseurl works).
+- slug: general
+  title: General
+  items:
+    - id: what-is-pagenorma
+      question: What is pagenorma and who is it for?
+      answer: |
+        pagenorma is a browser-based workspace for literary translators. It tracks your pace, deadline and earnings, and lets you compare your translation with the original using AI commentary, a glossary and a thesaurus.
+      links:
+        - {title: "What is pagenorma?", url: /support/getting-started/what-is-pagenorma/}
+    - id: is-it-free
+      question: Is pagenorma free?
+      answer: |
+        Every account starts on **pagenorma S**, which is free. It includes a monthly allowance of AI use: 5 analysis pages, 5 glossary pages and 100 thesaurus searches. **pagenorma QS** has no monthly limits. Buying extra tokens is not available yet.
+      links:
+        - {title: "pagenorma S and pagenorma QS", url: /support/getting-started/plans-pagenorma-s-and-qs/}
+    - id: s-vs-qs
+      question: What is the difference between pagenorma S and QS?
+      answer: |
+        On S, the AI features run through your own Hugging Face account or token and are limited by your monthly allowance. On QS, they run through pagenorma's own AI connection, so you need no Hugging Face token and have no limits. The logo at the top of the Dashboard shows which one you are using.
+      links:
+        - {title: "pagenorma S and pagenorma QS", url: /support/getting-started/plans-pagenorma-s-and-qs/}
+    - id: need-account
+      question: Do I need an account?
+      answer: |
+        Not to track projects. Projects, the Dashboard, Financial Analytics and backups work without signing in. You need an account with a verified email for AI analysis, the glossary and the thesaurus.
+      links:
+        - {title: "Create an account", url: /support/account/create-an-account/}
+    - id: offline
+      question: Can I install it and use it offline?
+      answer: |
+        Yes, you can install pagenorma on a computer or phone and open it without a connection to look at the projects stored on your device. Signing in, Google Docs and all AI features need the internet.
+      links:
+        - {title: "Install pagenorma as an app", url: /support/getting-started/install-pagenorma-as-an-app/}
+
+- slug: account
+  title: Account & sign-in
+  items:
+    - id: verify-email
+      question: Why do I have to verify my email?
+      answer: |
+        AI features use a shared allowance, and verification ties it to a reachable email address. Until you verify, you cannot start an analysis or see your allowance. Use **Resend verification email** on the Profile page if the message did not arrive.
+      links:
+        - {title: "Verify your email address", url: /support/account/verify-your-email/}
+    - id: same-account
+      question: Do Google, Hugging Face and email sign-in open the same account?
+      answer: |
+        Yes. All sign-in methods open the same account, with the same token balance and allowance.
+      links:
+        - {title: "Sign-in methods", url: /support/account/sign-in-methods/}
+    - id: forgot-password
+      question: I forgot my password. What now?
+      answer: |
+        On the login page click **Forgot password?**, then **Send reset link**, and follow the link in the email. If you normally sign in with Google or Hugging Face, you may have no password and should use that button.
+      links:
+        - {title: "Reset your password", url: /support/account/reset-your-password/}
+    - id: delete-account
+      question: If I delete my account, are my projects deleted too?
+      answer: |
+        No. Projects are stored in your browser, not in your account. Deleting the account removes your profile, token balance and token history, and it cannot be undone. This month's usage counters are kept until the month ends so the free allowance cannot be reset.
+      links:
+        - {title: "Delete your account", url: /support/account/delete-your-account/}
+
+- slug: projects
+  title: Projects & progress
+  items:
+    - id: standard-page
+      question: What is a standard page?
+      answer: |
+        One standard page is 1800 characters including spaces. Progress, earnings and AI usage are all counted in these pages.
+      links:
+        - {title: "Standard pages explained", url: /support/projects/standard-pages-explained/}
+    - id: file-formats
+      question: Which files can I use?
+      answer: |
+        The source book can be an **ePub** or a **PDF**. The translation can be a **Google Doc** or a **DOCX, RTF, ODT or TXT** file.
+      links:
+        - {title: "Supported file formats", url: /support/projects/supported-file-formats/}
+    - id: scanned-pdf
+      question: Does it work with scanned PDFs?
+      answer: |
+        Yes. Pages without selectable text are read with OCR, which takes longer. OCR recognises 25 languages, including Croatian, Serbian, Slovenian, German, French, Spanish and Italian.
+      links:
+        - {title: "Supported file formats", url: /support/projects/supported-file-formats/}
+    - id: update-progress
+      question: How does pagenorma know how much I have translated?
+      answer: |
+        It keeps a copy of your translation. After you write more, click **Refresh Translation** on the project card to update progress, pace and earnings.
+      links:
+        - {title: "Refresh your translation", url: /support/projects/refresh-translation/}
+    - id: not-100
+      question: I have finished, but progress is below 100%. Why?
+      answer: |
+        Translations are rarely exactly as long as the source. Once your translation reaches 95% of the source by characters, the card offers **Mark as completed**, which shows 100%. You can reopen the project later.
+      links:
+        - {title: "Mark a project as completed", url: /support/projects/mark-a-project-completed/}
+    - id: required-pace
+      question: What does the red required pace mean?
+      answer: |
+        If you set a daily target, the required pace turns red when the pages left divided by the days left is higher than that target, meaning you are behind your own plan. Only business days count unless you chose to work weekends.
+      links:
+        - {title: "Understand your project card", url: /support/projects/understand-your-project-card/}
+    - id: google-docs-required
+      question: Does my translation have to be in Google Docs?
+      answer: |
+        No. You can use a DOCX, RTF, ODT or TXT file instead. In browsers such as Chrome and Edge you can choose it with change tracking, so **Refresh Translation** rereads it without asking again.
+      links:
+        - {title: "Use a document file", url: /support/connections/use-a-document-file/}
+
+- slug: ai-analysis
+  title: AI analysis, glossary & thesaurus
+  items:
+    - id: changes-text
+      question: Does the AI change my translation?
+      answer: |
+        No. It only adds comments in a separate column of the side-by-side view.
+      links:
+        - {title: "How the AI commentary works", url: /support/analysis/how-ai-commentary-works/}
+    - id: what-checked
+      question: What does the AI check?
+      answer: |
+        It looks for meaning that is lost or changed, wording that is possible but unsuitable in context, and unjustified variation of the same term. It also checks that each translated paragraph really matches its source.
+      links:
+        - {title: "How the AI commentary works", url: /support/analysis/how-ai-commentary-works/}
+    - id: accurate
+      question: How accurate is it?
+      answer: |
+        It can be wrong, especially with idiom, wordplay and rare words. Treat comments as pointers to look again, and make the final decision yourself.
+    - id: comment-language
+      question: In which language are the comments written?
+      answer: |
+        In the language of your translation. It is detected automatically, or you can set it in the project. When the language is unknown, comments default to Croatian.
+      links:
+        - {title: "Create a project", url: /support/projects/create-a-project/}
+    - id: whole-book
+      question: Do I have to analyse the whole book?
+      answer: |
+        No. Enter page ranges such as `22-56, 60-75, 78` in the analysis dialog. You are charged only for the pages you select.
+      links:
+        - {title: "Choose which pages to analyse", url: /support/analysis/choose-pages-to-analyse/}
+    - id: glossary-red-flag
+      question: What does a glossary "Red flag" mean?
+      answer: |
+        The AI thinks the translated term looks wrong in context. Open the details to see the score, the reason and where the term appears, then decide yourself. The glossary is built from your own translation, so use it as a guide, not a rule.
+      links:
+        - {title: "Glossary quality assessments explained", url: /support/terminology/glossary-assessments-explained/}
+    - id: thesaurus-languages
+      question: Which languages does the thesaurus support?
+      answer: |
+        English, Croatian, Serbian, Slovenian, French, German, Spanish, Italian, Dutch, Polish, Portuguese, Swedish, Danish and Norwegian. Results are grouped by part of speech, with strong and weak synonyms.
+      links:
+        - {title: "Use the thesaurus", url: /support/terminology/use-the-thesaurus/}
+
+- slug: allowance
+  title: Allowance, tokens & vouchers
+  items:
+    - id: free-allowance
+      question: How much can I use for free each month?
+      answer: |
+        On pagenorma S: 5 analysis pages, 5 glossary pages and 100 thesaurus searches. The Dashboard card shows what is left.
+      links:
+        - {title: "Your monthly allowance", url: /support/usage/monthly-allowance/}
+    - id: reset
+      question: When does my allowance reset?
+      answer: |
+        On the first day of each month, using UTC. The Dashboard card shows the exact date.
+      links:
+        - {title: "Your monthly allowance", url: /support/usage/monthly-allowance/}
+    - id: token-value
+      question: What is a token worth?
+      answer: |
+        One token covers 100 analysis pages, or 10 glossary pages, or 500 thesaurus searches. Your free allowance is used first, and tokens never expire.
+      links:
+        - {title: "Tokens explained", url: /support/usage/tokens-explained/}
+    - id: buy-tokens
+      question: Can I buy tokens?
+      answer: |
+        Not yet. A **Buy tokens** panel with preview prices is shown as *Coming soon*. For now you can get tokens by redeeming a voucher.
+      links:
+        - {title: "Tokens explained", url: /support/usage/tokens-explained/}
+    - id: voucher
+      question: How do I use a voucher?
+      answer: |
+        Click **I have a voucher** on the Dashboard, or use **Voucher code** on the Profile page, enter the code and click **Redeem voucher**. Each voucher can be redeemed once per account and codes are not case-sensitive.
+      links:
+        - {title: "Redeem a voucher", url: /support/usage/redeem-a-voucher/}
+    - id: run-out
+      question: What happens if I run out mid-analysis?
+      answer: |
+        The analysis covers the first pages you could afford, a notice says so, and the partial result is saved. You can analyse the rest after the reset, with tokens or on QS.
+      links:
+        - {title: "When you reach your limit", url: /support/usage/when-you-reach-your-limit/}
+
+- slug: data-privacy
+  title: Your data & privacy
+  items:
+    - id: where-stored
+      question: Where are my projects stored?
+      answer: |
+        In your own browser, on your device, not on a server. Your account (email, token balance, usage) is kept by pagenorma. A different browser or device starts with no projects.
+      links:
+        - {title: "Where your data is stored", url: /support/data/where-your-data-is-stored/}
+    - id: text-sent
+      question: Is my text sent anywhere?
+      answer: |
+        Only when you use an AI feature. The paragraphs of the pages you choose are sent to the AI provider: Hugging Face on S, or Gemini through pagenorma's server on QS. Text you do not analyse stays on your device.
+      links:
+        - {title: "Privacy and AI processing", url: /support/data/privacy-and-ai-processing/}
+    - id: backup
+      question: How do I back up or move my data?
+      answer: |
+        In **Settings → Database Backup**, click **Export Database (JSON)**. On the other device, use **Import Database**. Importing replaces everything in that browser, and the backup does not include your deduction settings or Hugging Face token.
+      links:
+        - {title: "Back up and restore your data", url: /support/data/back-up-and-restore/}
+    - id: hf-token
+      question: Where is my Hugging Face token kept?
+      answer: |
+        Only in your browser. It is not stored in your pagenorma account.
+      links:
+        - {title: "Connect Hugging Face", url: /support/connections/connect-hugging-face/}
+
+- slug: earnings
+  title: Earnings
+  items:
+    - id: earnings-month
+      question: Why do earnings appear only in the month of the deadline?
+      answer: |
+        Financial Analytics lists a project in every month between its start and deadline, but counts its earnings in the deadline month only. Other months show *n/a*.
+      links:
+        - {title: "Financial Analytics", url: /support/earnings/financial-analytics/}
+    - id: deductions-dashboard
+      question: Do my deductions change the totals on the Dashboard?
+      answer: |
+        No. Deductions affect only the net amounts in Financial Analytics. The Dashboard shows gross amounts.
+      links:
+        - {title: "Set up your deductions", url: /support/earnings/set-up-deductions/}

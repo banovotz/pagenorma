@@ -1699,3 +1699,172 @@ body {
     font-size: 1.1rem;
   }
 }
+
+/* ==========================================================================
+   FAQ page (/faq/)
+   Same 860px story column and card styling as the support pages; the
+   accordion items live inside .support-card sections.
+   ========================================================================== */
+
+.faq-intro {
+  margin: 0 0 1.5rem;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.faq-intro a,
+.faq-item a,
+.faq-more a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.faq-intro a:hover,
+.faq-intro a:focus-visible,
+.faq-item a:hover,
+.faq-item a:focus-visible,
+.faq-more a:hover,
+.faq-more a:focus-visible {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.faq-toolbar {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 1rem;
+}
+
+.faq-toolbar button {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  color: var(--color-primary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.faq-toolbar button:hover,
+.faq-toolbar button:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.faq-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 1.5rem;
+}
+
+.faq-nav a {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.faq-nav a:hover,
+.faq-nav a:focus-visible {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.faq-group {
+  scroll-margin-top: 1rem;
+}
+
+.faq-item {
+  margin: 10px 0 0;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  scroll-margin-top: 1rem;
+}
+
+.faq-item:first-of-type {
+  margin-top: 0;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text-main);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.faq-item[open] summary::after {
+  content: "\2212";
+}
+
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.faq-item[open] summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-answer {
+  padding: 12px 16px 16px;
+}
+
+.faq-answer p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.faq-answer ul,
+.faq-answer ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.faq-answer li {
+  margin-bottom: 0.35rem;
+}
+
+.faq-answer li::marker {
+  color: var(--color-primary);
+}
+
+.faq-more {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .faq-item summary {
+    padding: 12px 14px;
+  }
+
+  .faq-answer {
+    padding: 10px 14px 14px;
+  }
+}
