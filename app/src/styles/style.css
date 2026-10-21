@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@600;700&display=swap');
 
 :root {
+  color-scheme: light;          /* native kontrole ostaju svijetle */
+
   --bg-color: #F8F5F2;          /* Warm, paper-like off-white */
   --card-bg: #FFFFFF;
   --text-color: #3D3D3D;
@@ -15,6 +17,34 @@
   --success: #2e7d32;
   --danger: #bc41413d;
   --stat-bg: #f2eee9;
+
+  /* Sekundarni nivoi - prije su se koristili u CSS-u, a nikad nisu bili
+     definirani, pa su pali na "inherit"/"transparent". */
+  --text-secondary: #666666;
+  --bg-secondary: #f2eee9;
+  --bg-hover: #e9e5e0;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  /* Boje statusnog teksta (zeleni/crveni/žuti/plavi) */
+  --success-text: #2e7d32;
+  --danger-text: #c62828;
+  --warning-text: #6b5300;
+  --info: #1976d2;
+
+  /* Uloge boja u SVG ikonama - iste vrijednosti koje su prije bile
+     zak hardkodirane u .svg datotekama. */
+  --icon-brand: #008080;        /* tirkiz - dominantne poteze i ispune */
+  --icon-accent: #D97706;       /* zlato - Studio/QA naglasak (fiksno) */
+  --icon-highlight: #4DD0E1;    /* svijetloplava - sekundarni naglasak */
+  --icon-muted: #D1D5DB;        /* siva - pozadinske linije dokumenata */
+  --icon-panel: #E0F2F1;        /* svijetlo tirkizna podloga */
+  --icon-paper: #FFFFFF;        /* bijela podloga */
+  --icon-danger: #DC2626;       /* crvena - brisanje */
+
+  /* Wordmark u logotipu */
+  --logo-wordmark: #1F2937;
+  --logo-badge-bg: #F3F4F6;
+  --logo-badge-text: #6B7280;
 }
 
 body {
@@ -133,10 +163,14 @@ h1 {
   letter-spacing: -0.5px;
 }
 
-h1 #pagenorma-logo {
+h1 .brand-logo {
   display: block;
   width: min(280px, 80vw);
   height: auto;
+}
+
+h1 .brand-logo[hidden] {
+  display: none;
 }
 
 .subscription-card {
@@ -840,6 +874,14 @@ h1 #pagenorma-logo {
   background: #f2c600;
 }
 
+/* Ikona unutar gumba za prijavu - boja se preuzima od gumba. */
+.subscription-icon {
+  display: block;
+  fill: currentColor;
+  width: 20px;
+  height: 20px;
+}
+
 /* Razdjelnik između jednokliknog povezivanja i ručnog unosa tokena. */
 .hugging-separator {
   border: none;
@@ -974,7 +1016,6 @@ button.btn-primary:hover {
 }
 
 button.btn-secondary {
-  background: #a29c9c;
   padding: 6px 12px; 
   font-size: 0.85em; 
   background: #f0f7f7; 
@@ -3345,4 +3386,1442 @@ button.glossary-quality-badge:focus-visible {
 
 .pagenorma-icon-profile:hover {
   color: #0066cc;
+}
+
+/* ============================================================================
+   SEMANTIČKE KLASE
+   Sadržaj koji se ranije bojio izravno iz JS-a (inline stilovi) ili iz
+   <img src="*.svg"> datoteka sada se boji preko ovih klasa, pa svaka boja
+   postoji na JEDNOM mjestu - u listu stilova. Vrijednosti u svijetloj temi
+   identične su dosadašnjim tvrdim vrijednostima.
+   ========================================================================== */
+
+/* --- Pomoćne klase ------------------------------------------------------ */
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.status-text--muted {
+  color: var(--text-secondary);
+}
+
+.status-text--success {
+  color: var(--success-text);
+}
+
+.status-text--error {
+  color: var(--danger-text);
+}
+
+.status-text--info {
+  color: var(--info);
+}
+
+/* --- Kartica projekta (Dashboard) --------------------------------------- */
+
+.card-projekt {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eef2f2;
+}
+
+.project-card-cover {
+  width: 75px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.project-card-cover-placeholder {
+  width: 75px;
+  height: 110px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #777;
+  flex-shrink: 0;
+}
+
+.project-card-title {
+  margin: 0;
+  color: #008080;
+  font-size: 1.2em;
+}
+
+.project-card-client {
+  font-size: 0.88em;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.project-card-progress-value {
+  color: #008080;
+  font-weight: bold;
+}
+
+.project-progress-track {
+  background: #e6f2f2;
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.project-progress-fill {
+  background: #008080;
+  width: var(--progress, 0%);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.project-complete-hint {
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-left: 3px solid #d97706;
+  background: #fff8e8;
+  font-size: 0.85em;
+}
+
+.project-complete-hint .btn-secondary {
+  margin-left: 8px;
+}
+
+.project-complete-confirmed {
+  margin: 8px 0;
+  font-size: 0.85em;
+  color: #2e7d32;
+}
+
+.project-complete-confirmed .btn-secondary {
+  margin-left: 8px;
+}
+
+.project-rhythm--success {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.project-rhythm--danger {
+  color: #c62828;
+  font-weight: bold;
+}
+
+.pace-mark {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.pace-mark[data-state="ontime"] {
+  background: #e6f2f2;
+  color: #008080;
+}
+
+.pace-mark[data-state="late"] {
+  background: #fde8e8;
+  color: #c62828;
+}
+
+.project-earnings {
+  background: #f9fbfb;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.88em;
+  margin-bottom: 12px;
+  border-left: 3px solid #008080;
+  display: flex;
+  justify-content: space-between;
+}
+
+.project-earnings-rate {
+  color: #666;
+}
+
+/* --- Kartica analize (Translation Analyses) ------------------------------ */
+
+.card-analiza {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eef2f2;
+}
+
+.analysis-card-title {
+  margin: 0 0 8px 0;
+  color: #008080;
+}
+
+.analysis-card-date {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+/* --- Interlinearni tekst ------------------------------------------------- */
+
+.para-label {
+  font-weight: bold;
+}
+
+.para-label--source {
+  color: #008080;
+}
+
+.para-label--target {
+  color: #2e7d32;
+}
+
+.para-box.is-flashing {
+  background: #fff9c4;
+}
+
+/* --- Analitika (mjesečna tablica) ----------------------------------------
+   Selektori se vežu uz .analytics-table jer on ima pravilo
+   ".analytics-table th, .analytics-table td { padding: 12px }" koje bi
+   inače (veća specifičnost) pobijedilo klase ćelija. */
+
+.analytics-row {
+  border-bottom: 1px solid #eee;
+}
+
+.analytics-table .analytics-month-cell {
+  padding: 10px 12px;
+  font-weight: bold;
+  color: #333;
+  vertical-align: top;
+  background: #fafafa;
+}
+
+.analytics-table .analytics-month-cell--empty {
+  color: #555;
+}
+
+.analytics-table .analytics-empty-cell {
+  padding: 10px 12px;
+  color: #aaa;
+}
+
+.analytics-table .analytics-empty-amount {
+  padding: 10px 12px;
+  text-align: right;
+  color: #aaa;
+}
+
+.analytics-table .analytics-project-cell {
+  padding: 10px 12px;
+  font-weight: 500;
+}
+
+.analytics-table .analytics-publisher-cell {
+  padding: 10px 12px;
+  color: #666;
+}
+
+.analytics-table .analytics-amount {
+  padding: 10px 12px;
+  text-align: right;
+}
+
+.analytics-amount[data-variant="plain"] {
+  color: #333;
+  font-weight: 500;
+}
+
+.analytics-amount[data-variant="net"] {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.analytics-amount[data-variant="na"] {
+  color: #888;
+  font-style: italic;
+}
+
+.analytics-status {
+  font-size: 0.85em;
+}
+
+.analytics-status[data-state="delayed"] {
+  color: #c62828;
+  font-weight: bold;
+  background: #fde8e8;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.analytics-status[data-state="ok"] {
+  color: #2e7d32;
+}
+
+.analytics-table .analytics-note-cell {
+  padding: 10px 12px;
+}
+
+.analytics-sum-row {
+  background: #f9fbe7;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.analytics-table .analytics-sum-description {
+  padding: 8px 12px;
+  font-size: 0.88em;
+  color: #555;
+}
+
+.analytics-table .analytics-sum-amount {
+  padding: 8px 12px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.analytics-sum-amount[data-sign="plus"] {
+  color: #2e7d32;
+}
+
+.analytics-sum-amount[data-sign="minus"] {
+  color: #c62828;
+}
+
+.analytics-table .analytics-sum-note {
+  padding: 8px 12px;
+  font-size: 0.82em;
+  color: #757575;
+  font-style: italic;
+}
+
+/* --- Glosar (jednostavna tablica) ---------------------------------------- */
+
+.glosar-tablica {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.glosar-tablica-head-row {
+  border-bottom: 2px solid #008080;
+  text-align: left;
+}
+
+.glosar-tablica th {
+  padding: 8px;
+}
+
+.glosar-tablica-row {
+  border-bottom: 1px solid #eee;
+}
+
+.glosar-tablica td {
+  padding: 8px;
+}
+
+.glosar-tablica td.glosar-term {
+  font-weight: bold;
+}
+
+.glosar-tablica td.glosar-note {
+  color: #666;
+}
+
+/* --- Pomoćne klase glosara ------------------------------------------------ */
+
+.glossary-loading {
+  text-align: center;
+  padding: 1rem;
+}
+
+.glossary-term-source {
+  font-weight: 600;
+}
+
+/* --- Toast obavijesti ---------------------------------------------------- */
+
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 0.9em;
+  transition: opacity 0.3s ease;
+}
+
+.toast--out {
+  opacity: 0;
+}
+
+.toast--info {
+  background: #008080;
+}
+
+.toast--success {
+  background: #2e7d32;
+}
+
+.toast--error {
+  background: #c62828;
+}
+
+/* --- Logotip -------------------------------------------------------------- */
+
+.brand-logo {
+  display: block;
+  width: min(280px, 80vw);
+  height: auto;
+}
+
+/* ============================================================================
+   TAMNA TEMA
+   Aktivira se postavljanjem data-theme="dark" na <html> (vidi core/theme.js).
+   Ovdje se ponavljaju SAMO svojstva koja se razlikuju - svijetla tema se
+   nikad ne dira, pa izgled ostaje identičan.
+   ========================================================================== */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* postojeći tokeni, s novim vrijednostima */
+  --bg-color:        #16181A;
+  --card-bg:         #212729;
+  --text-color:      #D9D6D2;
+  --heading-color:   #F2EFEA;
+  --accent-color:    #4FC3C0;
+  --accent-color-hover: #6AD6D3;
+  --border-color:    #333B3E;
+  --success:         #66BB6A;
+  --danger:          #F87171;
+  --stat-bg:         #1E2325;
+
+  /* tokeni koji se prije koristili, a nikad nisu bili definirani */
+  --shadow:          0 4px 12px rgba(0, 0, 0, .45);
+  --bg-secondary:    #1E2325;
+  --bg-hover:        #2A3134;
+  --text-secondary:  #A8B0B2;
+
+  /* uloge boja u SVG ikonama */
+  --icon-brand:      #4FC3C0;
+  --icon-accent:     #E8A33C;
+  --icon-highlight:  #6FD6E8;
+  --icon-muted:      #7A8488;
+  --icon-panel:      #2A3234;
+  --icon-paper:      #1E2325;
+  --icon-danger:     #F87171;
+  --logo-wordmark:   #F2EFEA;
+  --logo-badge-bg:   #1E2325;
+  --logo-badge-text: #A8B0B2;
+
+  /* novi tokeni za JS inline stilove i tamne nadredite */
+  --surface:         #212729;
+  --surface-inset:   #1B2123;
+  --surface-muted:   #1E2325;
+  --accent-soft:     #1E2A2C;
+  --accent-text:     #5CC8C5;
+  --accent-on-fill:  #06181A;
+  --text-muted:      #939DA0;
+  --border-strong:   #454F53;
+  --success-text:    #7FD08A;
+  --success-soft:    #1C2A1E;
+  --danger-text:     #FCA5A5;
+  --danger-soft:     #2C1A1A;
+  --warning-text:    #FCD34D;
+  --warning-soft:    #2A2312;
+  --info:            #60A5FA;
+  --commentary:      #CE93D8;
+  --commentary-soft: #251C2B;
+  --highlight-bg:    #6B5A1F;
+  --highlight-text:  #FFE9A3;
+  --overlay-bg:      rgba(0, 0, 0, .62);
+  --focus-ring:      rgba(79, 195, 192, .22);
+}
+
+/* --- Globalno ------------------------------------------------------------ */
+
+:root[data-theme="dark"] body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4 {
+  color: var(--heading-color);
+}
+
+:root[data-theme="dark"] a {
+  color: var(--accent-text);
+}
+
+/* Gumbi: u tamnoj temi primarni gumb ima svijetlo tirkiznu podlogu,
+   pa tekst mora biti gotovo crn da bi zadovoljio AA kontrast. */
+:root[data-theme="dark"] button {
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] button.btn-primary {
+  background: var(--accent-color);
+  color: var(--accent-on-fill);
+  border: 1px solid var(--accent-color);
+}
+
+:root[data-theme="dark"] button.btn-primary:hover {
+  background: var(--accent-color-hover);
+}
+
+:root[data-theme="dark"] button.btn-secondary {
+  background: var(--surface-muted);
+  color: var(--accent-text);
+  border: 1px solid var(--accent-color);
+}
+
+:root[data-theme="dark"] button.btn-secondary:hover {
+  background: var(--bg-hover);
+}
+
+:root[data-theme="dark"] button.btn-danger {
+  background: var(--danger-soft);
+  color: var(--danger-text);
+  border: 1px solid var(--danger);
+}
+
+:root[data-theme="dark"] button.btn-danger:hover {
+  background: var(--danger-text);
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] .btn-tab.active {
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: var(--surface-inset);
+  color: var(--text-color);
+  border-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .navbar {
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] .nav-item {
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .nav-item:hover {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .section-description {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .selected-file-name {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .setting-input-panel {
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .analytics-table-card,
+:root[data-theme="dark"] .analytics-year-selector {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .overlay {
+  background: var(--overlay-bg);
+}
+
+/* --- Obavijesti i napomene ---------------------------------------------- */
+
+:root[data-theme="dark"] .gdoc-cookie-hint {
+  border-color: rgba(252, 211, 77, .45);
+  border-left-color: var(--warning-text);
+  background: var(--warning-soft);
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .gdoc-cookie-hint strong {
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .gdoc-cookie-hint-close:hover {
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .interlinear-partial-notice {
+  background: var(--warning-soft);
+  border-color: rgba(252, 211, 77, .45);
+  border-left-color: var(--warning-text);
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .subscription-hook {
+  background: var(--warning-soft);
+  border-left-color: var(--warning-text);
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .subscription-hook a,
+:root[data-theme="dark"] .subscription-hook-comment a {
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .subscription-hook-comment {
+  background: var(--warning-soft);
+  border-left-color: var(--warning-text);
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .subscription-verification {
+  border-left-color: var(--icon-accent);
+  background: var(--warning-soft);
+}
+
+:root[data-theme="dark"] .info-note {
+  background: var(--accent-soft);
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] #btn-povuci-podatke {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] #metrika-preview {
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .demo-tour-banner {
+  background: linear-gradient(135deg, #1B2A2B 0%, #1E2426 100%);
+  border-color: var(--border-strong);
+  border-left-color: var(--accent-color);
+}
+
+:root[data-theme="dark"] .demo-tour-banner-text {
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .demo-tour-launch-btn {
+  background: var(--card-bg) !important;
+  color: var(--accent-text) !important;
+  border: 1px solid var(--accent-color) !important;
+}
+
+:root[data-theme="dark"] .demo-tour-launch-btn:hover {
+  background: var(--accent-soft) !important;
+}
+
+:root[data-theme="dark"] .demo-tour-badge {
+  background: var(--accent-color);
+  color: var(--accent-on-fill);
+}
+
+/* --- Kartice i projekti -------------------------------------------------- */
+
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .project-card,
+:root[data-theme="dark"] .card-projekt,
+:root[data-theme="dark"] .card-analiza {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .project-card {
+  border: 1px solid var(--border-color);
+}
+
+:root[data-theme="dark"] .card-cover-placeholder {
+  background: var(--surface-muted);
+  border: 1px dashed var(--accent-color);
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .project-cover-placeholder {
+  background: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .project-title {
+  color: var(--heading-color);
+}
+
+:root[data-theme="dark"] .project-client {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .sync-date {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .sync-status-bar {
+  color: var(--text-secondary);
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .stat-box {
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .stat-box small {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .progress-bar-container {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .progress-bar-bg {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .progress-bar-fill {
+  background: var(--accent-color);
+}
+
+:root[data-theme="dark"] .progress-bar {
+  background: var(--success);
+}
+
+:root[data-theme="dark"] .btn-sync-small {
+  background: var(--accent-color);
+}
+
+:root[data-theme="dark"] .btn-sync-small:hover {
+  background: var(--accent-color-hover);
+}
+
+:root[data-theme="dark"] .side-drawer {
+  background-color: var(--card-bg);
+}
+
+/* --- Dashboard kartica projekta (iz JS-a) -------------------------------- */
+
+:root[data-theme="dark"] .project-card-cover-placeholder {
+  background: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .project-card-title {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .project-card-client,
+:root[data-theme="dark"] .project-earnings-rate {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .project-card-progress-value {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .project-progress-track {
+  background: var(--accent-soft);
+}
+
+:root[data-theme="dark"] .project-progress-fill {
+  background: var(--accent-color);
+}
+
+:root[data-theme="dark"] .project-earnings {
+  background: var(--surface-inset);
+  border-left-color: var(--accent-color);
+}
+
+:root[data-theme="dark"] .project-complete-hint {
+  border-left-color: var(--icon-accent);
+  background: var(--warning-soft);
+}
+
+:root[data-theme="dark"] .project-complete-confirmed {
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .project-rhythm--success {
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .project-rhythm--danger {
+  color: var(--danger-text);
+}
+
+:root[data-theme="dark"] .pace-mark[data-state="ontime"] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .pace-mark[data-state="late"] {
+  background: var(--danger-soft);
+  color: var(--danger-text);
+}
+
+/* --- Analitika ------------------------------------------------------------ */
+
+:root[data-theme="dark"] .analytics-year-selector select {
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .analytics-table thead tr {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .analytics-table tfoot tr {
+  border-top: 2px solid var(--border-strong);
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .analytics-row {
+  border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .analytics-month-cell {
+  background: var(--surface-inset);
+  color: var(--heading-color);
+}
+
+:root[data-theme="dark"] .analytics-month-cell--empty {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analytics-empty-cell,
+:root[data-theme="dark"] .analytics-empty-amount {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analytics-publisher-cell {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analytics-amount[data-variant="plain"] {
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .analytics-amount[data-variant="net"] {
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .analytics-amount[data-variant="na"] {
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .analytics-status[data-state="delayed"] {
+  color: var(--danger-text);
+  background: var(--danger-soft);
+}
+
+:root[data-theme="dark"] .analytics-status[data-state="ok"] {
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .analytics-sum-row {
+  background: var(--surface-muted);
+  border-bottom-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] .analytics-sum-description {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analytics-sum-amount[data-sign="plus"] {
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .analytics-sum-amount[data-sign="minus"] {
+  color: var(--danger-text);
+}
+
+:root[data-theme="dark"] .analytics-sum-note {
+  color: var(--text-muted);
+}
+
+/* --- Interlinearni tekst -------------------------------------------------- */
+
+:root[data-theme="dark"] .interlinear-col {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .col-header {
+  background: var(--surface-muted);
+  color: var(--accent-text);
+  border-bottom-color: var(--accent-color);
+}
+
+:root[data-theme="dark"] .para-box {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .para-label--source {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .para-label--target {
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .para-box.is-flashing {
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
+}
+
+:root[data-theme="dark"] .comment-card {
+  background: var(--surface-inset);
+  border-left-color: var(--accent-color);
+}
+
+:root[data-theme="dark"] .btn-jump {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .interlinear-suggestions,
+:root[data-theme="dark"] .interlinear-suggestion {
+  background: var(--card-bg);
+}
+
+/* Generičko tamno pravilo "button { color: ... }" pretvara bi tekst
+   prijedloga u gotovo crnu, pa se vraća boja tijela teksta. */
+:root[data-theme="dark"] .interlinear-suggestion {
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .interlinear-suggestion:hover {
+  background: var(--surface-muted);
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .interlinear-results-count,
+:root[data-theme="dark"] .interlinear-frontmatter-hint {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .interlinear-pagination button.active {
+  box-shadow: inset 0 0 0 2px var(--card-bg);
+}
+
+:root[data-theme="dark"] .interlinear-comment {
+  background: var(--commentary-soft);
+  border-left-color: var(--commentary);
+  color: var(--commentary);
+}
+
+:root[data-theme="dark"] .empty-comment {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .interlinear-grid #col-izvor::-webkit-scrollbar-thumb,
+:root[data-theme="dark"] .interlinear-grid #col-prijevod::-webkit-scrollbar-thumb,
+:root[data-theme="dark"] .interlinear-grid #col-komentari::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] .translation-column h3 {
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .commentary-column h3 {
+  color: var(--commentary);
+}
+
+:root[data-theme="dark"] .highlight-term,
+:root[data-theme="dark"] .interlinear-translation-highlight {
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
+}
+
+/* --- LLM dijalog ----------------------------------------------------------- */
+
+:root[data-theme="dark"] .llm-status-dialog {
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] #llm-analysis-options {
+  border-color: var(--border-strong);
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] #llm-options-error,
+:root[data-theme="dark"] .llm-pages-error,
+:root[data-theme="dark"] .llm-pages-load-status.greska,
+:root[data-theme="dark"] #llm-options-pages.prekoracenje {
+  color: var(--danger-text);
+}
+
+:root[data-theme="dark"] #llm-options-pages,
+:root[data-theme="dark"] .llm-page-preview,
+:root[data-theme="dark"] #llm-status-text {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .llm-pages-hint,
+:root[data-theme="dark"] .llm-pages-load-status {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .llm-pages-browser {
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] .llm-page-card {
+  border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .llm-page-card.nastavak .llm-page-number,
+:root[data-theme="dark"] .llm-page-card.nastavak .llm-page-preview {
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .llm-page-card.odabrana {
+  background: var(--accent-soft);
+}
+
+:root[data-theme="dark"] .llm-progress-track {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .llm-status-warning {
+  color: var(--warning-text);
+}
+
+/* --- Glosar modal ---------------------------------------------------------- */
+
+:root[data-theme="dark"] #modal-glosar .modal-content {
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] #modal-glosar .modal-header {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .glossary-modal-close:hover {
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] .glossary-search-wrap input {
+  border-color: var(--border-strong);
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] .glossary-search-reset {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .glossary-search-reset:hover {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .glossary-result-count {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .glossary-page-button {
+  border-color: var(--border-strong);
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] .glossary-page-button:hover,
+:root[data-theme="dark"] .glossary-page-button.active {
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] .glossary-table {
+  background: var(--card-bg);
+  border-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] .glossary-table thead th {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .glossary-table tbody td {
+  border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .glossary-table tbody tr:nth-child(even) td {
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .glossary-filter-wrap select {
+  border-color: var(--border-strong);
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] button.glossary-quality-badge:focus-visible {
+  outline: 2px solid var(--accent-color);
+}
+
+:root[data-theme="dark"] .glossary-quality-badge.red-flag {
+  background: var(--danger-soft);
+  color: var(--danger-text);
+}
+
+:root[data-theme="dark"] .glossary-quality-badge.needs-improvement {
+  background: var(--warning-soft);
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .glossary-quality-badge.appears-correct {
+  background: var(--success-soft);
+  color: var(--success-text);
+}
+
+:root[data-theme="dark"] .glossary-quality-badge.not-assessed {
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .glossary-quality-score {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .glossary-assessment-details dt {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .glossary-context-toggle {
+  border-color: var(--border-strong);
+  background: var(--surface-muted);
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .glossary-context-toggle:hover,
+:root[data-theme="dark"] .glossary-context-toggle[aria-expanded="true"] {
+  background: var(--accent-soft);
+}
+
+:root[data-theme="dark"] .glossary-context-cell,
+:root[data-theme="dark"] .glossary-assessment-cell,
+:root[data-theme="dark"] .glossary-thesaurus-cell {
+  background: var(--surface-inset) !important;
+  border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .glossary-context-item {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  border-left-color: var(--accent-color);
+}
+
+:root[data-theme="dark"] .glossary-context-index {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .glosar-tablica-head-row {
+  border-bottom-color: var(--accent-color);
+}
+
+:root[data-theme="dark"] .glosar-tablica-row {
+  border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .glosar-tablica td.glosar-note {
+  color: var(--text-secondary);
+}
+
+/* --- Odabir prijevodne datoteke ------------------------------------------ */
+
+:root[data-theme="dark"] .translation-file-picker-modal {
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] .translation-file-picker-modal h2 {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .translation-file-picker-name {
+  background: var(--surface-inset);
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .translation-file-picker-formats {
+  color: var(--text-secondary);
+}
+
+/* --- Kartica kvota -------------------------------------------------------- */
+
+:root[data-theme="dark"] .analysis-quota-card {
+  border-color: var(--border-strong);
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] .analysis-quota-title {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .analysis-quota-card p {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analysis-quota-metric {
+  border-color: var(--border-strong);
+  background: linear-gradient(135deg, #1B2123 0%, #212729 100%);
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .analysis-quota-metric-value {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .analysis-quota-metric-label {
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .analysis-quota-reset {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analysis-quota-card-loading .analysis-quota-metric {
+  border-color: var(--border-color);
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .analysis-quota-skeleton {
+  background: linear-gradient(90deg, #232A2C 25%, #2C3436 50%, #232A2C 75%);
+}
+
+:root[data-theme="dark"] .analysis-quota-card-error {
+  border-color: rgba(248, 113, 113, .45);
+  border-left-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+:root[data-theme="dark"] .analysis-quota-card-error h2,
+:root[data-theme="dark"] .analysis-quota-card-error p {
+  color: var(--danger-text);
+}
+
+:root[data-theme="dark"] .analysis-quota-tokens {
+  border-top-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] .analysis-quota-token-balance {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .analysis-quota-token-pages {
+  color: var(--text-color);
+}
+
+:root[data-theme="dark"] .analysis-quota-panel {
+  border-color: var(--border-color);
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .analysis-quota-voucher input {
+  border-color: var(--border-strong);
+  background: var(--surface-inset);
+}
+
+:root[data-theme="dark"] .analysis-quota-voucher input::placeholder {
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .analysis-quota-voucher button[type="submit"] {
+  border-color: var(--accent-color);
+  background: var(--accent-color);
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] .analysis-quota-voucher button[type="submit"]:hover:not(:disabled) {
+  background: var(--accent-color-hover);
+}
+
+:root[data-theme="dark"] .analysis-quota-voucher-status.analysis-quota-voucher-error {
+  color: var(--danger-text);
+}
+
+:root[data-theme="dark"] .analysis-quota-tokens .analysis-quota-buy-note {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analysis-quota-coming-soon {
+  background: #cc7c2e;
+  color: #1b1b1b;
+}
+
+:root[data-theme="dark"] .analysis-quota-pack {
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .analysis-quota-pack-price {
+  color: var(--accent-text);
+}
+
+/* --- Ikone i logotip ------------------------------------------------------- */
+
+:root[data-theme="dark"] .pagenorma-icon-profile:hover {
+  color: #66b3ff;
+}
+
+/* --- Dodatne tamne nadogradnje ------------------------------------------- */
+
+/* Stupac interlinearnog teksta */
+:root[data-theme="dark"] .interlinear-column > div {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+/* Kartica analize (naslov i datum) */
+:root[data-theme="dark"] .analysis-card-title {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .analysis-card-date {
+  color: var(--text-secondary);
+}
+
+/* Toast obavijesti - u tamnoj temi pozadina je svjetlija pa tekst mora
+   biti tamni kako bi ostao čitljiv. */
+:root[data-theme="dark"] .toast {
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] .toast--info {
+  background: var(--accent-color);
+}
+
+:root[data-theme="dark"] .toast--success {
+  background: var(--success);
+}
+
+:root[data-theme="dark"] .toast--error {
+  background: var(--danger);
+}
+
+/* Gumbi koji imaju vlastitu (ne-tematsku) boju pozadine zadržavaju
+   izvorni kontrast teksta u obje teme. */
+:root[data-theme="dark"] .btn-sync {
+  /* Nešto tamniji plavi nego u svijetloj temi da bijeli tekst zadovolji AA. */
+  background-color: #1976d2;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .btn-sync:hover {
+  background-color: #1565c0;
+}
+
+:root[data-theme="dark"] .subscription-google {
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .subscription-huggingface {
+  color: #1b1b1b;
+}
+
+:root[data-theme="dark"] .main-menu-toggle:hover,
+:root[data-theme="dark"] .main-menu-toggle[aria-expanded="true"] {
+  color: var(--accent-on-fill);
+}
+
+/* Aktivna kartica u tabovima - u svijetloj temi pozadina je tamna,
+   u tamnoj mora postati akcentna kako bijeli tekst ne bi nestao. */
+:root[data-theme="dark"] .btn-tab.active {
+  background: var(--accent-color);
+  color: var(--accent-on-fill);
+}
+
+/* Padajući izbornik u mobilnom prikazu */
+@media (max-width: 640px) {
+  :root[data-theme="dark"] .nav-links {
+    background: var(--card-bg);
+  }
+}
+
+/* --- Gumbi koji nasljeđuju boju ------------------------------------------ */
+
+/* U svijetloj temi ovi gumbi imaju "color: inherit" pa preuzimaju boju
+   roditelja. Generičko tamno pravilo "button { color: ... }" preklopilo bi
+   to, pa se nasljeđivanje vraća. */
+:root[data-theme="dark"] .glossary-sort-button,
+:root[data-theme="dark"] .gdoc-cookie-hint-close {
+  color: inherit;
+}
+
+:root[data-theme="dark"] .glossary-sort-button:hover {
+  color: var(--accent-color);
+}
+
+/* Neaktivna kartica u tabovima ima pozadinu --bg-color (tamu), pa tekst
+   mora biti svijetlo sivi, a ne gotovo crni. */
+:root[data-theme="dark"] .btn-tab {
+  color: var(--text-color);
+}
+
+/* Gumb za zatvaranje glosarnog modala - pri hoveru dobije akcentnu pozadinu
+   pa tekst mora biti tamni. */
+:root[data-theme="dark"] .glossary-modal-close {
+  color: var(--accent-color);
+}
+
+/* Vodič (onboarding) je namjerno taman u obje teme, pa se njegove boje
+   ne diraju - osim "Skip" gumba kojemu generičko tamno pravilo
+   "button { color: ... }" mijenja boju teksta u nečitljivu. */
+:root[data-theme="dark"] .onboarding-btn-skip {
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .onboarding-btn-skip:hover {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .onboarding-btn-close {
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .onboarding-btn-close:hover {
+  color: #ffffff;
+}
+
+/* Poveznica koja otvara dijalog za vaučer / kupnju tokena. U svijetloj temi
+   hover daje boju kartice (bijelu) pa je na bijeloj pozadini nevidljiv;
+   u tamnoj se zato koristi svijetli akcent. */
+:root[data-theme="dark"] .analysis-quota-toggle {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .analysis-quota-toggle:hover {
+  color: var(--accent-color);
+}
+
+:root[data-theme="dark"] .analysis-quota-toggle.analysis-quota-toggle-aktivan {
+  color: var(--success-text);
+}
+
+/* Gumb koji otvara termin u stranici tezara. */
+:root[data-theme="dark"] .glossary-thesaurus-open-page {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .glossary-thesaurus-open-page:hover {
+  color: var(--accent-color);
 }

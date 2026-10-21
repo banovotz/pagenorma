@@ -31,6 +31,24 @@
   <meta name="twitter:image" content="./public/icons/icon-512.png">
   
   <!-- Stylesheets -->
+  <!-- Tema se postavlja PRIJE učitavanja lista stilova da nema bljeskanja
+       bijelog (FOUC). Skripta je duplikat logike iz src/core/theme.js, ali
+       mora teći sinhrono u <head>. -->
+  <meta name="theme-color" content="#F8F5F2">
+  <script>
+    (function () {
+      try {
+        var preferencija = localStorage.getItem('pagenorma_tema') || 'system';
+        var tema = preferencija;
+        if (tema !== 'light' && tema !== 'dark') {
+          tema = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', tema);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="./src/styles/style.css">   
 
   <!-- PWA Settings -->
@@ -69,15 +87,73 @@
 <!-- Navigation Bar -->
 <nav id="main-nav" class="navbar" aria-label="Main navigation">
   <ul class="nav-dashboard-menu">
-    <li><a href data-target="dashboard" class="nav-item nav-dashboard active"><img class="nav-icon" src="public/icons/dashboard.svg" alt=""> Dashboard</a></li>
+    <li><a href data-target="dashboard" class="nav-item nav-dashboard active"><svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+  <!-- Centralni indikator metrike (Zadržan) -->
+  <circle cx="12" cy="12" r="9" stroke="var(--icon-brand)" stroke-width="2"/>
+  <path d="M12 12V7" stroke="var(--icon-brand)" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="12" cy="12" r="1.5" fill="var(--icon-brand)"/>
+
+  <!-- Slojevi horizontalnih linija (Poput liste) -->
+  <!-- Red 1 -->
+  <rect x="6" y="14" width="2" height="4" rx="1" fill="var(--icon-highlight)" opacity="0.6"/>
+  <path d="M10 16H18" stroke="var(--icon-muted)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Red 2 -->
+  <rect x="6" y="11" width="2" height="6" rx="1" fill="var(--icon-brand)"/>
+  <path d="M10 13H18" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Red 3 (Istaknuti/Zlatni) -->
+  <rect x="6" y="9" width="2" height="8" rx="1" fill="var(--icon-accent)"/>
+  <path d="M10 11H18" stroke="var(--icon-accent)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Red 4 -->
+  <rect x="6" y="7" width="2" height="5" rx="1" fill="var(--icon-highlight)" opacity="0.6"/>
+  <path d="M10 9H18" stroke="var(--icon-muted)" stroke-width="1.5" stroke-linecap="round"/>
+</svg> Dashboard</a></li>
   </ul>
   <button id="main-menu-toggle" class="main-menu-toggle" type="button" aria-controls="main-menu" aria-expanded="false">
     <span class="sr-only">Open main menu</span>
     <span class="main-menu-toggle-icon" aria-hidden="true"></span>
   </button>
   <ul id="main-menu" class="nav-links">
-    <li><a href data-target="analytics" class="nav-item"><img class="nav-icon" src="public/icons/financial-analytics.svg" alt=""> Financial Analytics</a></li>
-    <li><a href data-target="translation-analytics" class="nav-item"><img class="nav-icon" src="public/icons/translation-analitycs.svg" alt=""> Translation Analyses</a></li>
+    <li><a href data-target="analytics" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+  <!-- Dokument/Ugovor u pozadini -->
+  <rect x="4" y="3" width="16" height="18" rx="3" stroke="var(--icon-muted)" stroke-width="2"/>
+
+  <!-- Linije ugovora -->
+  <path d="M8 7H14" stroke="var(--icon-muted)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M8 10H12" stroke="var(--icon-muted)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Rastući stupčasti grafikon zarade -->
+  <rect x="7" y="15" width="2" height="3" rx="1" fill="var(--icon-brand)"/>
+  <rect x="11" y="13" width="2" height="5" rx="1" fill="var(--icon-brand)"/>
+  <rect x="15" y="11" width="2" height="7" rx="1" fill="var(--icon-brand)"/>
+
+  <!-- Zlatna linija trenda/progresa -->
+  <path d="M7 16L11 14L15 12L19 10" stroke="var(--icon-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Simbol valute (€) na vrhu ugovora -->
+  <path d="M18 5.5C18 5 17.5 4.5 17 4.5C16.5 4.5 16 5 16 5.5C16 6 16.5 6.5 17 6.5C17.5 6.5 18 6 18 5.5Z" stroke="var(--icon-brand)" stroke-width="1" fill="none"/>
+  <path d="M15.5 5.5H18.5" stroke="var(--icon-brand)" stroke-width="1"/>
+</svg> Financial Analytics</a></li>
+    <li><a href data-target="translation-analytics" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+  <!-- Otvorene stranice teksta -->
+  <path d="M4 6C4 4.89543 4.89543 4 6 4H12V20H6C4.89543 20 4 19.1046 4 18V6Z" stroke="var(--icon-brand)" stroke-width="2" fill="var(--icon-panel)"/>
+  <path d="M12 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H12V4Z" stroke="var(--icon-brand)" stroke-width="2" fill="var(--icon-paper)"/>
+
+  <!-- Linije teksta (ritam) -->
+  <path d="M7 8H10" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M7 11H9" stroke="var(--icon-muted)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M7 14H10" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <path d="M14 8H17" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M14 11H16" stroke="var(--icon-highlight)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M14 14H17" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Povećalo/QA analiza (Analitika) -->
+  <circle cx="17" cy="17" r="4" stroke="var(--icon-accent)" stroke-width="2" fill="var(--icon-paper)"/>
+  <path d="M20.5 20.5L19 19" stroke="var(--icon-accent)" stroke-width="2" stroke-linecap="round"/>
+</svg> Translation Analyses</a></li>
     <li><a href data-target="thesaurus" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="pagenorma-icon-thesaurus">
   <!-- Otvorena knjiga / Korice -->
   <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
@@ -89,9 +165,28 @@
   <path d="M11 17h6" />
   
   <!-- Strelica koja simbolizira povezivanje sinonima -->
-  <path d="M17 10l3-3-3-3" stroke="#D97706" />
+  <path d="M17 10l3-3-3-3" stroke="var(--icon-accent)" />
 </svg>Thesaurus</a></li>
-    <li><a href data-target="settings" class="nav-item"><img class="nav-icon" src="public/icons/settings.svg" alt=""> Settings</a></li>
+    <li><a href data-target="settings" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+  <!-- Vanjski okvir zupčanika -->
+  <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="var(--icon-brand)" stroke-width="2"/>
+
+  <!-- Vodilice zupčanika (pomaknute izvan središta) -->
+  <path d="M12 3V5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M12 19V21" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M3 12H5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M19 12H21" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Čista središnja podloga za Studio izdanje -->
+  <circle cx="12" cy="12" r="4.5" fill="var(--icon-panel)" stroke="var(--icon-brand)" stroke-width="1.5"/>
+
+  <!-- Jasno definirano slovo "S" (bez presijecanja linijama) -->
+  <path d="M13.5 10.2C13.5 9.5 12.8 9 12 9C11.2 9 10.5 9.5 10.5 10.2C10.5 11 11 11.4 12 11.8C13 12.2 13.5 12.6 13.5 13.5C13.5 14.3 12.8 15 12 15C11.2 15 10.5 14.3 10.5 13.6" 
+        stroke="var(--icon-brand)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Zlatni akcent statusa -->
+  <circle cx="18.5" cy="5.5" r="1.5" fill="var(--icon-accent)"/>
+</svg> Settings</a></li>
     <li data-auth-navigation="login"><a href data-target="login" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pagenorma-icon-profile">
   <!-- Glava / Profilna kružnica -->
   <circle cx="12" cy="7" r="4" />  
@@ -106,7 +201,7 @@
   <path d="M19 21v-1.5a3.5 3.5 0 0 0-3.5-3.5h-7A3.5 3.5 0 0 0 5 19.5V21" />
   
   <!-- Indikator prijave (Status dot) -->
-  <circle cx="19" cy="5" r="2" fill="currentColor" stroke="#D97706" />
+  <circle cx="19" cy="5" r="2" fill="currentColor" stroke="var(--icon-accent)" />
 </svg>Profile</a></li>
   </ul>
 </nav>
@@ -120,7 +215,81 @@
 
 <div class="container">
   <header>
-    <h1><img id="pagenorma-logo" src="./public/icons/pagenorma-s.svg" alt="pagenorma S"></h1>
+    <h1>
+      <!-- Logotip je ugrađen kao SVG (a ne <img>) da bi boje preuzimao temu.
+           Postoje dva izdanja: "S" (standardno) i "QS" (Quiet Studio).
+          subscription.js prebacuje vidljivost preko skrivenog atributa. -->
+      <svg id="pagenorma-logo" class="brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 60" width="290" height="60" fill="none" role="img" aria-label="pagenorma S">
+  <!-- AMBLEM BRAND-A (Knjiga s p i n slovima) -->
+  <g transform="translate(4, 6)">
+    <!-- Lijeva stranica (Izvornik / Podloga) -->
+    <path d="M6 12C6 8.68629 8.68629 6 12 6H24V42H12C8.68629 42 6 39.3137 6 36V12Z" fill="var(--icon-panel)" stroke="var(--icon-brand)" stroke-width="2.5"/>
+
+    <!-- Desna stranica (Prijevod / Radna površina) -->
+    <path d="M24 6H36C39.3137 6 42 8.68629 42 12V36C42 39.3137 39.3137 42 36 42H24V6Z" fill="var(--icon-paper)" stroke="var(--icon-brand)" stroke-width="2.5"/>
+
+    <!-- Linije teksta -->
+    <path d="M11 14H19" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M11 34H19" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M29 14H37" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M29 34H37" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Slova p i n -->
+    <text x="15" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" fill="var(--icon-brand)" text-anchor="middle">p</text>
+    <text x="33" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" fill="var(--icon-brand)" text-anchor="middle">n</text>
+
+    <!-- Središnji zlatni indikator -->
+    <path d="M24 2V46" stroke="var(--icon-accent)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="24" cy="2" r="2.5" fill="var(--icon-accent)"/>
+  </g>
+
+  <!-- SPOJENA TIPOGRAFIJA (pagenorma) -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="60" y="38" font-size="28" letter-spacing="-0.5">
+      <tspan font-weight="300" fill="var(--logo-wordmark)">page</tspan><tspan font-weight="700" fill="var(--icon-brand)">norma</tspan>
+    </text>
+  </g>
+
+  <!-- OZNAKA IZDANJA "S" (Studio) -->
+  <rect x="216" y="16" width="24" height="24" rx="6" fill="var(--logo-badge-bg)" stroke="var(--icon-muted)" stroke-width="1.5"/>
+  <text x="223" y="33" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" fill="var(--logo-badge-text)">S</text>
+</svg>
+      <svg id="pagenorma-logo-qs" class="brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 305 60" width="305" height="60" fill="none" role="img" aria-label="pagenorma QS" hidden>
+  <!-- AMBLEM BRAND-A (Knjiga s p i n slovima) -->
+  <g transform="translate(4, 6)">
+    <!-- Lijeva stranica (Izvornik / Podloga) -->
+    <path d="M6 12C6 8.68629 8.68629 6 12 6H24V42H12C8.68629 42 6 39.3137 6 36V12Z" fill="var(--icon-panel)" stroke="var(--icon-brand)" stroke-width="2.5"/>
+
+    <!-- Desna stranica (Prijevod / Radna površina) -->
+    <path d="M24 6H36C39.3137 6 42 8.68629 42 12V36C42 39.3137 39.3137 42 36 42H24V6Z" fill="var(--icon-paper)" stroke="var(--icon-brand)" stroke-width="2.5"/>
+
+    <!-- Linije teksta -->
+    <path d="M11 14H19" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M11 34H19" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M29 14H37" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M29 34H37" stroke="var(--icon-brand)" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Slova p i n -->
+    <text x="15" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" fill="var(--icon-brand)" text-anchor="middle">p</text>
+    <text x="33" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" fill="var(--icon-brand)" text-anchor="middle">n</text>
+
+    <!-- Središnji zlatni indikator -->
+    <path d="M24 2V46" stroke="var(--icon-accent)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="24" cy="2" r="2.5" fill="var(--icon-accent)"/>
+  </g>
+
+  <!-- SPOJENA TIPOGRAFIJA (pagenorma) -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="60" y="38" font-size="28" letter-spacing="-0.5">
+      <tspan font-weight="300" fill="var(--logo-wordmark)">page</tspan><tspan font-weight="700" fill="var(--icon-brand)">norma</tspan>
+    </text>
+  </g>
+
+  <!-- OZNAKA IZDANJA "QS" (Quiet Studio Badge) -->
+  <rect x="216" y="16" width="38" height="24" rx="6" fill="var(--icon-brand)" stroke="var(--icon-accent)" stroke-width="1"/>
+  <text x="222" y="33" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="800" fill="var(--icon-paper)" letter-spacing="0.5">QS</text>
+</svg>
+    </h1>
     <div class="lbl">Literary translation management simplified.</div>
     <button id="btn-novi-projekt" class="btn-primary"> 
       <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -207,7 +376,7 @@
       </div>
 
       <!-- Preview Metadata Box -->
-      <div id="metrika-preview" class="preview-box">
+      <div id="metrika-preview">
         <div class="preview-box-content">
           <img id="img-cover-preview" src="" alt="">
           <div>
@@ -285,6 +454,34 @@
   <div id="settings-page" class="page-content">
     <h2 class="page-heading">Application Settings</h2>
 
+    <!-- SECTION 0: Appearance (Tema) -->
+    <section class="settings-card">
+      <h3>Appearance</h3>
+      <p class="section-description">
+        Choose how pagenorma looks. <strong>System</strong> follows your device's light or dark setting.
+        The choice is saved on this device only.
+      </p>
+
+      <div class="setting-group">
+        <label class="setting-label">Theme:</label>
+
+        <div class="choice-option">
+          <input type="radio" id="tema-light" name="tema" value="light">
+          <label for="tema-light">Light</label>
+        </div>
+
+        <div class="choice-option">
+          <input type="radio" id="tema-dark" name="tema" value="dark">
+          <label for="tema-dark">Dark</label>
+        </div>
+
+        <div class="choice-option">
+          <input type="radio" id="tema-system" name="tema" value="system" checked>
+          <label for="tema-system">System</label>
+        </div>
+      </div>
+    </section>
+
     <!-- SECTION 1: Financial Settings -->
     <section class="settings-card">
       <h3>Financials & Deductions</h3>
@@ -335,8 +532,8 @@
       </div>
     </section>
     <!-- SECTION 3: Hugging Face -->
-     <div id="hugging-page" class="hugging-page">
-    <section class="hugging-card settings-card">
+     <div id="hugging-page">
+    <section class="settings-card">
       <h3 id="hugging-title">Hugging Face analysis token</h3>
       <p id="hugging-status" class="section-description compact">
         To run QA analysis of your translations, connect your free <a href="https://huggingface.co" target="_blank" rel="noopener noreferrer">Hugging Face</a> account in one click, or <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">create a fine-grained token</a> manually and allow inference access. The token stays only in this browser.
@@ -352,10 +549,9 @@
         I want to insert Hugging Face token manually
       </label>
       <div id="hf-manual-fields" hidden>
-        <label for="hugging-face-token" class="form-label">Hugging Face access token (manual)</label>
+        <label for="hugging-face-token">Hugging Face access token (manual)</label>
         <input
           type="text"
-          class="form-control"
           id="hugging-face-token"
           name="hugging-face-access-token"
           autocomplete="off"
@@ -385,12 +581,12 @@
         <button type="button" id="btn-google-authenticate" class="btn-primary">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">
           <!-- Tijelo lokota -->
-          <rect x="5" y="11" width="14" height="10" rx="2" stroke="#fff" stroke-width="1.75"/>
+          <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.75"/>
           <!-- Luk lokota -->
-          <path d="M8 11V7a4 4 0 018 0v4" stroke="#fff" stroke-width="1.75" stroke-linecap="round"/>
+          <path d="M8 11V7a4 4 0 018 0v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
           <!-- Keyhole / Zlatni akcent -->
-          <circle cx="12" cy="15" r="1.25" fill="#D97706"/>
-          <path d="M12 16.25V18" stroke="#D97706" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="12" cy="15" r="1.25" fill="var(--icon-accent)"/>
+          <path d="M12 16.25V18" stroke="var(--icon-accent)" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
           Authenticate Google Drive
         </button>
@@ -416,11 +612,11 @@
         <button type="button" id="btn-export-backup" class="btn-primary">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
           <!-- Baza podataka / Cilindri -->
-          <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="#fff" stroke-width="1.75"/>
-          <path d="M4 6v5c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="#fff" stroke-width="1.75"/>
-          <path d="M4 11v5c0 1.38 2.69 2.5 6 2.5" stroke="#fff" stroke-width="1.75"/>
+          <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="currentColor" stroke-width="1.75"/>
+          <path d="M4 6v5c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="currentColor" stroke-width="1.75"/>
+          <path d="M4 11v5c0 1.38 2.69 2.5 6 2.5" stroke="currentColor" stroke-width="1.75"/>
           <!-- Strelica za Export (Zlatna) -->
-          <path d="M18 14v7m0 0l-3-3m3 3l3-3" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 14v7m0 0l-3-3m3 3l3-3" stroke="var(--icon-accent)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           Export Database (JSON)
         </button>
@@ -428,11 +624,11 @@
         <button type="button" id="btn-import-backup-trigger" class="btn-secondary">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="none">    
           <!-- Baza podataka / Cilindri -->
-          <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="#008080" stroke-width="1.75"/>
-          <path d="M4 6v5c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="#008080" stroke-width="1.75"/>
-          <path d="M4 11v5c0 1.38 2.69 2.5 6 2.5" stroke="#008080" stroke-width="1.75"/>          
+          <ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="currentColor" stroke-width="1.75"/>
+          <path d="M4 6v5c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="currentColor" stroke-width="1.75"/>
+          <path d="M4 11v5c0 1.38 2.69 2.5 6 2.5" stroke="currentColor" stroke-width="1.75"/>          
           <!-- Strelica za Import (Zlatna - usmjerena prema gore/unutra) -->
-          <path d="M18 21v-7m0 0l-3 3m3-3l3 3" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 21v-7m0 0l-3 3m3-3l3 3" stroke="var(--icon-accent)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           Import Database
         </button>
@@ -455,13 +651,13 @@
 </section><!-- /#page-settings -->
 
   <section id="page-login" class="page-section hidden">
-    <div id="login-page" class="page-content subscription-page">
+    <div id="login-page" class="page-content">
       <div class="login-layout">
         <section class="subscription-card">
           <h2 id="login-title">Sign in to pagenorma</h2>
           <p id="login-status" role="status">Sign in here.</p>
-          <button type="button" id="login-google" class="subscription-google"><svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.1891 14.1152C16.4619 16.6256 12.6694 18.8144 9.19027 16.6256C6.37273 14.853 6.27434 11.5944 7.27665 9.62754C8.27897 7.66072 11.3889 5.41688 15.6856 7.99314L18.3308 5.41688C16.7993 3.71784 11.4349 1.40171 6.97039 4.58582C1.66738 8.368 2.56578 14.1917 4.56819 17.2425C5.80223 19.1226 9.30789 22.1457 15.1844 20.5513C19.5527 19.366 21.2253 14.4945 20.9759 10.6802H12.1771V14.2814H15.1844" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>&nbsp;Continue with Google</button>
-          <button type="button" id="login-huggingface" class="subscription-huggingface"><svg class="niftybutton-hugging-face" data-donate="true" data-tag="hugging-face" data-name="Hugging Face" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" style="display: block; fill: rgb(255, 255, 255); width: 20px; height: 20px; color: rgb(255, 255, 255);" role="img" aria-label="hugging-face-round"><title>Hugging face round icon</title><path d="M16.781 3.277c2.997 1.704 4.844 4.851 4.844 8.258 0 .995-.155 1.955-.443 2.857a1.332 1.332 0 011.125.4 1.41 1.41 0 01.2 1.723c.204.165.352.385.428.632l.017.062c.06.222.12.69-.2 1.166.244.37.279.836.093 1.236-.255.57-.893 1.018-2.128 1.5l-.202.078-.131.048c-.478.173-.89.295-1.061.345l-.086.024c-.89.243-1.808.375-2.732.394-1.32 0-2.3-.36-2.923-1.067a9.852 9.852 0 01-3.18.018C9.778 21.647 8.802 22 7.494 22a11.249 11.249 0 01-2.541-.343l-.221-.06-.273-.08a16.574 16.574 0 01-1.175-.405c-1.237-.483-1.875-.93-2.13-1.501-.186-.4-.151-.867.093-1.236a1.42 1.42 0 01-.2-1.166c.069-.273.226-.516.447-.694a1.41 1.41 0 01.2-1.722c.233-.248.557-.391.917-.407l.078-.001a9.385 9.385 0 01-.44-2.85c0-3.407 1.847-6.554 4.844-8.258a9.822 9.822 0 019.687 0zM4.188 14.758c.125.687 2.357 2.35 2.14 2.707-.19.315-.796-.239-.948-.386l-.041-.04-.168-.147c-.561-.479-2.304-1.9-2.74-1.432-.43.46.119.859 1.055 1.42l.784.467.136.083c1.045.643 1.12.84.95 1.113-.188.295-3.07-2.1-3.34-1.083-.27 1.011 2.942 1.304 2.744 2.006-.2.7-2.265-1.324-2.685-.537-.425.79 2.913 1.718 2.94 1.725l.16.04.175.042c1.227.284 3.565.65 4.435-.604.673-.973.64-1.709-.248-2.61l-.057-.057c-.945-.928-1.495-2.288-1.495-2.288l-.017-.058-.025-.072c-.082-.22-.284-.639-.63-.584-.46.073-.798 1.21.12 1.933l.05.038c.977.721-.195 1.21-.573.534l-.058-.104-.143-.25c-.463-.799-1.282-2.111-1.739-2.397-.532-.332-.907-.148-.782.541zm14.842-.541c-.533.335-1.563 2.074-1.94 2.751a.613.613 0 01-.687.302.436.436 0 01-.176-.098.303.303 0 01-.049-.06l-.014-.028-.008-.02-.007-.019-.003-.013-.003-.017a.289.289 0 01-.004-.048c0-.12.071-.266.25-.427.026-.024.054-.047.084-.07l.047-.036c.022-.016.043-.032.063-.049.883-.71.573-1.81.131-1.917l-.031-.006-.056-.004a.368.368 0 00-.062.006l-.028.005-.042.014-.039.017-.028.015-.028.019-.036.027-.023.02c-.173.158-.273.428-.31.542l-.016.054s-.53 1.309-1.439 2.234l-.054.054c-.365.358-.596.69-.702 1.018-.143.437-.066.868.21 1.353.055.097.117.195.187.296.882 1.275 3.282.876 4.494.59l.286-.07.25-.074c.276-.084.736-.233 1.2-.42l.188-.077.065-.028.064-.028.124-.056.081-.038c.529-.252.964-.543.994-.827l.001-.036a.299.299 0 00-.037-.139c-.094-.176-.271-.212-.491-.168l-.045.01c-.044.01-.09.024-.136.04l-.097.035-.054.022c-.559.23-1.238.705-1.607.745h.006a.452.452 0 01-.05.003h-.024l-.024-.003-.023-.005c-.068-.016-.116-.06-.14-.142a.22.22 0 01-.005-.1c.062-.345.958-.595 1.713-.91l.066-.028c.528-.224.97-.483.985-.832v-.04a.47.47 0 00-.016-.098c-.048-.18-.175-.251-.36-.251-.785 0-2.55 1.36-2.92 1.36-.025 0-.048-.007-.058-.024a.6.6 0 01-.046-.088c-.1-.238.068-.462 1.06-1.066l.209-.126c.538-.32 1.01-.588 1.341-.831.29-.212.475-.406.503-.6l.003-.028c.008-.113-.038-.227-.147-.344a.266.266 0 00-.07-.054l-.034-.015-.013-.005a.403.403 0 00-.13-.02c-.162 0-.369.07-.595.18-.637.313-1.431.952-1.826 1.285l-.249.215-.033.033c-.08.078-.288.27-.493.386l-.071.037-.041.019a.535.535 0 01-.122.036h.005a.346.346 0 01-.031.003l.01-.001-.013.001c-.079.005-.145-.021-.19-.095a.113.113 0 01-.014-.065c.027-.465 2.034-1.991 2.152-2.642l.009-.048c.1-.65-.271-.817-.791-.493zM11.938 2.984c-4.798 0-8.688 3.829-8.688 8.55 0 .692.083 1.364.24 2.008l.008-.009c.252-.298.612-.46 1.017-.46.355.008.699.117.993.312.22.14.465.384.715.694.261-.372.69-.598 1.15-.605.852 0 1.367.728 1.562 1.383l.047.105.06.127c.192.396.595 1.139 1.143 1.68 1.06 1.04 1.324 2.115.8 3.266a8.865 8.865 0 002.024-.014c-.505-1.12-.26-2.17.74-3.186l.066-.066c.695-.684 1.157-1.69 1.252-1.912.195-.655.708-1.383 1.56-1.383.46.007.889.233 1.15.605.25-.31.495-.553.718-.694a1.87 1.87 0 01.99-.312c.357 0 .682.126.925.36.14-.61.215-1.245.215-1.898 0-4.722-3.89-8.55-8.687-8.55zm1.857 8.926l.439-.212c.553-.264.89-.383.89.152 0 1.093-.771 3.208-3.155 3.262h-.184c-2.325-.052-3.116-2.06-3.156-3.175l-.001-.087c0-1.107 1.452.586 3.25.586.716 0 1.379-.272 1.917-.526zm4.017-3.143c.45 0 .813.358.813.8 0 .441-.364.8-.813.8a.806.806 0 01-.812-.8c0-.442.364-.8.812-.8zm-11.624 0c.448 0 .812.358.812.8 0 .441-.364.8-.812.8a.806.806 0 01-.813-.8c0-.442.364-.8.813-.8zm7.79-.841c.32-.384.846-.54 1.33-.394.483.146.83.564.878 1.06.048.495-.212.97-.659 1.203-.322.168-.447-.477-.767-.585l.002-.003c-.287-.098-.772.362-.925.079a1.215 1.215 0 01.14-1.36zm-4.323 0c.322.384.377.92.14 1.36-.152.283-.64-.177-.925-.079l.003.003c-.108.036-.194.134-.273.24l-.118.165c-.11.15-.22.262-.377.18a1.226 1.226 0 01-.658-1.204c.048-.495.395-.913.878-1.059a1.262 1.262 0 011.33.394z" fill="#ffffff" style="fill:#000");"></path></svg>
+          <button type="button" id="login-google" class="subscription-google"><svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.1891 14.1152C16.4619 16.6256 12.6694 18.8144 9.19027 16.6256C6.37273 14.853 6.27434 11.5944 7.27665 9.62754C8.27897 7.66072 11.3889 5.41688 15.6856 7.99314L18.3308 5.41688C16.7993 3.71784 11.4349 1.40171 6.97039 4.58582C1.66738 8.368 2.56578 14.1917 4.56819 17.2425C5.80223 19.1226 9.30789 22.1457 15.1844 20.5513C19.5527 19.366 21.2253 14.4945 20.9759 10.6802H12.1771V14.2814H15.1844" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>&nbsp;Continue with Google</button>
+          <button type="button" id="login-huggingface" class="subscription-huggingface"><svg class="subscription-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" role="img" aria-label="Hugging Face"><title>Hugging face round icon</title><path d="M16.781 3.277c2.997 1.704 4.844 4.851 4.844 8.258 0 .995-.155 1.955-.443 2.857a1.332 1.332 0 011.125.4 1.41 1.41 0 01.2 1.723c.204.165.352.385.428.632l.017.062c.06.222.12.69-.2 1.166.244.37.279.836.093 1.236-.255.57-.893 1.018-2.128 1.5l-.202.078-.131.048c-.478.173-.89.295-1.061.345l-.086.024c-.89.243-1.808.375-2.732.394-1.32 0-2.3-.36-2.923-1.067a9.852 9.852 0 01-3.18.018C9.778 21.647 8.802 22 7.494 22a11.249 11.249 0 01-2.541-.343l-.221-.06-.273-.08a16.574 16.574 0 01-1.175-.405c-1.237-.483-1.875-.93-2.13-1.501-.186-.4-.151-.867.093-1.236a1.42 1.42 0 01-.2-1.166c.069-.273.226-.516.447-.694a1.41 1.41 0 01.2-1.722c.233-.248.557-.391.917-.407l.078-.001a9.385 9.385 0 01-.44-2.85c0-3.407 1.847-6.554 4.844-8.258a9.822 9.822 0 019.687 0zM4.188 14.758c.125.687 2.357 2.35 2.14 2.707-.19.315-.796-.239-.948-.386l-.041-.04-.168-.147c-.561-.479-2.304-1.9-2.74-1.432-.43.46.119.859 1.055 1.42l.784.467.136.083c1.045.643 1.12.84.95 1.113-.188.295-3.07-2.1-3.34-1.083-.27 1.011 2.942 1.304 2.744 2.006-.2.7-2.265-1.324-2.685-.537-.425.79 2.913 1.718 2.94 1.725l.16.04.175.042c1.227.284 3.565.65 4.435-.604.673-.973.64-1.709-.248-2.61l-.057-.057c-.945-.928-1.495-2.288-1.495-2.288l-.017-.058-.025-.072c-.082-.22-.284-.639-.63-.584-.46.073-.798 1.21.12 1.933l.05.038c.977.721-.195 1.21-.573.534l-.058-.104-.143-.25c-.463-.799-1.282-2.111-1.739-2.397-.532-.332-.907-.148-.782.541zm14.842-.541c-.533.335-1.563 2.074-1.94 2.751a.613.613 0 01-.687.302.436.436 0 01-.176-.098.303.303 0 01-.049-.06l-.014-.028-.008-.02-.007-.019-.003-.013-.003-.017a.289.289 0 01-.004-.048c0-.12.071-.266.25-.427.026-.024.054-.047.084-.07l.047-.036c.022-.016.043-.032.063-.049.883-.71.573-1.81.131-1.917l-.031-.006-.056-.004a.368.368 0 00-.062.006l-.028.005-.042.014-.039.017-.028.015-.028.019-.036.027-.023.02c-.173.158-.273.428-.31.542l-.016.054s-.53 1.309-1.439 2.234l-.054.054c-.365.358-.596.69-.702 1.018-.143.437-.066.868.21 1.353.055.097.117.195.187.296.882 1.275 3.282.876 4.494.59l.286-.07.25-.074c.276-.084.736-.233 1.2-.42l.188-.077.065-.028.064-.028.124-.056.081-.038c.529-.252.964-.543.994-.827l.001-.036a.299.299 0 00-.037-.139c-.094-.176-.271-.212-.491-.168l-.045.01c-.044.01-.09.024-.136.04l-.097.035-.054.022c-.559.23-1.238.705-1.607.745h.006a.452.452 0 01-.05.003h-.024l-.024-.003-.023-.005c-.068-.016-.116-.06-.14-.142a.22.22 0 01-.005-.1c.062-.345.958-.595 1.713-.91l.066-.028c.528-.224.97-.483.985-.832v-.04a.47.47 0 00-.016-.098c-.048-.18-.175-.251-.36-.251-.785 0-2.55 1.36-2.92 1.36-.025 0-.048-.007-.058-.024a.6.6 0 01-.046-.088c-.1-.238.068-.462 1.06-1.066l.209-.126c.538-.32 1.01-.588 1.341-.831.29-.212.475-.406.503-.6l.003-.028c.008-.113-.038-.227-.147-.344a.266.266 0 00-.07-.054l-.034-.015-.013-.005a.403.403 0 00-.13-.02c-.162 0-.369.07-.595.18-.637.313-1.431.952-1.826 1.285l-.249.215-.033.033c-.08.078-.288.27-.493.386l-.071.037-.041.019a.535.535 0 01-.122.036h.005a.346.346 0 01-.031.003l.01-.001-.013.001c-.079.005-.145-.021-.19-.095a.113.113 0 01-.014-.065c.027-.465 2.034-1.991 2.152-2.642l.009-.048c.1-.65-.271-.817-.791-.493zM11.938 2.984c-4.798 0-8.688 3.829-8.688 8.55 0 .692.083 1.364.24 2.008l.008-.009c.252-.298.612-.46 1.017-.46.355.008.699.117.993.312.22.14.465.384.715.694.261-.372.69-.598 1.15-.605.852 0 1.367.728 1.562 1.383l.047.105.06.127c.192.396.595 1.139 1.143 1.68 1.06 1.04 1.324 2.115.8 3.266a8.865 8.865 0 002.024-.014c-.505-1.12-.26-2.17.74-3.186l.066-.066c.695-.684 1.157-1.69 1.252-1.912.195-.655.708-1.383 1.56-1.383.46.007.889.233 1.15.605.25-.31.495-.553.718-.694a1.87 1.87 0 01.99-.312c.357 0 .682.126.925.36.14-.61.215-1.245.215-1.898 0-4.722-3.89-8.55-8.687-8.55zm1.857 8.926l.439-.212c.553-.264.89-.383.89.152 0 1.093-.771 3.208-3.155 3.262h-.184c-2.325-.052-3.116-2.06-3.156-3.175l-.001-.087c0-1.107 1.452.586 3.25.586.716 0 1.379-.272 1.917-.526zm4.017-3.143c.45 0 .813.358.813.8 0 .441-.364.8-.813.8a.806.806 0 01-.812-.8c0-.442.364-.8.812-.8zm-11.624 0c.448 0 .812.358.812.8 0 .441-.364.8-.812.8a.806.806 0 01-.813-.8c0-.442.364-.8.813-.8zm7.79-.841c.32-.384.846-.54 1.33-.394.483.146.83.564.878 1.06.048.495-.212.97-.659 1.203-.322.168-.447-.477-.767-.585l.002-.003c-.287-.098-.772.362-.925.079a1.215 1.215 0 01.14-1.36zm-4.323 0c.322.384.377.92.14 1.36-.152.283-.64-.177-.925-.079l.003.003c-.108.036-.194.134-.273.24l-.118.165c-.11.15-.22.262-.377.18a1.226 1.226 0 01-.658-1.204c.048-.495.395-.913.878-1.059a1.262 1.262 0 011.33.394z" fill="currentColor"></path></svg>
 &nbsp;&nbsp;Continue with Hugging Face</button>
           <form id="login-email-form">
             <div id="login-email-group">
@@ -519,7 +715,7 @@
         <p>Token balance: <strong data-token-balance>0 tokens (0 pages)</strong></p>
         <p class="text-muted">1 token covers 100 standard analysis pages. Your free monthly allowance is always used first.</p>
         <form id="profile-voucher-form">
-          <label for="profile-voucher-code" class="form-label">Voucher code</label>
+          <label for="profile-voucher-code">Voucher code</label>
           <input
             id="profile-voucher-code"
             name="profile-voucher-code"
@@ -557,7 +753,6 @@
     
     <div class="page-intro">
       <h2 class="page-heading">Monthly Project Analytics</h2>
-      <div class="info-box">
       <p class="info-note">
         <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/>
@@ -565,7 +760,7 @@
         <line x1="12" y1="8" x2="12.01" y2="8"/>
         </svg> 
         <strong>Note:</strong> Displayed analytics are informational and intended for internal planning of work pace and earnings.
-      </p></div>
+      </p>
     </div>
     <div class="analytics-year-selector">
       <label for="odabir-godine">Select year:</label>
@@ -781,8 +976,8 @@
   </div>
 </div>
 <!-- Modal za prikaz cijelog glosara -->
-<div id="modal-glosar" class="modal glossary-modal sakriveno" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+<div id="modal-glosar" class="sakriveno" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <div>
@@ -816,11 +1011,10 @@
           </label>
           <p id="glossary-result-count" class="glossary-result-count" aria-live="polite"></p>
         </div>
-        <div id="prazan-glosar-poruka" class="text-center text-muted my-3">
+        <div id="prazan-glosar-poruka" class="text-muted">
           Glossary is empty or not loaded for the current analysis.
         </div>
-        <div class="table-responsive">
-          <table class="table table-striped table-hover glossary-table" id="tablica-glosara">
+          <table class="glossary-table" id="tablica-glosara">
             <colgroup>
               <col class="glossary-source-column">
               <col class="glossary-target-column">
@@ -839,7 +1033,6 @@
               <!-- Dinamički sadržaj glosara -->
             </tbody>
           </table>
-        </div>
         <nav id="glossary-pagination" class="glossary-pagination" aria-label="Glossary pages"></nav>
       </div>
       <div class="modal-footer">

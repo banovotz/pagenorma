@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pagenorma-v33';
+const CACHE_NAME = 'pagenorma-v34';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -11,6 +11,8 @@ const  ASSETS_TO_CACHE = [
  './src/core/db.js',
  './src/core/router.js',
  './src/core/state.js',
+ './src/core/statusText.js',
+ './src/core/theme.js',
  './src/features/settings/settings.ui.js',
  './src/features/interlinear/interlinear.ui.js',
  './src/features/interlinear/interlinear.js',
