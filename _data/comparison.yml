@@ -1,6 +1,6 @@
 section_id: "comparison"
 heading: "Why Literary & Academic Translators Switch"
-subheading: "See how specialized manuscript tools compare to traditional translation software."
+subheading: "See how a manuscript-first workspace compares with traditional translation software and DIY spreadsheets."
 
 app_name: "pagenorma"
 
@@ -16,26 +16,56 @@ columns:
 
 rows:
   - feature: "Pacing & Deadline Calculations"
-    cat_tools: "None"
+    cat_tools: "Word-count progress; no page-based pace"
     spreadsheets: "Manual formulas required"
-    our_app: "Automatic & adaptive"
+    our_app: "Automatic: required vs planned daily pace"
 
-  - feature: "ePub, PDF, Word & Google Docs Sync"
-    cat_tools: "Complex / Plugin-heavy"
-    spreadsheets: "No"
-    our_app: "Native 1-click fetch"
+  - feature: "Source & Translation Import"
+    cat_tools: "Varies; often filters or plug-ins"
+    spreadsheets: "Manual copy-paste"
+    our_app: "1-click fetch: ePub, PDF (incl. scanned), Word, Google Docs"
+
+  - feature: "Character & Standard Page Metrics"
+    cat_tools: "Word or segment counts"
+    spreadsheets: "Manual tracking"
+    our_app: "Built on the 1,800-character standard page"
+
+  - feature: "Earnings Forecast"
+    cat_tools: "Not a core feature"
+    spreadsheets: "Manual formulas required"
+    our_app: "Monthly net earnings with your own deductions"
 
   - feature: "Concordance Analysis"
     cat_tools: "Rigid TM segments"
     spreadsheets: "None"
-    our_app: "Full-text contextual search with glossary"
+    our_app: "Full-text contextual search plus per-term contexts"
 
-  - feature: "Character & Standard Page Metrics"
-    cat_tools: "Secondary focus"
-    spreadsheets: "Manual tracking"
-    our_app: "Core native metric"
+  - feature: "Translation Review"
+    cat_tools: "Rule-based QA checks"
+    spreadsheets: "None"
+    our_app: "Side-by-side AI commentary on meaning, register and consistency"
 
-  - feature: "Offline Privacy"
-    cat_tools: "Cloud / Subscription heavy"
-    spreadsheets: "Local"
-    our_app: "Local-first app"
+  - feature: "Glossary Building"
+    cat_tools: "Manually maintained term bases"
+    spreadsheets: "Manual lists"
+    our_app: "AI-generated from your text, with quality scores"
+
+  - feature: "Thesaurus"
+    cat_tools: "Usually external"
+    spreadsheets: "None"
+    our_app: "Built-in, 14 languages, strong and weak synonyms"
+
+  - feature: "Pricing"
+    cat_tools: "Licence or subscription"
+    spreadsheets: "Free or low cost"
+    our_app: "Free tier with monthly AI allowance; unrestricted QS tier"
+
+  - feature: "Data Ownership & Privacy"
+    cat_tools: "Often cloud-based or licence-bound"
+    spreadsheets: "Local files"
+    our_app: "Local-first: projects stay in your browser; only chosen pages go to AI"
+
+  - feature: "Backup & Portability"
+    cat_tools: "Project packages"
+    spreadsheets: "Your own files"
+    our_app: "One-click JSON export and import"
