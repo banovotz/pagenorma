@@ -2654,6 +2654,12 @@ button.glossary-quality-badge:focus-visible {
 .analysis-quota-toggle.analysis-quota-toggle-aktivan {
   color: var(--card-bg);
 }
+.analysis-quota-toggle:visited,
+.analysis-quota-toggle.analysis-quota-toggle-aktivan {
+  color: var(--success);
+  text-decoration: none;
+}
+
 
 .analysis-quota-toggle:focus-visible {
   outline: 2px solid var(--accent-color);
