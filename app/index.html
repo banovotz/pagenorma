@@ -116,7 +116,7 @@
     <span class="main-menu-toggle-icon" aria-hidden="true"></span>
   </button>
   <ul id="main-menu" class="nav-links">
-    <li><a href data-target="analytics" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+    <li id="nav-analitika"><a href data-target="analytics" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
   <!-- Dokument/Ugovor u pozadini -->
   <rect x="4" y="3" width="16" height="18" rx="3" stroke="var(--icon-muted)" stroke-width="2"/>
 
@@ -311,6 +311,16 @@
       <input type="hidden" id="p-slova-prijevod">
       <input type="hidden" id="p-last-synced">
 
+      <!-- Vrsta projekta: prevoditeljska (s financijama) ili urednička -->
+      <div class="form-group" id="grupa-vrsta-projekta">
+        <label class="setting-label" id="label-vrsta-projekta">Project type:</label>
+        <div class="unos-tabs" role="radiogroup" aria-labelledby="label-vrsta-projekta">
+          <button type="button" class="btn-tab active" id="vrsta-prevoditelj" data-vrsta="translator" role="radio" aria-checked="true">Translator</button>
+          <button type="button" class="btn-tab" id="vrsta-urednik" data-vrsta="editor" role="radio" aria-checked="false">Editor</button>
+        </div>
+        <small id="vrsta-projekta-opis"></small>
+      </div>
+
       <!-- Data Sources: ePub/PDF & translation document -->
       <div class="grid-2">
         <div class="form-group">
@@ -482,8 +492,32 @@
       </div>
     </section>
 
-    <!-- SECTION 1: Financial Settings -->
+    <!-- SECTION 0b: Work mode (prevoditelj / urednik) -->
     <section class="settings-card">
+      <h3>Work mode</h3>
+      <p class="section-description">
+        Choose how you work with pagenorma. The mode sets the default for <strong>new projects</strong>
+        and hides the parts of the app you don't use. You can change it at any time - existing projects
+        keep their own type.
+      </p>
+
+      <div class="setting-group">
+        <label class="setting-label">I work as a:</label>
+
+        <div class="choice-option">
+          <input type="radio" id="nacin-prevoditelj" name="radniNacin" value="translator">
+          <label for="nacin-prevoditelj">Translator - full project management with rates, deadlines and earnings</label>
+        </div>
+
+        <div class="choice-option">
+          <input type="radio" id="nacin-urednik" name="radniNacin" value="editor">
+          <label for="nacin-urednik">Editor - documents and AI commentary only</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: Financial Settings -->
+    <section class="settings-card" id="postavke-financije">
       <h3>Financials & Deductions</h3>
       <p class="section-description">
         These settings calculate net income on the <strong>Analytics</strong> screen and do not alter gross totals displayed on the dashboard.

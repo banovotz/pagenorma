@@ -914,6 +914,12 @@ h1 .brand-logo[hidden] {
   gap: 16px;
 }
 
+/* Red s jednim vidljivim poljem (npr. urednički projekt bez klijenta) - polje
+   zauzima cijelu širinu umjesto polovice grida. */
+.grid-2.jedan-stupac {
+  grid-template-columns: 1fr;
+}
+
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1002,6 +1008,13 @@ button {
 
 button:hover {
   background: var(--accent-color-hover);
+}
+
+/* Atribut hidden mora sakriti element unatoč pravilima koja mu postavljaju
+   display (npr. gumbi dobivaju display: inline-flex), a ne samo oslanjati
+   na korisnički stil koji bi ga mogao nadjačati. */
+[hidden] {
+  display: none !important;
 }
 button.btn-primary {
   padding: 6px 12px; 
@@ -1166,6 +1179,82 @@ ul.unosi-list li {
 
 .btn-block {
   width: 100%;
+}
+
+/* --- Čarobnjak radnog načina (prevoditelj / urednik) --- */
+.radni-nacin-kartica {
+  max-width: 520px;
+}
+
+.radni-nacin-zaglavlje {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.radni-nacin-oznaka {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+
+.radni-nacin-zatvori {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.radni-nacin-opis {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 16px;
+}
+
+.radni-nacin-izbori {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radni-nacin-izbor {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.radni-nacin-izbor strong {
+  font-size: 1rem;
+}
+
+.radni-nacin-izbor span {
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+.radni-nacin-izbor.aktivan {
+  border-color: var(--accent-color);
+  box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+.radni-nacin-nog {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
 }
 
 /* Modal Overlay za Popup */
@@ -4783,6 +4872,14 @@ button.glossary-quality-badge:focus-visible {
 /* Neaktivna kartica u tabovima ima pozadinu --bg-color (tamu), pa tekst
    mora biti svijetlo sivi, a ne gotovo crni. */
 :root[data-theme="dark"] .btn-tab {
+  color: var(--text-color);
+}
+
+/* Gumbi čarobnjaka radnog načina imaju vlastitu (tamu) podlogu, pa tekst
+   mora biti svijetli umjesto --accent-on-fill koji postavlja generičko
+   pravilo za gumbi. */
+:root[data-theme="dark"] .radni-nacin-izbor,
+:root[data-theme="dark"] .radni-nacin-zatvori {
   color: var(--text-color);
 }
 
