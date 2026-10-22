@@ -2560,8 +2560,9 @@ button.glossary-quality-badge:focus-visible {
 }
 
 .analysis-quota-card {
+  position: relative;
   margin-bottom: 20px;
-  padding: 12px 16px;
+  padding: 12px 14px;
   border: 1px solid #b7c4c4;
   border-radius: 8px;
   background: #fff;
@@ -2597,40 +2598,42 @@ button.glossary-quality-badge:focus-visible {
 }
 
 
+/* Cijela kvota stane u jedan red: naslov, metrike, datum resetiranja,
+   stanje tokena i poveznice. */
 .analysis-quota-layout {
-  display: grid;
-  grid-template-columns: minmax(150px, 0.7fr) minmax(370px, 1.6fr) minmax(140px, 0.55fr);
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px 16px;
+  gap: 6px 7px;
 }
 
 .analysis-quota-layout .analysis-quota-title {
   margin: 0;
+  font-size: 0.9rem;
 }
 
 .analysis-quota-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .analysis-quota-metric {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  min-height: 22px;
-  gap: 9px;
-  padding: 7px 7px;
+  gap: 5px;
+  padding: 3px 4px;
   border: 1px solid #8dadad;
-  border-radius: 6px;
+  border-radius: 999px;
   background: linear-gradient(135deg, #f3faf9 0%, #e7f2f1 100%);
   color: #15575a;
 }
 
 .analysis-quota-icon {
   display: inline-flex;
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .analysis-quota-icon svg {
@@ -2639,31 +2642,36 @@ button.glossary-quality-badge:focus-visible {
 }
 
 .analysis-quota-metric-content {
-  display: grid;
-  gap: 1px;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
 }
 
 .analysis-quota-metric-value {
   color: #15575a;
-  font-size: clamp(1.1rem, 2vw, 1.2rem);
-  line-height: 1;
+  font-size: 0.85rem;
+  line-height: 1.2;
 }
 
 .analysis-quota-metric-label {
   color: #1f3739;
-  font-size: 0.78rem;
+  font-size: 0.65rem;
   line-height: 1.2;
 }
 
 .analysis-quota-reset {
   margin: 0;
-  text-align: right;
+  text-align: left;
   color: #31484a;
-  font-size: 0.78rem;
+  font-size: 0.67rem;
   line-height: 1.25;
+  white-space: nowrap;
 }
 
+/* Ucitateljski skelet: mjerice se popunjavaju umjesto sadrzaja pa
+   dobivaju fiksnu sirinu, a visina ostaje jednaka stvarnoj mjerici. */
 .analysis-quota-card-loading .analysis-quota-metric {
+  width: 152px;
   border-color: #d8e6e5;
   background: #f3f8f8;
 }
@@ -2678,8 +2686,12 @@ button.glossary-quality-badge:focus-visible {
   animation: analysis-quota-shimmer 1.2s ease-in-out infinite;
 }
 
+.analysis-quota-card-loading .analysis-quota-skeleton {
+  height: 18px;
+}
+
 .analysis-quota-reset-skeleton {
-  justify-self: end;
+  margin-left: auto;
   width: 110px;
   height: 12px;
 }
@@ -2690,30 +2702,9 @@ button.glossary-quality-badge:focus-visible {
   }
 }
 
-@media (max-width: 980px) {
-  .analysis-quota-layout {
-    grid-template-columns: minmax(150px, 0.7fr) minmax(0, 1.6fr);
-  }
-
-  .analysis-quota-reset {
-    grid-column: 2;
-    margin: 0;
-    text-align: left;
-  }
-
-  .analysis-quota-reset-skeleton {
-    justify-self: start;
-  }
-}
-
 @media (max-width: 640px) {
-  .analysis-quota-layout,
-  .analysis-quota-metrics {
-    grid-template-columns: 1fr;
-  }
-
-  .analysis-quota-reset {
-    grid-column: auto;
+  .analysis-quota-reset-skeleton {
+    margin-left: 0;
   }
 }
 
@@ -2728,32 +2719,87 @@ button.glossary-quality-badge:focus-visible {
   color: #8a1c1c;
 }
 
+/* Donji dio kartice kvote nosi samo sklopive panele; dijelitelj se pojavi
+   tek kad se jedan otvori. */
 .analysis-quota-tokens {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed #b7c4c4;
   display: grid;
   gap: 10px;
 }
 
-.analysis-quota-token-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px 16px;
+.analysis-quota-tokens-otvoreno {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #b7c4c4;
 }
 
 .analysis-quota-token-balance {
-  margin: 0;
-   font-size: 1.1rem;
-  font-weight:bolder;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: bolder;
   color: #15575a;
 }
 
-.analysis-quota-token-pages {
-  color: #1f3739;
-  font-size: 0.82rem;
+/* ⓘ gumb koji otvara opis vrijednosti tokena. */
+.analysis-quota-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #15575a;
+  cursor: pointer;
+}
+
+.analysis-quota-info-icon {
+  display: inline-flex;
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+}
+
+.analysis-quota-info-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.analysis-quota-info:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* Opis je sidro za karticu pa uvijek ostaje unutar njezinih rubova. */
+.analysis-quota-callout {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  display: block;
+  width: max-content;
+  max-width: min(320px, 72vw);
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #1b2123;
+  color: #f2efea;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s ease-in-out;
+}
+
+.analysis-quota-token-balance:hover .analysis-quota-callout,
+.analysis-quota-token-balance:focus-within .analysis-quota-callout,
+.analysis-quota-info[aria-expanded="true"] + .analysis-quota-callout {
+  opacity: 1;
+  visibility: visible;
 }
 
 .analysis-quota-token-actions {
@@ -2761,33 +2807,31 @@ button.glossary-quality-badge:focus-visible {
   font-weight: 600;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 20px;
+  gap: 2px 12px;
 }
 
 /* Poveznice koje otvaraju dijalog za vaučer odnosno najavu kupnje tokena. */
 .analysis-quota-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 4px;
   padding: 2px 0;
   border: 0;
   background: none;
   color: var(--accent-color);
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
 }
 
-
-
-.analysis-quota-toggle:hover,
-.analysis-quota-toggle.analysis-quota-toggle-aktivan {
-  color: var(--card-bg);
+.analysis-quota-toggle:hover {
+  color: var(--accent-color-hover);
 }
-.analysis-quota-toggle:visited,
-.analysis-quota-toggle.analysis-quota-toggle-aktivan {
+
+.analysis-quota-toggle.analysis-quota-toggle-aktivan,
+.analysis-quota-toggle.analysis-quota-toggle-aktivan:visited {
   color: var(--success);
   text-decoration: none;
 }
@@ -2801,9 +2845,9 @@ button.glossary-quality-badge:focus-visible {
 
 .analysis-quota-toggle-icon {
   display: inline-flex;
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
 }
 
 .analysis-quota-toggle-icon svg {
@@ -4710,7 +4754,7 @@ button.glossary-quality-badge:focus-visible {
   color: var(--danger-text);
 }
 
-:root[data-theme="dark"] .analysis-quota-tokens {
+:root[data-theme="dark"] .analysis-quota-tokens-otvoreno {
   border-top-color: var(--border-strong);
 }
 
@@ -4718,7 +4762,13 @@ button.glossary-quality-badge:focus-visible {
   color: var(--accent-text);
 }
 
-:root[data-theme="dark"] .analysis-quota-token-pages {
+:root[data-theme="dark"] .analysis-quota-info {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .analysis-quota-callout {
+  border: 1px solid var(--border-strong);
+  background: #2b3336;
   color: var(--text-color);
 }
 

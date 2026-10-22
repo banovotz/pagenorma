@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pagenorma-v36';
+const CACHE_NAME = 'pagenorma-v37';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
