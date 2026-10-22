@@ -1255,7 +1255,9 @@ ul.unosi-list li {
       width: 44px;
       min-height: 44px;
       padding: 0;
-      color: var(--heading-color);
+      /* Crte hamburger ikone u početnom stanju nose boju logotipa pa su
+         jasno vidljive i na tamnoj podlozi. */
+      color: var(--logo-wordmark);
       background: transparent;
       border: 1px solid var(--border-color);
     }
@@ -4736,6 +4738,13 @@ button.glossary-quality-badge:focus-visible {
 
 :root[data-theme="dark"] .subscription-huggingface {
   color: #1b1b1b;
+}
+
+/* Hamburger gumb: u početnom stanju crte su u boji logotipa. Generičko tamno
+   pravilo "button { color: ... }" pretvorilo bi ih u gotovo crnu boju
+   (--accent-on-fill) pa se boja logotipa vraća. */
+:root[data-theme="dark"] .main-menu-toggle {
+  color: var(--logo-wordmark);
 }
 
 :root[data-theme="dark"] .main-menu-toggle:hover,
