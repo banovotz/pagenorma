@@ -5035,11 +5035,22 @@ button.glossary-quality-badge:focus-visible {
   outline: 0;
 }
 
-#modal-dijeljenje:not(.sakriveno) {
+#modal-uredi-kopiju {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(29, 45, 45, 0.58);
+  overflow: auto;
+  outline: 0;
+}
+
+#modal-uredi-kopiju:not(.sakriveno) {
   display: flex;
 }
 
-#modal-dijeljenje .modal-dialog,
 #modal-uredi-kopiju .modal-dialog {
   width: min(620px, 100%);
   max-width: none;
