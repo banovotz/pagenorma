@@ -4981,3 +4981,400 @@ button.glossary-quality-badge:focus-visible {
 :root[data-theme="dark"] .glossary-thesaurus-open-page:hover {
   color: var(--accent-color);
 }
+
+/* --- Dijeljenje projekta --------------------------------------------------- */
+
+/* Traka nadzorne ploče s uvozom zajedničkog projekta. */
+.dashboard-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+/* Oznaka na kartici projekta koji je primljen od drugog korisnika. */
+.project-card-shared {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.project-card-shared-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(0, 128, 128, 0.12);
+  border: 1px solid rgba(0, 128, 128, 0.35);
+  color: var(--accent-color);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-card-shared-meta {
+  color: var(--text-secondary, var(--text-color));
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Modal dijeljenja. */
+#modal-dijeljenje {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(29, 45, 45, 0.58);
+  overflow: auto;
+  outline: 0;
+}
+
+#modal-dijeljenje:not(.sakriveno) {
+  display: flex;
+}
+
+#modal-dijeljenje .modal-dialog,
+#modal-uredi-kopiju .modal-dialog {
+  width: min(620px, 100%);
+  max-width: none;
+  margin: 0;
+}
+
+#modal-dijeljenje .modal-content,
+#modal-uredi-kopiju .modal-content {
+  display: flex;
+  flex-direction: column;
+  background: #f1f7f5;
+  color: var(--text-color);
+  border: 1px solid rgba(0, 128, 128, 0.25);
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(20, 48, 48, 0.3);
+  overflow: hidden;
+}
+
+#modal-dijeljenje .modal-header,
+#modal-uredi-kopiju .modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px 18px;
+  background: #e4f0ed;
+  border-bottom: 1px solid rgba(0, 128, 128, 0.18);
+}
+
+#modal-dijeljenje .modal-title,
+#modal-uredi-kopiju .modal-title {
+  margin: 0;
+  color: var(--heading-color);
+  font-family: var(--heading-font);
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+}
+
+#modal-dijeljenje .modal-body,
+#modal-uredi-kopiju .modal-body {
+  padding: 20px 28px 24px;
+}
+
+#modal-dijeljenje .modal-footer,
+#modal-uredi-kopiju .modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 28px 24px;
+}
+
+#modal-dijeljenje input[type="text"],
+#modal-dijeljenje input[type="email"],
+#modal-uredi-kopiju input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 42px;
+  padding: 9px 14px;
+  border: 1px solid #c5ddd8;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-color);
+}
+
+#modal-dijeljenje input:focus,
+#modal-uredi-kopiju input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.12);
+  outline: none;
+}
+
+#modal-dijeljenje input:disabled {
+  background: #eef3f2;
+  color: var(--text-color);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.share-modal-kicker {
+  margin: 0 0 6px;
+  color: var(--accent-color);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.share-modal-project {
+  margin: 6px 0 0;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.share-modal-close,
+.uredi-modal-close {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 128, 128, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.share-modal-close:hover,
+.uredi-modal-close:hover {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+.share-modal-info,
+.share-modal-napomena {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+.share-modal-datoteka,
+.uredi-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.share-modal-datoteka input,
+.uredi-checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-color);
+  cursor: pointer;
+}
+
+.share-modal-datoteka input:disabled {
+  cursor: not-allowed;
+}
+
+.uredi-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.share-modal-status {
+  min-height: 1.2em;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.share-modal-status[data-vrsta="uspjeh"] {
+  color: var(--success-text, var(--accent-color));
+}
+
+.share-modal-status[data-vrsta="greska"] {
+  color: var(--danger-text, #b3261e);
+}
+
+.share-link-result {
+  margin: 4px 0 12px;
+  padding: 12px;
+  border: 1px solid var(--border-strong, rgba(0, 128, 128, 0.25));
+  border-radius: 10px;
+  background: var(--surface-muted, rgba(0, 128, 128, 0.06));
+}
+
+.share-link-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.share-link-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.share-link-result .share-modal-napomena {
+  margin: 8px 0 0;
+}
+
+.share-existing {
+  margin: 4px 0 14px;
+}
+
+.share-existing[hidden] {
+  display: none;
+}
+
+.share-existing-title {
+  margin: 0 0 8px;
+  color: var(--accent-color);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.share-existing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.share-existing-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.share-existing-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 0.86rem;
+}
+
+.share-existing-info strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.share-existing-info span {
+  font-size: 0.76rem;
+  opacity: 0.72;
+}
+
+.share-existing-revoke {
+  flex: 0 0 auto;
+}
+
+/* Pozivnice na nadzornoj ploči: kompaktna kartica iznad projekata. */
+.invitations-card {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-strong, rgba(0, 128, 128, 0.25));
+  border-radius: 12px;
+  background: var(--card-bg);
+}
+
+.invitations-card[hidden] {
+  display: none;
+}
+
+.invitations-title {
+  margin: 0 0 10px;
+  color: var(--accent-color);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.invitations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.invitation-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.invitation-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.invitation-info strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.invitation-info span {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+:root[data-theme="dark"] #modal-dijeljenje .modal-content,
+:root[data-theme="dark"] #modal-uredi-kopiju .modal-content {
+  background: var(--surface-inset);
+  border-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] #modal-dijeljenje .modal-header,
+:root[data-theme="dark"] #modal-uredi-kopiju .modal-header {
+  background: var(--surface-muted);
+  border-bottom-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] #modal-dijeljenje input[type="text"],
+:root[data-theme="dark"] #modal-dijeljenje input[type="email"],
+:root[data-theme="dark"] #modal-uredi-kopiju input[type="file"] {
+  border-color: var(--border-strong);
+  background: var(--card-bg);
+}
+
+:root[data-theme="dark"] #modal-dijeljenje input:disabled {
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .share-modal-close,
+:root[data-theme="dark"] .uredi-modal-close {
+  border-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] .share-modal-close:hover,
+:root[data-theme="dark"] .uredi-modal-close:hover {
+  color: var(--accent-on-fill);
+}
+
+:root[data-theme="dark"] .project-card-shared-badge {
+  background: rgba(0, 128, 128, 0.22);
+  border-color: var(--border-strong);
+}

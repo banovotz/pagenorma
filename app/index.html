@@ -868,6 +868,7 @@
 <div id="interlinear-page" class="page-content">
   <div class="interlinear-workspace">
     <h2>LLM Translation Analysis</h2>
+    <div id="interlinear-archive-notice" class="interlinear-partial-notice" hidden></div>
     <div id="interlinear-partial-notice" class="interlinear-partial-notice" hidden></div>
     <div class="interlinear-toolbar">
       <div class="interlinear-search-wrap">
@@ -1009,6 +1010,97 @@
     </div>
   </div>
 </div>
+<!-- Modal za dijeljenje projekta (online poveznica + datotečni paket) -->
+<div id="modal-dijeljenje" class="sakriveno" tabindex="-1" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="share-modal-naslov">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <p class="share-modal-kicker">Project sharing</p>
+          <h2 class="modal-title" id="share-modal-naslov">Share project</h2>
+          <p class="share-modal-project" id="share-modal-projekt"></p>
+        </div>
+        <button type="button" class="share-modal-close" aria-label="Close share dialog">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="share-modal-info">
+          The recipient gets the project details, the full source and translated text, and the saved analysis - never your file names, deadlines, fees or daily targets. On their side the shared project arrives as a copy they can edit, analyze and pass on. Only the account signed in with the recipient email can open the link.
+        </p>
+        <label class="setting-label" for="share-vlasnik">Your name (shown to the recipient)</label>
+        <input id="share-vlasnik" type="text" maxlength="80" autocomplete="off" placeholder="e.g. Ana Horvat">
+        <label class="share-modal-datoteka" for="share-ukljuci-datoteku">
+          <input id="share-ukljuci-datoteku" type="checkbox" checked>
+          <span>Include the original document</span>
+        </label>
+        <p id="share-datoteka-napomena" class="share-modal-napomena"></p>
+        <label class="setting-label" for="share-primatelj">Recipient email</label>
+        <input id="share-primatelj" type="email" autocomplete="off" placeholder="editor@example.com" aria-describedby="share-primatelj-napomena">
+        <p id="share-primatelj-napomena" class="share-modal-napomena">
+          The recipient must register with this address. The link expires after 30 days and you can revoke it at any time.
+        </p>
+        <div id="share-rezultat" class="share-link-result" hidden>
+          <label class="setting-label" for="share-rezultat-veza">Share link (valid until <span id="share-rezultat-rok"></span>)</label>
+          <div class="share-link-row">
+            <input id="share-rezultat-veza" type="text" readonly autocomplete="off">
+            <button type="button" id="share-kopiraj" class="btn-secondary">Copy</button>
+          </div>
+          <p class="share-modal-napomena">
+            This link is personal to the recipient's email address. You can revoke it at any time by deleting the share.
+          </p>
+        </div>
+        <div id="share-postojeca" class="share-existing" hidden></div>
+        <div id="share-modal-status" class="share-modal-status" role="status" aria-live="polite"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="share-posalji" class="btn-primary">Create share link</button>
+        <button type="button" id="share-izvezi" class="btn-secondary">Export package (.json)</button>
+        <button type="button" id="share-zatvori" class="btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="file" id="share-unos-datoteke" accept="application/json,.json" class="sakriveno" aria-hidden="true" tabindex="-1">
+
+<!-- Modal za uređivanje primljene kopije (preuzmi tekst, učitaj svoju verziju) -->
+<div id="modal-uredi-kopiju" class="sakriveno" tabindex="-1" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="uredi-modal-naslov">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <p class="share-modal-kicker">Shared project</p>
+          <h2 class="modal-title" id="uredi-modal-naslov">Edit my copy</h2>
+          <p class="share-modal-project" id="uredi-modal-projekt"></p>
+          <p class="share-modal-napomena" id="uredi-sazetak"></p>
+        </div>
+        <button type="button" class="uredi-modal-close" aria-label="Close edit dialog">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="share-modal-info">
+          Download the text, edit it in your word processor, then upload the saved document. Your version is analyzed under this same project; the analysis you received stays available for comparison.
+        </p>
+        <div class="uredi-actions">
+          <button type="button" id="uredi-preuzmi-tekst" class="btn-secondary">Download translation text (.txt)</button>
+          <button type="button" id="uredi-preuzmi-datoteku" class="btn-secondary">Download original document</button>
+        </div>
+        <p class="share-modal-napomena" id="uredi-datoteka-napomena">
+          This share did not include a binary document; the text above is all you need to edit.
+        </p>
+        <label class="setting-label" for="uredi-unos-datoteke">Upload your edited document (.docx, .odt, .rtf, .txt)</label>
+        <input id="uredi-unos-datoteke" type="file" accept=".docx,.odt,.rtf,.txt">
+        <label class="uredi-checkbox" for="uredi-zadrzi-analizu">
+          <input id="uredi-zadrzi-analizu" type="checkbox" checked>
+          <span>Keep the received analysis for comparison</span>
+        </label>
+        <div id="uredi-status" class="share-modal-status" role="status" aria-live="polite"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="uredi-spremi" class="btn-primary">Save &amp; analyze my edit</button>
+        <button type="button" id="uredi-zatvori" class="btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal za prikaz cijelog glosara -->
 <div id="modal-glosar" class="sakriveno" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">

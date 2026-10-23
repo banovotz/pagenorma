@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pagenorma-v37';
+const CACHE_NAME = 'pagenorma-v40';
 const  ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -22,6 +22,9 @@ const  ASSETS_TO_CACHE = [
  './src/features/projects/projects.ui.js',
  './src/features/projects/projects.js',
  './src/features/projects/projectProgress.js',
+ './src/features/projects/share.js',
+ './src/features/projects/share.api.js',
+ './src/features/projects/share.ui.js',
  './src/features/pdf-parser/pdf.parser.js',
  './src/features/subscription/subscription.js',
  './src/features/subscription/analysisQuota.js',
