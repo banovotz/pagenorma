@@ -10,37 +10,47 @@
 
 (function () {
   const DB_NAME = 'pagenormaDB';
-  const DB_VERSION = 8;
   const STORE_NAME = 'projekti';
   const UNOSI_STORE = 'unosi';
   const INTERLINEARNI_STORE = 'interlinearnitekst';
+  const ARHIVA_ANALIZA_STORE = 'arhivaAnaliza';
   const DEMO_DATA_URL = '/app/public/demo-project.json';
   const APP_URL = '/app/';
   const REDIRECT_DELAY_MS = 1800;
 
+  // Shema mora ostati identična onoj u app/src/core/db.js. Namjerno se NE
+  // otvara s brojem verzije: aplikacija u /app/ smije podići DB_VERSION
+  // neovisno od ove stranice, a otvaranje sa zastarjelom verzijom ruši
+  // IndexedDB s VersionError. Bez verzije se koristi postojeća baza, a nova
+  // nastaje kao verzija 1 i odmah dobije sve storeove.
+  function osigurajShemu(db) {
+    if (!db.objectStoreNames.contains(STORE_NAME)) {
+      db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+    }
+
+    if (!db.objectStoreNames.contains(UNOSI_STORE)) {
+      const unosiStore = db.createObjectStore(UNOSI_STORE, { keyPath: 'id' });
+      unosiStore.createIndex('projektId', 'projektId', { unique: false });
+    }
+
+    if (!db.objectStoreNames.contains(INTERLINEARNI_STORE)) {
+      db.createObjectStore(INTERLINEARNI_STORE, { keyPath: 'projektId' });
+    }
+
+    if (!db.objectStoreNames.contains(ARHIVA_ANALIZA_STORE)) {
+      db.createObjectStore(ARHIVA_ANALIZA_STORE, { keyPath: 'projektId' });
+    }
+
+    if (db.objectStoreNames.contains('glosari')) {
+      db.deleteObjectStore('glosari');
+    }
+  }
+
   function otvoriBazu() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      const request = indexedDB.open(DB_NAME);
 
-      // Shema mora ostati identična onoj u app/src/core/db.js kako bi oba
-      // mjesta (landing i app) dijelila istu bazu bez konflikta verzija.
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-
-        if (!db.objectStoreNames.contains(STORE_NAME)) {
-          db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-        }
-
-        if (!db.objectStoreNames.contains(UNOSI_STORE)) {
-          const unosiStore = db.createObjectStore(UNOSI_STORE, { keyPath: 'id' });
-          unosiStore.createIndex('projektId', 'projektId', { unique: false });
-        }
-
-        if (!db.objectStoreNames.contains(INTERLINEARNI_STORE)) {
-          db.createObjectStore(INTERLINEARNI_STORE, { keyPath: 'projektId' });
-        }
-      };
-
+      request.onupgradeneeded = (event) => osigurajShemu(event.target.result);
       request.onsuccess = (event) => resolve(event.target.result);
       request.onerror = (event) => reject(event.target.error);
     });
