@@ -5051,6 +5051,7 @@ button.glossary-quality-badge:focus-visible {
   display: flex;
 }
 
+#modal-dijeljenje .modal-dialog,
 #modal-uredi-kopiju .modal-dialog {
   width: min(620px, 100%);
   max-width: none;
