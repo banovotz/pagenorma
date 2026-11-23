@@ -53,7 +53,7 @@ description: pagenorma is a browser-based workspace for literary translation man
   <!-- Hero Sadržaj -->
   <div class="container hero-content" data-parallax="-0.08">
     <h1 class="hero-title">
-      Translating Prose or Articles?<br>
+      Streamline your literary translation workflow?<br>
       <span class="hero-title-highlight">Use The Translator's Quiet Studio → </span> <u>pagenorma</u>
     </h1>
     <p class="hero-description">
@@ -149,22 +149,24 @@ description: pagenorma is a browser-based workspace for literary translation man
     <div class="grid-three-col">
       {% for feat in features.features_list %}
         <div class="feature-card" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s">
-          {% if feat.badge %}
-            <span class="feature-badge">{{ feat.badge }}</span>
-          {% endif %}
-          
-          <h3 class="feature-title">{{ feat.title }}</h3>
-          <p class="feature-description">{{ feat.description }}</p>
-
-          <!-- Prostor za Mockup / Screenshot -->
-          <div class="feature-mockup-wrapper">
-            {% if feat.image %}
-              <img src="{{ feat.image | relative_url }}" alt="{{ feat.title }} screenshot" class="feature-mockup-img" loading="lazy">
-            {% else %}
-              <div class="feature-mockup-placeholder">
-                <span>App Screenshot Placeholder</span>
-              </div>
+          <div class="feature-card-page">
+            {% if feat.badge %}
+              <span class="feature-badge">{{ feat.badge }}</span>
             {% endif %}
+
+            <h3 class="feature-title">{{ feat.title }}</h3>
+            <p class="feature-description">{{ feat.description }}</p>
+
+            <!-- Prostor za Mockup / Screenshot -->
+            <div class="feature-mockup-wrapper">
+              {% if feat.image %}
+                <img src="{{ feat.image | relative_url }}" alt="{{ feat.title }} screenshot" class="feature-mockup-img" loading="lazy">
+              {% else %}
+                <div class="feature-mockup-placeholder">
+                  <span>App Screenshot Placeholder</span>
+                </div>
+              {% endif %}
+            </div>
           </div>
         </div>
       {% endfor %}

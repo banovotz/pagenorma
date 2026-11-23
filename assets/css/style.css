@@ -152,23 +152,6 @@ body {
 }
 
 /* ==========================================================================
-   Features Section
-   ========================================================================== */
-.feature-card {
-  background: var(--color-bg-card);
-  padding: 2.2rem;
-  border-radius: var(--border-radius);
-  border-left: 4px solid var(--color-primary);
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-}
-
-/* ==========================================================================
    Comparison Table
    ========================================================================== */
 .comparison-table-wrapper {
@@ -594,21 +577,100 @@ body {
 
 /* Feature Cards & Mockup Container */
 .feature-card {
-  background: var(--color-bg-card);
-  padding: 2.2rem;
+  background: transparent;
+  padding: 0;
   border-radius: var(--border-radius);
-  border-left: 4px solid var(--color-primary);
-  box-shadow: var(--shadow-soft);
+  border-right: 0;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .feature-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  z-index: 0;
+  width: 18px;
+  border: 1px solid rgba(31, 51, 57, 0.12);
+  border-right: 0;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  background:
+    linear-gradient(90deg, rgba(217, 226, 222, 0.9), rgba(255, 255, 255, 0.96)),
+    repeating-linear-gradient(180deg, #fff 0 3px, #dce5e1 3px 4px);
+  box-shadow: -2px 2px 5px rgba(22, 45, 50, 0.08);
+  pointer-events: none;
+}
+
+.feature-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -14px;
+  bottom: 0;
+  z-index: 2;
+  width: 18px;
+  border: 2px solid var(--color-primary);
+  border-left: 0;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  background: linear-gradient(
+    90deg,
+    transparent calc(100% - 4px),
+    var(--color-primary) calc(100% - 4px)
+  );
+  pointer-events: none;
+}
+
+.feature-card-page {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  margin-left: 10px;
+  padding: 2.2rem;
+  border-radius: var(--border-radius);
+  background: var(--color-bg-card);
+  border: 1px solid rgba(31, 51, 57, 0.14);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    2px 2px 0 rgba(255, 255, 255, 0.95),
+    4px 4px 0 rgba(223, 231, 229, 0.9),
+    7px 9px 16px rgba(22, 45, 50, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+
+.feature-card-page::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  right: -14px;
+  bottom: 7px;
+  z-index: -1;
+  width: 20px;
+  border: 1px solid rgba(31, 51, 57, 0.12);
+  border-left: 0;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  background:
+    linear-gradient(90deg, #fff 0%, #f5f7f5 100%),
+    repeating-linear-gradient(180deg, #fff 0 3px, #dce5e1 3px 4px);
+  box-shadow: 2px 3px 6px rgba(22, 45, 50, 0.08);
+  pointer-events: none;
+}
+
+.feature-card:hover .feature-card-page {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    2px 2px 0 rgba(255, 255, 255, 0.95),
+    4px 4px 0 rgba(223, 231, 229, 0.9),
+    9px 12px 20px rgba(22, 45, 50, 0.18);
 }
 
 .feature-mockup-wrapper {
@@ -631,6 +693,39 @@ body {
 
 .feature-card:hover .feature-mockup-img {
   transform: scale(1.02);
+}
+
+.section-features .grid-three-col {
+  perspective: 1200px;
+}
+
+.js-effects .section-features .feature-card.is-visible {
+  opacity: 1;
+  animation: none;
+}
+
+.js-effects .section-features .feature-card.is-visible .feature-card-page {
+  transform-origin: left center;
+  backface-visibility: hidden;
+  animation: feature-page-turn 0.9s backwards cubic-bezier(0.22, 0.61, 0.36, 1)
+    calc(var(--reveal-delay, 0s) + 0.2s);
+}
+
+@keyframes feature-page-turn {
+  from {
+    opacity: 0;
+    transform: rotateY(-68deg) translateY(12px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) translateY(0);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.08),
+      2px 2px 0 rgba(255, 255, 255, 0.95),
+      4px 4px 0 rgba(223, 231, 229, 0.9),
+      7px 9px 16px rgba(22, 45, 50, 0.12);
+  }
 }
 
 .feature-mockup-placeholder {
