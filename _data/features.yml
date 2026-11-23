@@ -17,13 +17,13 @@ features_list:
 
   - id: "multilanguage"
     title: "Support Translation in Multiple Languages"
-    description: "<strong>Translate in multiple languages.</strong> The app supports <strong>all latin scripts</strong> and provides <strong>intuitive tools</strong> such as side-by-side view, searchable glossary of all terms with concordance, and smart AI commmentary for managing translations regardles of source and translation language."
+    description: "The app supports <strong>all latin scripts</strong> and provides <strong>intuitive tools</strong> such as side-by-side view, searchable glossary of all terms with concordance, and smart QA commmentary regardles of source and translation language."
     badge: "Multi-language"
     image: "/assets/images/mockup5.jpeg"
 
   - id: "analysis"
-    title: "Deep Textual & Concordance Analysis"
-    description: "<strong>Maintain terminology consistency</strong> across a 100,000-word manuscript. Generate glossary with all the terms used in your text, analyze phrase/term occurrences, and run <strong>concordance checks</strong> between source text and your translation without losing context."
+    title: "Deep Translation QA & Glossary Analysis"
+    description: "<strong>Maintain terminology consistency</strong> across a 100,000-word manuscript. Generate glossary with all the terms used in your text, analyze phrase/term occurrences, and run <strong>QA checks</strong> between source text and your translation without losing context."
     badge: "Concordance"
     image: "/assets/images/mockup8.jpeg"
 
