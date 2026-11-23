@@ -1,12 +1,12 @@
 ---
 layout: page
 title: Frequently asked questions
-description: Quick answers about pagenorma, the workspace for literary translators.
+description: Quick answers about pagenorma, a workspace for literary translation management and literary translation QA.
 permalink: /faq/
 ---
 
 <h1 class="support-title">Frequently asked questions</h1>
-<p class="faq-intro">Quick answers about pagenorma. Need more detail? Browse the <a href="{{ '/support/' | relative_url }}">support articles</a>.</p>
+<p class="faq-intro">pagenorma is a workspace for literary translation management and literary translation QA. Find quick answers below, or browse the <a href="{{ '/support/' | relative_url }}">support articles</a>.</p>
 
 <div class="faq-toolbar">
   <button type="button" id="faq-expand">Expand all</button>

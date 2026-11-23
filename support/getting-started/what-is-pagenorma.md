@@ -1,7 +1,7 @@
 ---
 layout: support-article
 title: What is pagenorma?
-description: An overview of pagenorma, the browser-based workspace for literary translators, and a quick tour of its main screens.
+description: An overview of pagenorma, a browser-based workspace for literary translation management and literary translation QA.
 category: Getting Started
 category_slug: getting-started
 permalink: /support/getting-started/what-is-pagenorma/
@@ -12,7 +12,7 @@ last_modified_at: '2026-10-20'
 related: [/support/getting-started/plans-pagenorma-s-and-qs/, /support/projects/create-a-project/, /support/account/create-an-account/]
 ---
 
-pagenorma is a browser-based workspace for literary translators. It helps you plan a translation, keep an eye on your pace and deadline, see what you will earn, and compare your translation with the original — with AI commentary, a searchable glossary and a thesaurus alongside.
+pagenorma is a browser-based workspace for literary translation management and literary translation QA. It helps you plan a translation, keep an eye on your pace and deadline, see what you will earn, and compare your translation with the original — with AI analysis and smart QA commentary, a searchable glossary and a thesaurus alongside.
 
 You use it at [pagenorma.eu/app](https://pagenorma.eu/app/) in any modern browser. It is a progressive web app, so you can also [install it like an app]({% link support/getting-started/install-pagenorma-as-an-app.md %}).
 
@@ -31,7 +31,7 @@ Open the menu (the ☰ button on small screens) to move between screens.
 |---|---|
 | **Dashboard** | Your projects, progress, pace and earnings. Start a **New Project** here. |
 | **Financial Analytics** | Monthly net earnings for the year you choose. |
-| **Translation Analyses** | Your saved AI analyses and the side-by-side view. |
+| **Translation Analyses** | Your saved AI QA analyses and the side-by-side view. |
 | **Thesaurus** | Synonyms grouped by part of speech, in 14 languages. |
 | **Settings** | Deductions, Hugging Face, Google Docs and database backup. |
 | **Login / Profile** | Sign in, or manage your account once you are signed in. |

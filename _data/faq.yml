@@ -7,13 +7,13 @@
     - id: what-is-pagenorma
       question: What is pagenorma and who is it for?
       answer: |
-        pagenorma is a browser-based workspace for literary translators. It tracks your pace, deadline and earnings, and lets you compare your translation with the original using AI commentary, a glossary and a thesaurus.
+        pagenorma is a browser-based workspace for literary translation management and literary translation QA. It helps literary translators track their pace, deadlines and earnings, and compare a translation with its original using smart QA commentary, a glossary and a thesaurus.
       links:
         - {title: "What is pagenorma?", url: /support/getting-started/what-is-pagenorma/}
     - id: is-it-free
       question: Is pagenorma free?
       answer: |
-        Every account starts on **pagenorma S**, which is free. It includes a monthly allowance of AI use: 5 analysis pages, 5 glossary pages and 100 thesaurus searches. **pagenorma QS** has no monthly limits. Buying extra tokens is not available yet.
+        Every account starts on **pagenorma S**, which is free. It includes a monthly allowance of AI use: 5 QA analysis pages, 5 glossary pages and 100 thesaurus searches. **pagenorma QS** has no monthly limits. Buying extra tokens is not available yet.
       links:
         - {title: "pagenorma S and pagenorma QS", url: /support/getting-started/plans-pagenorma-s-and-qs/}
     - id: s-vs-qs
