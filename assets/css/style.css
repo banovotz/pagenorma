@@ -707,8 +707,8 @@ body {
 .js-effects .section-features .feature-card.is-visible .feature-card-page {
   transform-origin: left center;
   backface-visibility: hidden;
-  animation: feature-page-turn 0.9s backwards cubic-bezier(0.22, 0.61, 0.36, 1)
-    calc(var(--reveal-delay, 0s) + 0.2s);
+  animation: feature-page-turn 0.9s backwards cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-delay: var(--page-turn-delay, 0.2s);
 }
 
 @keyframes feature-page-turn {
