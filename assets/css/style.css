@@ -216,6 +216,18 @@ body {
   text-decoration: none;
 }
 
+/* Footer links are stacked <p><a> pairs; give each anchor a real 44px target. */
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+}
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.25rem;
+}
 
 .footer-subtext {
   /* 5.5:1 on --color-dark-bg; #6b7280 was only 3.67:1. */
