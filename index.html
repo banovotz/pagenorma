@@ -39,6 +39,10 @@ description: pagenorma is a browser-based workspace for literary translation man
 <section class="hero-section">
   <!-- Inline SVG background (animated with CSS, parallax via JS) -->
   <div class="hero-bg-picture" data-parallax="0.35">
+    <picture class="hero-bg-raster">
+      <source srcset="{{ '/assets/images/hero-mobile.webp' | relative_url }}" type="image/webp">
+      <img src="{{ '/assets/images/hero-mobile.jpg' | relative_url }}" alt="" aria-hidden="true">
+    </picture>
     {% include hero-background.html %}
   </div>
 

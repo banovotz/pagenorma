@@ -1,6 +1,6 @@
 # Promo banner shown at the top of the homepage (index.html).
 # Set `live` to false to hide the banner without deleting the content.
-live: true
+live: false
 teaser: "Explore advanced features of pagenorma with <strong>free voucher</strong> code:"
 voucher_code: "WELCOME1"
 link: "/app"
