@@ -1,6 +1,6 @@
 section_id: "problem"
 heading: "A tool designed by a literary translator, <strong>specifically for their peers</strong>,"
-subheading: "...built arround questions every translators has when a translation project ramps up:"
+subheading: "...built around questions every translators has when a translation project ramps up:"
 
 pain_points:
   - id: "how-long"
@@ -10,7 +10,7 @@ pain_points:
 
   - id: "how-much"
     title: "How much will I make?"
-    description: "pagenorma <strong>calculates</strong> your gross earnings with built-in deduction tracking for taxes, pension, and health insurancece giving you a <strong>realistic view</strong> of your true net income."
+    description: "pagenorma <strong>calculates</strong> your gross earnings with built-in deduction tracking for taxes, pension, and health insurance giving you a <strong>realistic view</strong> of your true net income."
     icon: "pin"
 
   - id: "any-mistake"

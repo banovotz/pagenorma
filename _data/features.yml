@@ -17,7 +17,7 @@ features_list:
 
   - id: "multilanguage"
     title: "Support Translation in Multiple Languages"
-    description: "The app supports <strong>all latin scripts</strong> and provides <strong>intuitive tools</strong> such as side-by-side view, searchable glossary of all terms with concordance, and smart QA commmentary regardles of source and translation language."
+    description: "The app supports <strong>all latin scripts</strong> and provides <strong>intuitive tools</strong> such as side-by-side view, searchable glossary of all terms with concordance, and smart QA commentary regardless of source and translation language."
     badge: "Multi-language"
     image: "/assets/images/mockup5.jpeg"
 
@@ -28,7 +28,7 @@ features_list:
     image: "/assets/images/mockup8.jpeg"
 
   - id: "metrics"
-    title: "Track Monthly Earnings Accross All Projects"
+    title: "Track Monthly Earnings Across All Projects"
     description: "Ditch manual spreadsheet formulas. <strong>Automatically calculate your earnings</strong> for each project/month with <strong>crystal-clear overview of your income for each translation project.</strong>"
     badge: "Financial Analytics"
     image: "/assets/images/mockup4.jpeg"
