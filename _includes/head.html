@@ -58,6 +58,11 @@
   <!-- Glavni CSS -->
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
+  <!-- Below-the-fold fonts (Lora italic + diacritics): non-render-blocking so
+       they never extend the LCP critical path. -->
+  <link rel="stylesheet" href="{{ '/assets/css/fonts-deferred.css' | relative_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ '/assets/css/fonts-deferred.css' | relative_url }}"></noscript>
+
   <!-- Prije painta: uključi parallax/reveal stilove samo ako JS radi i korisnik
        nije zatražio smanjenu animaciju (prefers-reduced-motion). -->
   <script>

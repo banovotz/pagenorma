@@ -18,13 +18,14 @@ Both fonts are licensed under the SIL Open Font License 1.1; copies are in
 
 The `*-extended.woff2` files exist because the only Latin-extended characters
 in the site copy are the Croatian diacritics in "Davor Banović" and similar
-names. Their `unicode-range` keeps them off the critical path; the full
+names. Their `unicode-range` limits them to just those glyphs; the full
 Latin-extended subsets from Google were 85 KiB + 20 KiB + 12 KiB for the same
 handful of glyphs.
 
-`@font-face` rules live at the top of `../css/style.css`. The preload hints in
-`_includes/head.html` point at the two Latin files used above the fold; if a
-filename changes, update those hints too.
+The two above-the-fold `@font-face` rules live at the top of `../css/style.css`
+and are preloaded in `_includes/head.html`. The italic and diacritic faces live
+in `../css/fonts-deferred.css`, loaded from a `media="print"` stylesheet so they
+are not on the LCP critical path. If a filename changes, update both places.
 
 ## Regenerating
 
