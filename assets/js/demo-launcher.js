@@ -1,9 +1,10 @@
 // ============================================================================
 // DEMO PROJECT LAUNCHER (landing page)
 // ============================================================================
-// Pokreće se klikom na hero CTA "Start With Demo Project". Provjerava postoji
-// li već postojeći IndexedDB unutar preglednika (ista shema koju koristi
-// aplikacija u /app/src/core/db.js) i, ovisno o stanju, ili automatski uvozi
+// Pokreće se klikom na bilo koji CTA s klasom .js-demo-cta (hero, navigacija,
+// među-CTA i završni CTA). Provjerava postoji li već postojeći IndexedDB unutar
+// preglednika (ista shema koju koristi aplikacija u /app/src/core/db.js) i,
+// ovisno o stanju, ili automatski uvozi
 // demo projekt pa korisnika prebacuje na dashboard, ili traži potvrdu ako bi
 // uvoz prepisao postojeće podatke korisnika.
 // ============================================================================
@@ -305,11 +306,13 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('btn-launch-demo');
-    if (!btn) return;
-    btn.addEventListener('click', (event) => {
-      event.preventDefault();
-      pokreniDemoTok();
+    // The id is kept for backwards compatibility; all CTAs use .js-demo-cta.
+    const buttons = document.querySelectorAll('.js-demo-cta, #btn-launch-demo');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        pokreniDemoTok();
+      });
     });
   });
 })();

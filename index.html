@@ -51,23 +51,29 @@ description: pagenorma is a browser-based workspace for literary translation man
 
   <!-- Hero Sadržaj -->
   <div class="container hero-content" data-parallax="-0.08">
-    <h1 class="hero-title">
-      Streamline your literary translation workflow?<br>
-      <span class="hero-title-highlight">Use The Translator's Quiet Studio → </span> <u>pagenorma</u>
-    </h1>
-    <p class="hero-description">
-<div class="hero-feature-summary">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-eyebrow">Built for literary translators</span>
+        <h1 class="hero-title">Know where you stand on every translation — <span class="hero-title-highlight">pace, pay, and prose.</span></h1>
+        <p class="hero-description">
+          A browser-based workspace for literary translators: daily pace targets, real net earnings,
+          and side-by-side QA that never rewrites your text.
+        </p>
 
-   <p class="hero-lead-text"><b>pagenorma is</b> a workspace for <strong>literary translation management</strong> and <strong>literary translation QA</strong>.</p>
-   <p class="hero-lead-text"><b>Follow</b> your <strong>progress</strong>  and gain <strong>clear visibility</strong> over deadlines.</p>
-   <p class="hero-lead-text"><b>View</b> the original and your translation side-by-side with <strong>glossary</strong> and <strong>concordance</strong>.</p>
-   <p class="hero-lead-text"><b>Refine</b> your work with the help of <strong>inline AI commentary</strong> that never alters your text.</p>
-</div>
+        <div class="hero-actions">
+          <a href="/app" id="btn-launch-demo" class="btn-primary js-demo-cta" data-cta="hero">Explore the demo project</a>
+          <a href="{{ '/#features' | relative_url }}" class="btn-secondary" data-cta="hero-secondary">See the features</a>
+        </div>
+        <p class="hero-note">Opens a sample project — your own projects are never replaced without asking.</p>
+        <p class="hero-trust-inline">Free to start · No credit card · Manuscripts stay on your device</p>
+      </div>
 
-
-    <div class="hero-actions">
-      <a href="/app" id="btn-launch-demo" class="btn-primary">Start With Demo Project</a>
-         </div>
+      <div class="hero-visual">
+        <img class="hero-screenshot" src="{{ '/assets/images/mockup1.jpeg' | relative_url }}"
+             alt="pagenorma dashboard showing project progress, required daily pace and earnings"
+             width="1376" height="768" fetchpriority="high">
+      </div>
+    </div>
   </div>
 </section>
 
@@ -87,6 +93,24 @@ description: pagenorma is a browser-based workspace for literary translation man
   requestAnimationFrame(injectParallax);
   setTimeout(injectParallax, 200);
 </script>
+
+<!-- TRUST STRIP -->
+{% assign trust = site.data.trust %}
+<section class="trust-strip" aria-label="Why translators choose pagenorma">
+  <div class="container">
+    <ul class="trust-list">
+      {% for item in trust.items %}
+        <li class="trust-item" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.08 }}s">
+          <svg class="trust-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m8 12 2.5 2.5L16 9"></path>
+          </svg>
+          <span>{{ item.text }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
 
 <!-- PROBLEM / EMPATHY SECTION -->
 {% assign problem = site.data.problem %}
@@ -116,36 +140,32 @@ description: pagenorma is a browser-based workspace for literary translation man
   </div>
 </section>
 
-<!-- THE STORY SECTION -->
-{% assign story = site.data.story %}
-<section id="{{ story.section_id }}" class="section-story">
-  <span class="deco-orb deco-orb-d" data-parallax="-0.09" aria-hidden="true"></span>
-  <div class="container story-container">
-    <div class="story-content" data-reveal>
-      {% if story.badge %}
-        <span class="story-badge">{{ story.badge }}</span>
-      {% endif %}
-      <h2 class="section-title story-title">{{ story.heading }}</h2>
-      <p class="story-subheading">{{ story.subheading }}</p>
+<!-- HOW IT WORKS -->
+{% assign steps = site.data.how_it_works %}
+<section id="{{ steps.section_id }}" class="section-how">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <h2 class="section-title">{{ steps.heading }}</h2>
+      <p class="section-subheading">{{ steps.subheading }}</p>
+    </div>
 
-      <div class="story-body">
-        {% for paragraph in story.paragraphs %}
-          <p>{{ paragraph.text }}</p>
-        {% endfor %}
-      </div>
-
-      {% if story.quote %}
-        <blockquote class="story-quote" data-reveal style="--reveal-delay: 0.15s">
-          <p>“{{ story.quote.text }}”</p>
-          <cite>
-            <strong>{{ story.quote.author }}</strong>
-            <span>{{ story.quote.role }}</span>
-          </cite>
-        </blockquote>
-      {% endif %}
+    <div class="grid-three-col">
+      {% for step in steps.steps %}
+        <div class="step-card" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s">
+          <span class="step-number">{{ forloop.index }}</span>
+          <img class="step-image" src="{{ step.image | relative_url }}" alt="{{ step.title }}" loading="lazy">
+          <h3 class="step-title">{{ step.title }}</h3>
+          <p class="step-description">{{ step.description }}</p>
+          {% if step.link_title and step.link_url %}
+            <a class="step-link" href="{{ step.link_url | relative_url }}">{{ step.link_title }} →</a>
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
   </div>
 </section>
+
+<!-- The founder story now sits below the mid-page CTA as a compact proof section. -->
 
 <!-- UNIQUE VALUE PROPOSITION & FEATURES SECTION -->
 {% assign features = site.data.features %}
@@ -157,36 +177,92 @@ description: pagenorma is a browser-based workspace for literary translation man
       <p class="section-subheading">{{ features.subheading }}</p>
     </div>
 
-    <div class="grid-three-col">
+    <!-- Core benefits get a full-width, alternating image/text row. -->
+    <div class="feature-rows">
       {% for feat in features.features_list %}
-        <div class="feature-card" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s; --page-turn-delay: {{ forloop.index0 | times: 0.12 | plus: 0.2 }}s">
-          <div class="feature-card-page">
-            {% if feat.badge %}
-              <span class="feature-badge">{{ feat.badge }}</span>
-            {% endif %}
-
-            <h3 class="feature-title">{{ feat.title }}</h3>
-            <p class="feature-description">{{ feat.description }}</p>
-
-            <!-- Prostor za Mockup / Screenshot -->
-            <div class="feature-mockup-wrapper">
-              {% if feat.image %}
-                <img src="{{ feat.image | relative_url }}" alt="{{ feat.title }} screenshot" class="feature-mockup-img" loading="lazy">
-              {% else %}
-                <div class="feature-mockup-placeholder">
-                  <span>App Screenshot Placeholder</span>
-                </div>
+        {% if feat.featured %}
+          <div class="feature-row" data-reveal>
+            <div class="feature-row-copy">
+              {% if feat.badge %}
+                <span class="feature-row-badge">{{ feat.badge }}</span>
               {% endif %}
+              <h3 class="feature-row-title">{{ feat.title }}</h3>
+              <p class="feature-row-description">{{ feat.description }}</p>
+            </div>
+            <div class="feature-row-visual">
+              <img src="{{ feat.image | relative_url }}" alt="{{ feat.title }} screenshot" loading="lazy">
             </div>
           </div>
-        </div>
+        {% endif %}
       {% endfor %}
+    </div>
+
+    <h3 class="compact-features-title" data-reveal>Also built in</h3>
+    <div class="grid-three-col">
+      {% for feat in features.features_list %}
+        {% unless feat.featured %}
+          <div class="feature-card" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s; --page-turn-delay: {{ forloop.index0 | times: 0.12 | plus: 0.2 }}s">
+            <div class="feature-card-page">
+              {% if feat.badge %}
+                <span class="feature-badge">{{ feat.badge }}</span>
+              {% endif %}
+
+              <h3 class="feature-title">{{ feat.title }}</h3>
+              <p class="feature-description">{{ feat.description }}</p>
+
+              <div class="feature-mockup-wrapper">
+                <img src="{{ feat.image | relative_url }}" alt="{{ feat.title }} screenshot" class="feature-mockup-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- MID-PAGE CALL TO ACTION -->
+<section class="section-cta section-cta-inline">
+  <div class="container cta-container" data-reveal>
+    <h2 class="cta-title">See it on a real book project.</h2>
+    <p class="cta-description">Load a sample manuscript and explore pacing, earnings and side-by-side QA right away.</p>
+    <div class="hero-actions">
+      <a href="/app" class="btn-primary js-demo-cta" data-cta="mid-page">Explore the demo project</a>
+      <a href="{{ '/#comparison' | relative_url }}" class="btn-secondary" data-cta="mid-page-secondary">See the comparison</a>
+    </div>
+    <p class="cta-note">No sign-up needed to look around.</p>
+  </div>
+</section>
+
+<!-- FOUNDER PROOF -->
+{% assign story = site.data.story %}
+<section id="{{ story.section_id }}" class="section-story section-story-compact">
+  <span class="deco-orb deco-orb-d" data-parallax="-0.09" aria-hidden="true"></span>
+  <div class="container story-container" data-reveal>
+    <div class="story-content">
+      {% if story.badge %}
+        <span class="story-badge">{{ story.badge }}</span>
+      {% endif %}
+      <h2 class="section-title story-title">{{ story.heading }}</h2>
+      <p class="story-subheading">{{ story.summary }}</p>
+
+      {% if story.quote %}
+        <blockquote class="story-quote">
+          <p>“{{ story.quote.text }}”</p>
+          <cite>
+            <strong>{{ story.quote.author }}</strong>
+            <span>{{ story.quote.role }}</span>
+          </cite>
+        </blockquote>
+      {% endif %}
     </div>
   </div>
 </section>
 
 <!-- FEATURE COMPARISON MATRIX SECTION -->
 {% assign comp = site.data.comparison %}
+{% assign visible_rows = comp.rows | slice: 0, 6 %}
+{% assign extra_rows = comp.rows | slice: 6, 99 %}
 <section id="{{ comp.section_id }}" class="section-comparison">
   <div class="container">
     <div class="section-header" data-reveal>
@@ -195,32 +271,73 @@ description: pagenorma is a browser-based workspace for literary translation man
     </div>
 
     <div class="table-responsive" data-reveal style="--reveal-delay: 0.15s">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            {% for col in comp.columns %}
-              <th>
-                {% if col.key == 'our_app' %}
-                  <strong>{{ comp.app_name }}</strong>
-                {% else %}
-                  {{ col.label }}
-                {% endif %}
-              </th>
-            {% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in comp.rows %}
-            <tr>
-              <td class="col-feature">{{ row.feature }}</td>
-              <td class="col-muted">{{ row.cat_tools }}</td>
-              <td class="col-muted">{{ row.spreadsheets }}</td>
-              <td class="col-highlight">{{ row.our_app }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      {% include comparison-table.html rows=visible_rows %}
     </div>
+
+    {% if extra_rows.size > 0 %}
+      <details class="comparison-more" data-reveal>
+        <summary>Show all {{ comp.rows.size }} comparisons</summary>
+        <div class="table-responsive">
+          {% include comparison-table.html rows=extra_rows %}
+        </div>
+      </details>
+    {% endif %}
+  </div>
+</section>
+
+<!-- OBJECTIONS / QUICK FAQ -->
+<section id="home-faq" class="section-home-faq">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <h2 class="section-title">The questions translators ask first</h2>
+      <p class="section-subheading">Straight answers, so you can try it without second-guessing.</p>
+    </div>
+
+    <div class="home-faq-list" data-reveal>
+      {% for item in site.data.home_faq %}
+        <details class="faq-item" name="home-faq">
+          <summary>{{ item.question }}</summary>
+          <div class="faq-answer">
+            <p>{{ item.answer }}</p>
+            {% if item.link_title and item.link_url %}
+              <p><a href="{{ item.link_url | relative_url }}">{{ item.link_title }} →</a></p>
+            {% endif %}
+          </div>
+        </details>
+      {% endfor %}
+    </div>
+
+    <p class="home-faq-more">Still curious? <a href="{{ '/faq/' | relative_url }}">Browse the full FAQ</a>.</p>
+  </div>
+</section>
+
+<!-- ACCESS / PLANS -->
+{% assign access = site.data.access %}
+<section id="{{ access.section_id }}" class="section-access">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <h2 class="section-title">{{ access.heading }}</h2>
+      <p class="section-subheading">{{ access.subheading }}</p>
+    </div>
+
+    <div class="access-grid">
+      {% for plan in access.plans %}
+        <div class="access-card" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s">
+          <h3 class="access-plan-name">{{ plan.name }}</h3>
+          <p class="access-plan-price">{{ plan.price }}</p>
+          <ul class="access-list">
+            {% for point in plan.points %}
+              <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+          {% if plan.link_title and plan.link_url %}
+            <a class="step-link" href="{{ plan.link_url | relative_url }}">{{ plan.link_title }} →</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <p class="access-note">{{ access.note }}</p>
   </div>
 </section>
 
@@ -228,11 +345,14 @@ description: pagenorma is a browser-based workspace for literary translation man
 <section class="section-cta">
   <span class="deco-orb deco-orb-f" data-parallax="-0.12" aria-hidden="true"></span>
   <div class="container cta-container" data-reveal>
-    <h2 class="cta-title">Ready to bring structure to your manuscript workflow?</h2>
+    <h2 class="cta-title">See what your next manuscript could feel like.</h2>
     <p class="cta-description">
-      Join translators who spend less time managing spreadsheets and more time crafting prose.
+      Explore a fully populated sample project — pace targets, real net earnings and side-by-side QA included.
     </p>
-    <a href="/app" class="btn-cta">Launch Application</a>
-    <p class="cta-note">No credit card required. Works completely in your browser.</p>
+    <div class="hero-actions">
+      <a href="/app" class="btn-cta js-demo-cta" data-cta="final">Explore the demo project</a>
+      <a href="{{ '/app' | relative_url }}" class="btn-secondary" data-cta="final-secondary">Open app</a>
+    </div>
+    <p class="cta-note">Free to start · No credit card · Your own projects are never overwritten without asking.</p>
   </div>
 </section>

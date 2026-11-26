@@ -3,6 +3,9 @@ badge: "Behind the Code"
 heading: "Born Out of Real-World Literary Workflows"
 subheading: "How a literary translator built the missing tool for manuscript pacing and textual precision."
 
+# Short version used in the compact proof section on the home page.
+summary: "pagenorma was built at the translation desk to replace manual deadline math and spreadsheet tracking. It reads your active document, forecasts the pace you need, and gives you a searchable side-by-side view with inline QA."
+
 paragraphs:
   - text: "Managing multiple book translation projects across different publishing houses at the same time quickly reveals gaps in the software available to translators. Commercial CAT tools treat literature like technical manuals, while keeping track of deadlines and the tempo needed to meet them requires endless manual math. As a translator, I am constantly faced with three basic questions: <strong>Am I on track for my deadline?</strong> <strong>What are my projected earnings?</strong> and <strong>How many mistakes do I still need to fix?</strong>" 
   - text: "pagenorma was created directly at the translation desk to cut out that daily hassle. By <strong>reading directly from your active document (Word or Google Docs)</strong>, it <strong>compares your actual progress against your source file and deadline.</strong> Instead of manual calculations, you get <strong>dynamic daily targets and a real-time pace forecast.</strong> It also provides you with <strong>insights into your monthly earnings for each project.</strong>"

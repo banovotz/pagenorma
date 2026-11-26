@@ -1,0 +1,30 @@
+{% comment %}
+Renders the comparison table for a given array of rows. Used by the home page
+for the short list and the expandable "show all" list.
+{% endcomment %}
+{% assign comparison = site.data.comparison %}
+<table class="comparison-table">
+  <thead>
+    <tr>
+      {% for col in comparison.columns %}
+        <th>
+          {% if col.key == 'our_app' %}
+            <strong>{{ comparison.app_name }}</strong>
+          {% else %}
+            {{ col.label }}
+          {% endif %}
+        </th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in include.rows %}
+      <tr>
+        <td class="col-feature">{{ row.feature }}</td>
+        <td class="col-muted">{{ row.cat_tools }}</td>
+        <td class="col-muted">{{ row.spreadsheets }}</td>
+        <td class="col-highlight">{{ row.our_app }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

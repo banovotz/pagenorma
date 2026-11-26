@@ -1,0 +1,25 @@
+section_id: "access"
+heading: "Start free. Upgrade only if you want unlimited AI."
+subheading: "No credit card and no long-form contract — projects work without signing in."
+
+plans:
+  - name: "pagenorma S"
+    price: "Free"
+    points:
+      - "Project tracking, pacing and earnings without an account"
+      - "5 AI analysis pages per month"
+      - "5 glossary pages and 100 thesaurus searches per month"
+      - "AI features run through your own Hugging Face account"
+    link_title: "See what S includes"
+    link_url: "/support/getting-started/plans-pagenorma-s-and-qs/"
+
+  - name: "pagenorma QS"
+    price: "Unrestricted"
+    points:
+      - "Unlimited AI analysis, glossary and thesaurus"
+      - "No Hugging Face token needed"
+      - "The same local-first projects and backups"
+    link_title: "Ask about QS access"
+    link_url: "/contact/"
+
+note: "Only the pages you choose to analyse are sent to the AI provider; everything else stays in your browser."

@@ -13,9 +13,10 @@
         </a>
         <nav class="nav-links">
           <a href="{{ '/#problem' | relative_url }}">Why pagenorma</a>
+          <a href="{{ '/#how-it-works' | relative_url }}">How it works</a>
           <a href="{{ '/#features' | relative_url }}">Features</a>
           <a href="{{ '/#comparison' | relative_url }}">Comparison</a>
-          <a href="{{ '/app' | relative_url }}" class="btn-nav">Launch App</a>
+          <a href="{{ '/app' | relative_url }}" data-cta="nav" class="btn-nav{% if page.path == 'index.html' %} js-demo-cta{% endif %}">{% if page.path == 'index.html' %}Try the demo{% else %}Launch app{% endif %}</a>
         </nav>
       </div>
     </header>
@@ -39,5 +40,7 @@
         <p><a href="{{ '/contact/' | relative_url }}">Contact</a></p>
       </div>
     </footer>
+
+    <script src="{{ '/assets/js/cta-tracking.js' | relative_url }}" defer></script>
   </body>
 </html>

@@ -1,0 +1,20 @@
+# Short objection-handling FAQ for the home page. Full answers live in _data/faq.yml.
+- question: "Will pagenorma change my translation?"
+  answer: "No. AI commentary appears in a separate column of the side-by-side view. You make every editing decision."
+  link_title: "How the AI commentary works"
+  link_url: "/support/analysis/how-ai-commentary-works/"
+
+- question: "Where does my manuscript go?"
+  answer: "Your projects stay in this browser on your device. Only the pages you choose to analyse are sent to the AI provider."
+  link_title: "Privacy and AI processing"
+  link_url: "/support/data/privacy-and-ai-processing/"
+
+- question: "Do I need an account?"
+  answer: "Not for projects. Tracking, pacing, earnings and backups work without signing in. An account is needed for AI analysis, the glossary and the thesaurus."
+  link_title: "Create an account"
+  link_url: "/support/account/create-an-account/"
+
+- question: "What does it cost?"
+  answer: "pagenorma S is free, with 5 analysis pages, 5 glossary pages and 100 thesaurus searches per month. pagenorma QS has no monthly limits."
+  link_title: "Plans explained"
+  link_url: "/support/getting-started/plans-pagenorma-s-and-qs/"

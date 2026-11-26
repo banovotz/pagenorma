@@ -10,6 +10,7 @@ features_list:
     image: "/assets/images/mockup7.jpeg"
 
   - id: "pacing"
+    featured: true
     title: "Smart Pacing & Deadline Management"
     description: "Set your total pages or words per day <strong>target</strong>, start and end dates, and weekend preferences. Pagenorma <strong>continuously calculates your Required Daily Pace vs. your Planned Daily Pace</strong>, warning you in advance if you're falling behind schedule."
     badge: "Core Feature"
@@ -22,12 +23,14 @@ features_list:
     image: "/assets/images/mockup5.jpeg"
 
   - id: "analysis"
+    featured: true
     title: "Deep Translation QA & Glossary Analysis"
     description: "<strong>Maintain terminology consistency</strong> across a 100,000-word manuscript. Generate glossary with all the terms used in your text, analyze phrase/term occurrences, and run <strong>QA checks</strong> between source text and your translation without losing context."
     badge: "Concordance"
     image: "/assets/images/mockup8.jpeg"
 
   - id: "metrics"
+    featured: true
     title: "Track Monthly Earnings Across All Projects"
     description: "Ditch manual spreadsheet formulas. <strong>Automatically calculate your earnings</strong> for each project/month with <strong>crystal-clear overview of your income for each translation project.</strong>"
     badge: "Financial Analytics"
