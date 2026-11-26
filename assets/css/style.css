@@ -100,11 +100,6 @@ body {
   gap: 0.4rem;
 }
 
-.brand-logo .highlight {
-  color: var(--color-primary);
-  font-weight: 700;
-}
-
 .nav-links {
   display: flex;
   align-items: center;
@@ -149,11 +144,6 @@ body {
   box-shadow: 0 8px 20px rgba(0, 128, 128, 0.3);
 }
 
-.hero-section .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.25) !important;
-  transform: translateY(-2px);
-}
-
 /* ==========================================================================
    Problem Section (Pain points)
    ========================================================================== */
@@ -178,12 +168,6 @@ body {
 /* ==========================================================================
    Comparison Table
    ========================================================================== */
-.comparison-table-wrapper {
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-soft);
-  overflow: hidden;
-}
-
 .comparison-table th {
   font-family: var(--font-sans);
   letter-spacing: 0.03em;
@@ -408,17 +392,6 @@ body {
   transition: background 0.2s, transform 0.2s;
 }
 
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  padding: 0.9rem 2rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  backdrop-filter: blur(4px);
-  transition: background 0.2s, transform 0.2s;
-}
-
 /* Common Layout Helpers */
 .section-problem, .section-comparison {
   padding: 5rem 1.5rem;
@@ -457,11 +430,6 @@ body {
 }
 
 /* Cards */
-.pain-icon {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-}
-
 .pain-title, .feature-title {
   font-size: 1.25rem;
   margin-bottom: 0.75rem;
@@ -853,60 +821,6 @@ body {
   font-weight: 600;
 }
 
-/* Centralno poravnata lista s natuknicama */
-.hero-bullets {
-  
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.hero-bullets li {
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
-  position: relative;
-  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.6;
-  max-width: 720px;
-  padding-left: 1.75rem;
-  text-align: center;
-}
-
-/* Prilagođeni kružni bullet indikator u liniji s tekstom */
-.hero-bullets li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.55em;
-  width: 8px;
-  height: 8px;
-  background-color: #008080;
-  border: 2px solid #4dd0e1;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(77, 208, 225, 0.6);
-}
-
-.hero-bullets .bullet-title {
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
-  font-weight: 900;
-  color: #ffffff;
-}
-
-/* Responzivne prilagodbe za mobilne ekrane */
-@media (max-width: 640px) {
-  .hero-bullets {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .hero-bullets li {
-    text-align: left;
-  }
-}
 /* ==========================================================================
    Demo Project Launcher Modal
    ========================================================================== */
