@@ -322,11 +322,63 @@ body {
   z-index: 1;
 }
 
-.hero-bg-img {
+.hero-bg-svg {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Subtle wash so the hero copy stays as readable as it was with the WebP. */
   opacity: 0.35;
+}
+
+.hero-bg-svg .ribbon-text,
+.hero-bg-svg .ribbon-text-italic {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 600;
+}
+
+.hero-bg-svg .ribbon-text {
+  letter-spacing: 0.4px;
+}
+
+.hero-bg-svg .ribbon-text-italic {
+  font-style: italic;
+}
+
+.hero-ribbon {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* js-effects is only set when JS is on and reduced motion wasn't requested,
+   so the static SVG is the fallback in every other case. Animating the
+   groups (not the wrapper) keeps the JS parallax transform independent. */
+.js-effects .hero-ribbon {
+  will-change: transform, opacity;
+}
+
+.js-effects .hero-ribbon--a {
+  animation: hero-ribbon-drift-a 9s ease-in-out var(--hero-delay, 0s) infinite;
+}
+
+.js-effects .hero-ribbon--b {
+  animation: hero-ribbon-drift-b 11s ease-in-out var(--hero-delay, 0s) infinite;
+}
+
+@keyframes hero-ribbon-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.88; }
+  50% { transform: translate3d(6px, -4px, 0); opacity: 1; }
+}
+
+@keyframes hero-ribbon-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 1; }
+  50% { transform: translate3d(-5px, 4px, 0); opacity: 0.86; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ribbon {
+    animation: none !important;
+    will-change: auto;
+  }
 }
 
 .hero-overlay {

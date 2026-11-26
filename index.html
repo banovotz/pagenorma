@@ -37,11 +37,10 @@ description: pagenorma is a browser-based workspace for literary translation man
 
 <!-- HERO SECTION -->
 <section class="hero-section">
-  <!-- Pozadinska WebP Animacija -->
-  <picture class="hero-bg-picture" data-parallax="0.35">
-    <source srcset="{{ '/assets/images/hero.webp' | relative_url }}" type="image/webp">
-    <img src="{{ '/assets/images/hero.webp' | relative_url }}" alt="Background Animation" class="hero-bg-img" loading="eager">
-  </picture>
+  <!-- Inline SVG background (animated with CSS, parallax via JS) -->
+  <div class="hero-bg-picture" data-parallax="0.35">
+    {% include hero-background.html %}
+  </div>
 
   <!-- Tamni sloj za čitljivost teksta -->
   <div class="hero-overlay"></div>

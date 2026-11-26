@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%" class="hero-bg-svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="heroBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#152222" />
+      <stop offset="55%" stop-color="#1C2E2E" />
+      <stop offset="100%" stop-color="#121C1C" />
+    </linearGradient>
+
+    <filter id="heroRibbonShadow" x="-15%" y="-15%" width="135%" height="135%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.42" />
+    </filter>
+
+    <path id="heroPathFrTop" d="M 190 175 Q 370 115 565 215" fill="none" />
+    <path id="heroPathEnTop" d="M 455 245 Q 585 110 735 45" fill="none" />
+    <path id="heroPathDeRight" d="M 655 235 Q 845 145 1055 65" fill="none" />
+    <path id="heroPathFrLeft" d="M 65 255 Q 245 315 435 375" fill="none" />
+    <path id="heroPathDeMid" d="M 595 315 Q 785 415 985 515" fill="none" />
+    <path id="heroPathEnBottom" d="M 95 455 Q 315 515 535 555" fill="none" />
+    <path id="heroPathHrBottom" d="M 665 495 Q 865 555 1085 615" fill="none" />
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#heroBgGrad)" />
+
+  <g stroke="#2C4747" stroke-width="2" fill="none" opacity="0.55">
+    <circle cx="240" cy="120" r="54" stroke-dasharray="8 6" />
+    <circle cx="240" cy="120" r="34" />
+    <circle cx="940" cy="210" r="68" stroke-dasharray="10 8" />
+    <line x1="0" y1="540" x2="1200" y2="190" stroke-width="1.5" opacity="0.35" />
+    <line x1="120" y1="0" x2="980" y2="675" stroke-width="1.5" opacity="0.25" />
+  </g>
+
+  <g class="hero-ribbon hero-ribbon--a" style="--hero-delay: 0s" filter="url(#heroRibbonShadow)">
+    <path d="M 165 155 Q 370 92 585 198 L 568 236 Q 368 136 152 194 Z" fill="#F8F5F2" />
+    <text class="ribbon-text" font-size="22" fill="#1A1A1A">
+      <textPath href="#heroPathFrTop" startOffset="4%">On ne voit bien qu’avec le cœur.</textPath>
+    </text>
+  </g>
+
+  <g class="hero-ribbon hero-ribbon--b" style="--hero-delay: -2.4s" filter="url(#heroRibbonShadow)">
+    <path d="M 432 238 Q 572 95 745 24 L 762 62 Q 596 130 465 264 Z" fill="#EFECE6" />
+    <text class="ribbon-text" font-size="20" fill="#1A1A1A">
+      <textPath href="#heroPathEnTop" startOffset="4%">It is only with the heart</textPath>
+    </text>
+  </g>
+
+  <g class="hero-ribbon hero-ribbon--a" style="--hero-delay: -5.1s" filter="url(#heroRibbonShadow)">
+    <path d="M 638 220 Q 842 124 1068 42 L 1082 80 Q 860 162 658 256 Z" fill="#233333" />
+    <text class="ribbon-text" font-size="21" fill="#F8F5F2">
+      <textPath href="#heroPathDeRight" startOffset="4%">Man sieht nur mit dem Herzen gut.</textPath>
+    </text>
+  </g>
+
+  <g class="hero-ribbon hero-ribbon--b" style="--hero-delay: -1.2s" filter="url(#heroRibbonShadow)">
+    <path d="M 45 234 Q 245 296 452 358 L 440 396 Q 232 334 32 272 Z" fill="#008080" />
+    <text class="ribbon-text-italic" font-size="20" fill="#FFFFFF">
+      <textPath href="#heroPathFrLeft" startOffset="4%">L’essentiel est invisible pour les yeux.</textPath>
+    </text>
+  </g>
+
+  <g filter="url(#heroRibbonShadow)">
+    <polygon points="445,252 675,358 656,398 426,292" fill="#F8F5F2" stroke="#008080" stroke-width="2" />
+    <text x="550" y="336" transform="rotate(24.8 550 336)" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="22" fill="#006666">
+      Le Petit Prince
+    </text>
+  </g>
+
+  <g class="hero-ribbon hero-ribbon--a" style="--hero-delay: -7.3s" filter="url(#heroRibbonShadow)">
+    <path d="M 582 294 Q 788 396 1004 498 L 986 534 Q 770 432 564 330 Z" fill="#E6E1DA" />
+    <text class="ribbon-text" font-size="19" fill="#1A1A1A">
+      <textPath href="#heroPathDeMid" startOffset="4%">Gerade die Zeit, die du für deine Rose...</textPath>
+    </text>
+  </g>
+
+  <g class="hero-ribbon hero-ribbon--b" style="--hero-delay: -4.6s" filter="url(#heroRibbonShadow)">
+    <path d="M 78 434 Q 312 496 552 536 L 545 574 Q 302 534 68 472 Z" fill="#1C2826" />
+    <text class="ribbon-text" font-size="19" fill="#F8F5F2">
+      <textPath href="#heroPathEnBottom" startOffset="4%">It is the time you have wasted for your rose...</textPath>
+    </text>
+  </g>
+
+  <g class="hero-ribbon hero-ribbon--a" style="--hero-delay: -8.8s" filter="url(#heroRibbonShadow)">
+    <path d="M 652 474 Q 862 536 1098 598 L 1088 634 Q 852 572 642 510 Z" fill="#006666" />
+    <text class="ribbon-text" font-size="20" fill="#F8F5F2">
+      <textPath href="#heroPathHrBottom" startOffset="4%">Pravim se srcem jedino dobro vidi.</textPath>
+    </text>
+  </g>
+</svg>
