@@ -7,38 +7,38 @@ features_list:
     title: "ePub, PDF, Word & Google Docs Integration"
     description: "Pagenorma <strong>parses your source file (ePub, PDF)</strong> to determine absolute volume, and <strong>connects directly to your working Google Doc or Word translation doc</strong> to sync your translation progress in <strong>real time</strong>."
     badge: "Automation"
-    image: "/assets/images/mockup7.jpeg"
+    image: "/assets/images/mockup7.webp"
 
   - id: "pacing"
     featured: true
     title: "Smart Pacing & Deadline Management"
     description: "Set your total pages or words per day <strong>target</strong>, start and end dates, and weekend preferences. Pagenorma <strong>continuously calculates your Required Daily Pace vs. your Planned Daily Pace</strong>, warning you in advance if you're falling behind schedule."
     badge: "Core Feature"
-    image: "/assets/images/mockup1.jpeg"
+    image: "/assets/images/mockup1.webp"
 
   - id: "multilanguage"
     title: "Support Translation in Multiple Languages"
     description: "The app supports <strong>all latin scripts</strong> and provides <strong>intuitive tools</strong> such as side-by-side view, searchable glossary of all terms with concordance, and smart QA commentary regardless of source and translation language."
     badge: "Multi-language"
-    image: "/assets/images/mockup5.jpeg"
+    image: "/assets/images/mockup5.webp"
 
   - id: "analysis"
     featured: true
     title: "Deep Translation QA & Glossary Analysis"
     description: "<strong>Maintain terminology consistency</strong> across a 100,000-word manuscript. Generate glossary with all the terms used in your text, analyze phrase/term occurrences, and run <strong>QA checks</strong> between source text and your translation without losing context."
     badge: "Concordance"
-    image: "/assets/images/mockup8.jpeg"
+    image: "/assets/images/mockup8.webp"
 
   - id: "metrics"
     featured: true
     title: "Track Monthly Earnings Across All Projects"
     description: "Ditch manual spreadsheet formulas. <strong>Automatically calculate your earnings</strong> for each project/month with <strong>crystal-clear overview of your income for each translation project.</strong>"
     badge: "Financial Analytics"
-    image: "/assets/images/mockup4.jpeg"
+    image: "/assets/images/mockup4.webp"
 
   - id: "privacy"
     title: "Local-First & Privacy-Focused"
     description: "<strong>Your intellectual property stays yours.</strong> Built as a PWA with local storage (IndexedDB), your manuscripts, drafts, and original source files <strong>stay in your browser and on your computer.</strong>"
     badge: "Security"
-    image: "/assets/images/mockup2.jpeg"
+    image: "/assets/images/mockup2.webp"
 

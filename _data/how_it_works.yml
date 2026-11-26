@@ -5,18 +5,18 @@ subheading: "No plug-ins to install and no spreadsheet formulas to maintain — 
 steps:
   - title: "Bring in your book"
     description: "Add your source ePub or PDF, then connect the Word document or Google Doc you write in."
-    image: "/assets/images/mockup7.jpeg"
+    image: "/assets/images/mockup7.webp"
     link_title: "Getting started"
     link_url: "/support/getting-started/what-is-pagenorma/"
 
   - title: "Set the pace and the money"
     description: "Enter your deadline, daily target, weekends and deductions. pagenorma works out the pace you need and what the project will net."
-    image: "/assets/images/mockup1.jpeg"
+    image: "/assets/images/mockup1.webp"
     link_title: "Understand your project card"
     link_url: "/support/projects/understand-your-project-card/"
 
   - title: "Write, refresh, review"
     description: "Refresh your translation to update progress, then open the side-by-side view for the glossary, concordance and inline QA comments."
-    image: "/assets/images/mockup8.jpeg"
+    image: "/assets/images/mockup8.webp"
     link_title: "Read the side-by-side view"
     link_url: "/support/analysis/read-the-side-by-side-view/"
