@@ -342,6 +342,30 @@ body {
   }
 }
 
+/* Small/touch screens: keep the hero cheap to paint. iOS Safari otherwise
+   drops the animated SVG layer during scroll and repaints it a moment later,
+   leaving a blank white hero. These rules also cover touch laptops/resizes
+   where js-effects may already be set. */
+@media (max-width: 768px), (hover: none) {
+  .js-effects .hero-ribbon {
+    animation: none !important;
+    will-change: auto;
+    filter: none;
+  }
+
+  .js-effects [data-reveal],
+  .js-effects .hero-grid > * {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .site-header {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(252, 251, 249, 0.97);
+  }
+}
+
 .hero-overlay {
   z-index: 2;
   background: linear-gradient(135deg, rgba(112, 152, 137, 0.971) 0%, rgba(131, 6, 85, 0.4) 100%);

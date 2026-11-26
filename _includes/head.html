@@ -55,11 +55,13 @@
   <link rel="preload" href="{{ '/assets/fonts/inter-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ '/assets/fonts/lora-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
 
-  <!-- Prije CSS-a: uključi parallax/reveal stilove samo ako JS radi i korisnik
-       nije zatražio smanjenu animaciju (prefers-reduced-motion). Postavljanje
-       klase prije CSS-a sprječava invalidaciju stilova nakon prvog layouta. -->
+  <!-- Prije CSS-a: uključi parallax/reveal stilove samo na širem zaslonu i kad
+       korisnik nije zatražio smanjenu animaciju (prefers-reduced-motion). Na
+       telefonima ih izostavljamo jer iOS Safari sporo ponovo crta animirani SVG.
+       Postavljanje klase prije CSS-a sprječava invalidaciju stilova nakon layouta. -->
   <script>
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        window.matchMedia('(min-width: 769px)').matches) {
       document.documentElement.classList.add('js-effects');
     }
   </script>
