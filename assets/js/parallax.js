@@ -25,7 +25,8 @@
   // --------------------------------------------------------------------------
 
   let layers = [];
-  let sectionTops = new Map();
+  // Geometry is measured once per layout change, never during a scroll frame.
+  let sectionMetrics = new Map();
   let frameRequested = false;
   let parallaxEnabled = window.innerWidth > MOBILE_BREAKPOINT;
 
@@ -42,10 +43,14 @@
       };
     });
 
-    sectionTops = new Map();
+    // All layout reads happen here, together, before any transform writes.
+    sectionMetrics = new Map();
     layers.forEach(({ section }) => {
-      if (section && !sectionTops.has(section)) {
-        sectionTops.set(section, section.getBoundingClientRect().top + window.scrollY);
+      if (section && !sectionMetrics.has(section)) {
+        sectionMetrics.set(section, {
+          top: section.getBoundingClientRect().top + window.scrollY,
+          height: section.offsetHeight || 1
+        });
       }
     });
 
@@ -59,17 +64,18 @@
     frameRequested = false;
     if (!parallaxEnabled) return;
 
-    const viewportMiddle = window.scrollY + window.innerHeight / 2;
+    const viewportHeight = window.innerHeight;
+    const viewportMiddle = window.scrollY + viewportHeight / 2;
 
+    // Write-only frame: every geometry value comes from the cached measurements.
     layers.forEach(({ el, speed, section }) => {
-      const sectionTop = sectionTops.get(section);
-      if (sectionTop === undefined) return;
+      const metrics = sectionMetrics.get(section);
+      if (!metrics) return;
       // Distance of the section's middle from the viewport middle, normalised.
-      const sectionHeight = section.offsetHeight || 1;
-      const sectionMiddle = sectionTop + sectionHeight / 2;
-      const offset = (viewportMiddle - sectionMiddle) / (window.innerHeight + sectionHeight);
+      const sectionMiddle = metrics.top + metrics.height / 2;
+      const offset = (viewportMiddle - sectionMiddle) / (viewportHeight + metrics.height);
       // Clamp so layers don't fly off-screen.
-      const translate = Math.max(-1, Math.min(1, offset)) * speed * window.innerHeight;
+      const translate = Math.max(-1, Math.min(1, offset)) * speed * viewportHeight;
       el.style.transform = 'translate3d(0,' + translate.toFixed(1) + 'px,0)';
     });
   }
