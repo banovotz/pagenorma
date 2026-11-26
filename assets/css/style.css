@@ -218,7 +218,8 @@ body {
 
 
 .footer-subtext {
-  color: #6b7280;
+  /* 5.5:1 on --color-dark-bg; #6b7280 was only 3.67:1. */
+  color: #87909e;
   font-size: 0.85rem;
 }
 
