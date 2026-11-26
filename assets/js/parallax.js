@@ -30,6 +30,20 @@
   let frameRequested = false;
   let parallaxEnabled = window.innerWidth > MOBILE_BREAKPOINT;
 
+  // Wait for a clean layout pass before reading geometry or observing reveal
+  // targets (IntersectionObserver's initial check also needs layout). The head
+  // script adds `js-effects` before this file runs; two frames guarantee that
+  // the invalidation is flushed and neither operation forces a reflow.
+  function scheduleMeasure(setupReveal) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        measureLayers();
+        if (setupReveal) initReveal();
+        requestParallaxFrame();
+      });
+    });
+  }
+
   // Measure each layer's position inside its section once (and on resize),
   // so the scroll handler only reads cached numbers.
   function measureLayers() {
@@ -115,24 +129,19 @@
   // --------------------------------------------------------------------------
 
   function init() {
-    measureLayers();
-    applyParallax();
-    initReveal();
+    scheduleMeasure(true);
 
     window.addEventListener('scroll', requestParallaxFrame, { passive: true });
 
     let resizeTimer = null;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        measureLayers();
-        requestParallaxFrame();
-      }, 150);
+      resizeTimer = setTimeout(() => scheduleMeasure(false), 150);
     });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
     init();
   }
