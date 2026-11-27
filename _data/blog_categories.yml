@@ -1,0 +1,18 @@
+# Order, titles and descriptions of the blog categories.
+# Slugs are lowercase and hyphenated so they can be used directly in URLs.
+- slug: product-updates
+  title: Product updates
+  description: What changed in pagenorma and why it matters at the desk.
+  order: 1
+- slug: translation-workflow
+  title: Translation workflow
+  description: Practical notes on pacing, deadlines and literary QA.
+  order: 2
+- slug: privacy-data
+  title: Privacy & data
+  description: How local-first storage and AI processing actually work.
+  order: 3
+- slug: tips
+  title: Tips
+  description: Small habits and shortcuts for literary translators.
+  order: 4

@@ -1,0 +1,23 @@
+{% if paginator and paginator.total_pages > 1 %}
+  <nav class="blog-pagination" aria-label="Blog pagination">
+    {% if paginator.previous_page %}
+      <a class="blog-page-link" href="{{ paginator.previous_page_path | relative_url }}">&larr; Newer</a>
+    {% else %}
+      <span class="blog-page-link blog-page-link--disabled" aria-hidden="true">&larr; Newer</span>
+    {% endif %}
+
+    {% for trail_page in paginator.page_trail %}
+      {% if trail_page.num == paginator.page %}
+        <span class="blog-page-number blog-page-number--current" aria-current="page">{{ trail_page.num }}</span>
+      {% else %}
+        <a class="blog-page-number" href="{{ trail_page.path | relative_url }}">{{ trail_page.num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if paginator.next_page %}
+      <a class="blog-page-link" href="{{ paginator.next_page_path | relative_url }}">Older &rarr;</a>
+    {% else %}
+      <span class="blog-page-link blog-page-link--disabled" aria-hidden="true">Older &rarr;</span>
+    {% endif %}
+  </nav>
+{% endif %}

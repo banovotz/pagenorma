@@ -17,6 +17,19 @@ url: https://pagenorma.eu # the base hostname & protocol for your site, e.g. htt
 
 timezone: Europe/Zagreb
 
+# Blog posts live under /blog/; category indexes use /blog/category/<slug>/.
+permalink: /blog/:year/:month/:day/:slug/
+
+pagination:
+  enabled: true
+  per_page: 9
+  permalink: '/page/:num/'
+  title: ':title - page :num'
+  sort_reverse: true
+  trail:
+    before: 2
+    after: 2
+
 exclude:
   - .sass-cache/
   - .jekyll-cache/
@@ -33,6 +46,7 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-minifier
+  - jekyll-paginate-v2
 
 keep_files: [app]
 include:
@@ -44,9 +58,12 @@ defaults:
       path: "app"
     values:
       layout: null
-
-defaults:
   - scope:
       path: "support"
     values:
       layout: "support-article"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

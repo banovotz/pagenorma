@@ -342,6 +342,23 @@ description: pagenorma is a browser-based workspace for literary translation man
   </div>
 </section>
 
+<!-- LATEST BLOG POST -->
+{% assign latest_post = site.posts.first %}
+{% if latest_post %}
+<section class="section-latest-post">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <h2 class="section-title">From the blog</h2>
+      <p class="section-subheading">Notes from the desk — releases, workflow and how we handle your data.</p>
+    </div>
+    <div class="latest-post-wrap" data-reveal>
+      {% include blog-card.html post=latest_post %}
+    </div>
+    <p class="latest-post-more"><a href="{{ '/blog/' | relative_url }}">Browse all posts &rarr;</a></p>
+  </div>
+</section>
+{% endif %}
+
 <!-- CLOSING CALL TO ACTION SECTION -->
 <section class="section-cta">
   <span class="deco-orb deco-orb-f" data-parallax="-0.12" aria-hidden="true"></span>

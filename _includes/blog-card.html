@@ -1,0 +1,27 @@
+{% assign post = include.post %}
+{% assign thumb = post.thumbnail | default: post.hero_image %}
+{% assign category_slug = post.categories.first %}
+{% assign category_meta = site.data.blog_categories | where: "slug", category_slug | first %}
+
+<article class="blog-card{% unless thumb %} blog-card--text-only{% endunless %}">
+  <a class="blog-card-link" href="{{ post.url | relative_url }}">
+    {% if thumb %}
+      <div class="blog-card-thumb">
+        <img src="{{ thumb | relative_url }}" alt="" loading="lazy" width="640" height="360">
+      </div>
+    {% endif %}
+
+    <div class="blog-card-body">
+      <div class="blog-card-meta">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+        {% if category_slug %}
+          <span class="blog-card-category">{% if category_meta %}{{ category_meta.title }}{% else %}{{ category_slug | capitalize }}{% endif %}</span>
+        {% endif %}
+      </div>
+
+      <h2 class="blog-card-title">{{ post.title | escape }}</h2>
+      <p class="blog-card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 28 }}</p>
+      <span class="blog-card-more">Read post <span aria-hidden="true">&rarr;</span></span>
+    </div>
+  </a>
+</article>

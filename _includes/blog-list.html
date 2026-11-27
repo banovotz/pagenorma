@@ -1,0 +1,36 @@
+{% if paginator %}
+  {% assign posts = paginator.posts %}
+{% else %}
+  {% assign posts = site.posts %}
+{% endif %}
+
+<div class="container blog-container">
+  <header class="blog-header">
+    <h1 class="support-title">{{ page.title | escape }}</h1>
+    {% if page.description %}
+      <p class="blog-intro">{{ page.description }}</p>
+    {% endif %}
+  </header>
+
+  {% assign sorted_categories = site.data.blog_categories | sort: "order" %}
+  <nav class="blog-categories" aria-label="Blog categories">
+    <a href="{{ '/blog/' | relative_url }}" class="blog-category-link{% unless page.category %} blog-category-link--active{% endunless %}">All posts</a>
+    {% for cat in sorted_categories %}
+      {% assign count = site.categories[cat.slug] | size %}
+      <a href="{{ '/blog/category/' | append: cat.slug | append: '/' | relative_url }}" class="blog-category-link{% if page.category == cat.slug %} blog-category-link--active{% endif %}">
+        {{ cat.title }} <span class="blog-category-count">{{ count }}</span>
+      </a>
+    {% endfor %}
+  </nav>
+
+  {% if posts.size > 0 %}
+    <div class="blog-grid">
+      {% for post in posts %}
+        {% include blog-card.html post=post %}
+      {% endfor %}
+    </div>
+    {% include blog-pagination.html %}
+  {% else %}
+    <p class="blog-empty">No posts in this category yet.</p>
+  {% endif %}
+</div>
